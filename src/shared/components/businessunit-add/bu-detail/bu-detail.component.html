@@ -1,0 +1,132 @@
+<section class="bu-address-component-container">
+    <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="16">
+
+            <section nz-row nzGutter="30">
+                <section nz-col [nzSpan]="24">
+                    <nz-form-item>
+                        <nz-form-label nzRequired nzFor="name">Internal Name</nz-form-label>
+                        <nz-form-control nzErrorTip="Enter Valid Internal Name" [nzValidateStatus]="buNameValidationStatus"
+                          nzHasFeedback [nzErrorTip]="'Invalid/Duplicate Internal Name'">
+                          <input class="text-capitalize" [placeholder]="businessUnitInternalNamePlaceholder"
+                            #nameWithPattern="ngModel" trim="blur" nz-input id="name" type="text" required maxlength="56"
+                            name="name" [(ngModel)]="businessUnit.name" changes [changedValue]="businessUnit?.name"
+                            [changedType]="changedType" [changedField]="'name'" [changeDescription]="'-'"
+                            [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'" [trimValue]="true"
+                            (input)="onBuNameInput()">
+                        </nz-form-control>
+                      </nz-form-item>
+                </section>
+            </section>
+            <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="name">Official Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter Official Name">
+                      <input nz-input class="text-capitalize" required type="text" required
+                        [placeholder]="businessUnitOfficialNamePlaceholder" name="officialname"
+                        [(ngModel)]="businessUnit.officialName" trim="blur" changes
+                        [changedValue]="businessUnit?.officialName" [changedType]="changedType"
+                        [changedField]="'officialName'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Official Name'" [trimValue]="true">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="tags">Tags</nz-form-label>
+                    <nz-form-control nzErrorTip="Select Tags">
+                      <nz-select [nzPlaceHolder]="businessUnitTagsPlaceholder" nzMode="multiple" nzShowSearch required
+                        [(ngModel)]="businessUnit.tags" name="tags" id="tags" [nzMaxTagCount]="maximumSelections"
+                        [nzMaxTagPlaceholder]="selectionCountTemplate" changes [changedValue]="businessUnit?.tags"
+                        [changedType]="changedType" [changedField]="'tags'" [changeDescription]="'-'"
+                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Tags'">
+                        <nz-option nzCustomContent *ngFor="let tagname of tags" [nzValue]="tagname"
+                          [nzLabel]="tagname?.name">
+                          <nz-avatar
+                            [ngStyle]="{ 'background-color': tagname.color ,'border': '1px solid #80808040' }"
+                            nzSize="small" [nzShape]="'square'"></nz-avatar>
+                          <span class="ml-2 text-capitalize"> {{ tagname?.name}} </span>
+                        </nz-option>
+                      </nz-select>
+                      <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter Valid Email" [nzValidateStatus]="buEmailValidationStatus"
+                      nzHasFeedback [nzErrorTip]="'Invalid/Duplicate Email'">
+                      <input nz-input #emailWithPattern="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,18}$"
+                        id="email" type="email" required [placeholder]="businessUnitEmailPlaceholder" name="email"
+                        [ngModel]="businessUnit.email | lowercase" trim="blur"
+                        (ngModelChange)="businessUnit.email=$event.toLowerCase()" changes
+                        [changedValue]="businessUnit?.email" [changedType]="changedType" [changedField]="'email'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Email'" [trimValue]="true" (input)="onBuEmailInput()">
+                    </nz-form-control>
+                    <div *ngIf="emailWithPattern.touched">
+                      <p *ngIf="emailWithPattern.errors?.required">
+                        Email is a required field!
+                      </p>
+                    </div>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="phone">Phone Number</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter a valid phone number"
+                      [nzValidateStatus]="buPhoneValidationStatus" nzHasFeedback
+                      [nzErrorTip]="'Invalid/Duplicate Phone'">
+                      <input nz-input id="phone" type="text" maxlength="14" required name="phone"
+                        [placeholder]="businessUnitPhoneNumberPlaceholder" (ngModelChange)="businessUnit.phone=$event"
+                        [ngModel]="businessUnit.phone | phoneFormat" trim="blur" (input)="onBuPhoneInput($event)"
+                        pattern="((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}" changes [changedValue]="businessUnit?.phone"
+                        [changedType]="changedType" [changedField]="'phone'" [changeDescription]="'-'"
+                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Phone'"
+                        [formatterType]="'phone'" [trimValue]="true">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="minPostDate">Minimum Post Date</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter Minimum Post Date">
+                      <nz-date-picker [nzPlaceHolder]="businessUnitMinimumPostDatePlaceholder" [nzFormat]="dateFormat"
+                        name="minPostDate" required [(ngModel)]="businessUnit.minPostDate" required changes
+                        [changedValue]="businessUnit?.minPostDate" [changedType]="changedType"
+                        [changedField]="'minPostDate'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Min Post Date'">
+                      </nz-date-picker>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="role">Status</nz-form-label>
+                    <nz-form-control nzErrorTip="Select a Status">
+
+                      <nz-select [nzPlaceHolder]="businessUnitStatusPlaceholder" required name="status"
+                        [nzDisabled]="!editID" [(ngModel)]="businessUnit.status" changes
+                        [changedValue]="businessUnit?.status" [changedType]="changedType" [changedField]="'status'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Status'">
+                        <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+
+                  </nz-form-item>
+                </div>
+              </div>
+        </section>
+    </section>
+</section>
+  

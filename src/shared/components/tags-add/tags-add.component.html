@@ -1,0 +1,121 @@
+<section class="tags-add-container">
+  <nz-spin class="tag-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="businessunit-add-form-container">
+      <form #tagform="ngForm" [nzLayout]="'vertical'" nz-form (ngSubmit)="onSubmit()">
+        <div nz-row nzGutter="30">
+          <div nz-col nzSpan="14">
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="color">Color</nz-form-label>
+                  <div nz-row>
+                    <div nz-col nzSpan="8">
+                      <nz-form-control nzErrorTip="Enter Color">
+                        <input [placeholder]="tagColorPlaceholder" class="uppercase" nz-input id="color" type="color"
+                          name="color" [(ngModel)]="tag.color" changes [changedValue]="tag?.color"
+                          [changedType]="changedType" [changedField]="'color'" [changeDescription]="'-'"
+                          [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Color'" [trimValue]="true" />
+                      </nz-form-control>
+                    </div>
+                    <div nz-col nzSpan="15" nzOffset="1">
+                      <nz-form-control nzErrorTip="Enter Color">
+                        <input [placeholder]="tagColorPlaceholder" class="uppercase" (blur)="onColorInput()" nz-input
+                          name="colorCode" [(ngModel)]="tag.color" changes [changedValue]="tag?.color"
+                          [changedType]="changedType" [changedField]="'color'" [changeDescription]="'-'"
+                          [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Color Code'"
+                          [trimValue]="true" />
+                      </nz-form-control>
+                    </div>
+                  </div>
+                </nz-form-item>
+              </div>
+            </div>
+            <!-- <nz-form-item>
+              <nz-form-label nzFor="name"> Name</nz-form-label>
+              <nz-form-control nzErrorTip="Enter  Name">
+                <input nz-input type="text" required name="name" [(ngModel)]="tag.name">
+              </nz-form-control>
+            </nz-form-item> -->
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="name"> Name</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter  Name">
+                    <input [placeholder]="tagNamePlaceholder" class="titlecase" nz-input type="text" trim="blur"
+                      required name="name" [(ngModel)]="tag.name" changes [changedValue]="tag?.name"
+                      [changedType]="changedType" [changedField]="'name'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'" [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="role">Status</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Status">
+                    <nz-select [nzPlaceHolder]="tagStatusPlaceholder" name="tagStatus" [nzDisabled]="!tag?.id"
+                      [(ngModel)]="tag.status" nzPlaceHolder="Select Status" changes [changedValue]="tag?.status"
+                      [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                      <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12" *ngIf="tag?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="code">Code</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter Code">
+                    <input [placeholder]="tagCodePlaceholder" class="uppercase" nz-input id="code" trim="blur"
+                      [disabled]="tagId" type="text" required name="code" [(ngModel)]="tag.code" changes
+                      [changedValue]="tag?.code" [changedType]="changedType" [changedField]="'code'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Code'"
+                      [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="imp">Importance</nz-form-label>
+                  <nz-select [nzPlaceHolder]="tagImportancePlaceholder" required name="importance" id="imp"
+                    [(ngModel)]="tag.importance" nzPlaceHolder="Select Importance" changes
+                    [changedValue]="tag?.importance" [changedType]="changedType" [changedField]="'importance'"
+                    [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                    [changedFieldDisplayName]="'Importance'">
+                    <nz-option *ngFor="let item of importanceDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <!-- <div nz-row ngGutter="30">
+              <div nz-col nzSpan="12">
+                <label name="conversionCheckbox" [(ngModel)]="tags.conversionCheckbox" nz-checkbox >Conversion Opportunity</label>
+              </div>
+              <div nz-col nzSpan="12">
+                <label nz-checkbox name="dispatchCheckbox" [(ngModel)]="tags.dispatchCheckbox" >Show on Dispatch Board</label>
+              </div>
+            </div> -->
+
+            <nz-form-item nz-row class="register-area mt-4 text-right">
+              <nz-form-control>
+                <a type="link" class="link mr-4" (click)="onCancel()">Cancel</a>
+                <button nz-button [disabled]="tagform.invalid" class="mr-auto" type="submit" nzType="primary">
+                  {{ tag?.id ? 'Update' : 'Add' }}
+                </button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </form>
+    </section>
+  </nz-spin>
+</section>

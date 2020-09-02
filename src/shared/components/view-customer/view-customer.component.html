@@ -1,0 +1,37 @@
+<section class="view-customer-container">
+  <nz-spin class="view-customer-spin-container" [nzSpinning]="isSpinning">
+
+    <!-- Customer Summary -->
+    <section class="customer-summary-parent-container" *ngIf="customer?.id && orgId">
+      <app-customer-summary [customer]="customer" [orgId]="orgId" (emitOnCustomerUpdate)="onCustomerUpdate($event)">
+      </app-customer-summary>
+    </section>
+
+    <!-- Address List -->
+    <section class="customer-addresses-table-container" *ngIf="customer?.id">
+      <app-customer-address-list [addresses]="customer?.addresses" [customerId]="customer.id"
+        (emitOnCustomerUpdate)="onCustomerUpdate($event)"
+        (emitOnCustomerAddressCreate)="onCustomerAddressCreate($event)"
+        (emitOnCustomerAddressUpdate)="onCustomerAddressUpdate($event)"
+        (emitOnCustomerAddressDelete)="onCustomerAddressDelete($event)">
+      </app-customer-address-list>
+    </section>
+
+    <!-- Project List -->
+    <section class="customer-projects-table-container" *ngIf="customer?.id">
+      <!-- <app-customer-project-list [customer]="customer"
+            (emitOnCustomerUpdate)="onCustomerUpdate($event)">
+            </app-customer-project-list> -->
+      <app-customer-project-list [customer]="customer" (emitOnProjectUpdate)="onCustomerProjectUpdate($event)"
+        (emitOnProjectCreate)="onCustomerProjectCreate($event)">
+      </app-customer-project-list>
+    </section>
+
+    <!-- Job List -->
+    <ng-container *permission="viewJobsPermission">
+      <section class="customer-jobs-table-container" *ngIf="customer?.id && orgId">
+        <app-customer-job-list [customerId]="customer.id" [orgId]="orgId"></app-customer-job-list>
+      </section>
+    </ng-container>
+  </nz-spin>
+</section>

@@ -1,0 +1,36 @@
+query getCustomer($id: String!) {
+  getCustomer(id: $id) {
+    id
+    firstName
+    lastName
+    fullName
+    imageUrl
+    jobNotification
+    homePhone
+    officePhone
+    email
+    status
+    businessUnit {
+      id
+      name
+    }
+    projects {
+      id
+      name
+      code
+      status
+    }
+    addresses {
+      id
+      street
+      city
+      state
+      country
+      postalCode
+      latitude
+      longitude
+      type
+      landmark
+    }
+  }
+}

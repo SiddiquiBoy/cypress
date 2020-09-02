@@ -1,0 +1,66 @@
+// .jobtype-add-form-container {
+//     [nz-button] {
+//         margin-right: 8px;
+//     }
+// }
+
+.job-type-add-component-container {
+  .page-header-container {
+    margin-bottom: 20px;
+  }
+
+  .job-type-spin-container {
+  }
+
+  label {
+    margin-bottom: 0;
+  }
+
+  .ant-form-item {
+    margin-bottom: 10px;
+  }
+
+  nz-select {
+    ul {
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+
+  nz-select {
+    &.custom-job-type-tag-select {
+      li {
+        // border: none;
+        // background: none;
+      }
+    }
+  }
+
+  .custom-tag-template-container {
+    // margin-right: -10px;
+    // margin-top: 1.5px;
+    // display: inline-flex;
+
+    .black-color {
+      // color: black;
+    }
+
+    .custom-tag-selected-option {
+    }
+  }
+}
+
+.cdk-overlay-pane {
+  .custom-tag-dropdown {
+    .tag-option-name {
+      margin-left: 20px;
+    }
+  }
+}

@@ -1,0 +1,124 @@
+<section class="vendor-detail-component-container">
+  <section nz-row nzGutter="30">
+    <section nz-col [nzSpan]="16">
+
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="name">
+              Vendor Name
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Enter valid vendor name">
+              <input [attr.data-cy]="'vendorName'" required nz-input class="titlecase" name="vendorName"
+                [(ngModel)]="vendor.vendorName" [placeholder]="vendorNamePlaceholder" changes
+                [changedValue]="vendor?.vendorName" [changedType]="changedType" [changedField]="'vendorName'"
+                [pattern]="nameRegex" trim="blur" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'VendorName'" [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="role">Status</nz-form-label>
+            <nz-form-control nzErrorTip="Select status">
+              <nz-select [nzPlaceHolder]="vendorStatusPlaceholder" required name="status" name="status"
+                [nzDisabled]="!vendor?.id" [(ngModel)]="vendor.status" changes [changedValue]="vendor?.status"
+                [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'" [checkOnlyObjectId]="false">
+                <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="street">
+              Street
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Enter valid street">
+              <input [placeholder]="vendorStreetPlaceholder" [attr.data-cy]="'street'" required nz-input
+                class="titlecase" name="street" [(ngModel)]="vendor.street" changes [changedValue]="vendor?.street"
+                [changedType]="changedType" [changedField]="'street'" trim="blur" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Street'" [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzFor="landmark">
+              Landmark
+            </nz-form-label>
+            <nz-form-control>
+              <input [attr.data-cy]="'landmark'" nz-input class="titlecase" name="landmark"
+                [(ngModel)]="vendor.landmark" [placeholder]="vendorLandmarkPlaceholder" changes
+                [changedValue]="vendor?.landmark" [changedType]="changedType" [changedField]="'landmark'"
+                [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Landmark'"
+                [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="city">
+              City
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Enter valid city">
+              <input nz-input [attr.data-cy]="'city'" class="titlecase" required name="city" [(ngModel)]="vendor.city"
+                [placeholder]="vendorCityPlaceholder" changes [changedValue]="vendor?.city" [changedType]="changedType"
+                [changedField]="'city'" trim="blur" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'City'" [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="zipcode">Zipcode</nz-form-label>
+            <nz-form-control nzErrorTip="Enter valid zipcode">
+              <input [placeholder]="vendorZipCodePlaceholder" nz-input [attr.data-cy]="'zipcode'" id="zipcode"
+                type="text" [(ngModel)]="vendor.postalCode" maxlength="5" name="postalCode" required
+                [pattern]="zipcodeRegex" trim="blur" changes [changedValue]="vendor?.postalCode"
+                [changedType]="changedType" [changedField]="'postalCode'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'PostalCode'" [trimValue]="true">
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="country">Country</nz-form-label>
+            <nz-form-control nzErrorTip="Select country">
+              <nz-select [nzPlaceHolder]="vendorCountryPlaceholder" nzShowSearch required [(ngModel)]="vendor.country"
+                name="country" changes [changedValue]="vendor?.country" [changedType]="changedType"
+                [changedField]="'country'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'Country'">
+                <nz-option *ngFor="let country of countries" [nzLabel]="country.name | titlecase"
+                  [nzValue]="country.name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="state">State</nz-form-label>
+            <nz-form-control nzErrorTip="Select state">
+              <nz-select [nzPlaceHolder]="vendorStatePlaceholder" [attr.data-cy]="'state'" nzShowSearch name="state"
+                [(ngModel)]="vendor.state" required changes [changedValue]="vendor?.state" [changedType]="changedType"
+                [changedField]="'state'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'State'" [trimValue]="true">
+                <nz-option *ngFor="let state of states" [nzLabel]="state.name | titlecase" [nzValue]="state.name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+    </section>
+  </section>
+</section>

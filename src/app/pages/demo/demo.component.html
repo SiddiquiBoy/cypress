@@ -1,0 +1,27 @@
+<section class="demo-component-container">
+  <nz-spin class="demo-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="demos"
+        [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons" [showSearchBox]="true"
+        [customHeaderOptions]="columns" [tableConfig]="tableConfig" [totalRecords]="totalRecords"
+        [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (eEmitSearchInput)="onSearchInput($event)" (sortObj)="onSortChange($event)" [customTemplate]="custom">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.type === 'phone'">
+    {{data[key.columnMap] | phoneFormat}}
+  </span>
+  <span *ngIf="key.columnMap === 'organizationName' || key.columnMap === 'contactPersonName'">
+    {{data[key.columnMap] | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'contactPersonEmail'">
+    {{data[key.columnMap] | lowercase}}
+  </span>
+</ng-template>

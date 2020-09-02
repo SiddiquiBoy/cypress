@@ -1,0 +1,12 @@
+<section class="component-job-events-container">
+  <nz-tabset *ngIf="jobSegments?.length" [nzTabPosition]="'top'" [nzType]="'card'" [nzSelectedIndex]="activeIndex"
+    (nzSelectedIndexChange)="onTabChange($event)">
+    <nz-tab *ngFor="let segment of jobSegments ; let i = index" [nzTitle]="segment | titlecase">
+      <ng-container *ngIf="activeIndex === i">
+        <!-- [entity]="entity" -->
+        <app-app-events [segment]="segment" [entityId]="entityId">
+        </app-app-events>
+      </ng-container>
+    </nz-tab>
+  </nz-tabset>
+</section>

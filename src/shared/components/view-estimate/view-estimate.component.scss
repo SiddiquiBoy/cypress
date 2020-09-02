@@ -1,0 +1,22 @@
+.view-estimate-container {
+    width: 100%;
+    height: 100%;
+
+    padding-right: 30px;
+    // padding-left: 30px;
+
+    .view-estimate-spin-container {
+        width: 100%;
+        height: 100%;
+
+        .estimate-summary-parent-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .estimate-joblist-table-container {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

@@ -1,0 +1,90 @@
+<section class="project-detail-component-container">
+  <section nz-row nzGutter="30">
+    <section nz-col [nzSpan]="redirectUpdate ? 16 : 24">
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="name">
+              Name
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Enter valid name">
+              <input class="titlecase" nz-input type="text" required name="name" [placeholder]="projectNamePlaceholder"
+                [(ngModel)]="project.name" trim="blur" changes [changedValue]="project?.name"
+                [changedType]="changedType" [changedField]="'name'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'" [checkOnlyObjectId]="false"
+                [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12" *ngIf="project?.id">
+          <nz-form-item>
+            <nz-form-label nzFor="code">
+              Code
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Enter a code">
+              <input required nz-input name="code" [disabled]="project?.id" class="uppercase"
+                [placeholder]="projectCodePlaceholder" [(ngModel)]="project.code" trim="blur" changes
+                [changedValue]="project?.code" [changedType]="changedType" [changedField]="'code'"
+                [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Code'"
+                [checkOnlyObjectId]="false" [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12" *ngIf="!project?.id">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="customer">
+              Customer
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Select a customer">
+              <nz-select [nzDisabled]="project?.id || redirectFrom === 'customer'" required name="customer" nzShowSearch
+                [(ngModel)]="project.customer" (ngModelChange)="onCustomerSelect()"
+                [nzPlaceHolder]="projectCustomerPlaceholder" changes [changedValue]="project?.customer"
+                [changedType]="changedType" [changedField]="'customer'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Customer'" [checkOnlyObjectId]="true">
+                <nz-option *ngFor="let customer of customers" [nzValue]="customer"
+                  nzLabel="{{ customer.fullName | titlecase }}">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12" *ngIf="project?.id">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="customer">
+              Customer
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Select a customer">
+              <nz-select [nzDisabled]="project?.id || redirectFrom === 'customer'" required name="customer" nzShowSearch
+                [(ngModel)]="project.customer" (ngModelChange)="onCustomerSelect()"
+                [nzPlaceHolder]="projectCustomerPlaceholder" changes [changedValue]="project?.customer"
+                [changedType]="changedType" [changedField]="'customer'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Customer'" [checkOnlyObjectId]="true">
+                <nz-option *ngFor="let customer of customers" [nzValue]="customer"
+                  nzLabel="{{ customer.fullName | titlecase }}">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="projectStatus">
+              Status
+            </nz-form-label>
+            <nz-form-control nzErrorTip="Select a staus">
+              <nz-select required name="projectStatus" [nzDisabled]="!project?.id" [(ngModel)]="project.status"
+                [nzPlaceHolder]="projectStatusPlaceholder" changes [changedValue]="project?.status"
+                [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'" [checkOnlyObjectId]="false">
+                <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+    </section>
+  </section>
+</section>

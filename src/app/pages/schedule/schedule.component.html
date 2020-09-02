@@ -1,0 +1,80 @@
+<section class="schedule-container">
+    <section class="page-header-container">
+        <!-- <app-page-header></app-page-header> -->
+    </section>
+    <nz-spin class="schedule-spin-container" [nzSpinning]="isSpinning">
+        <div nz-row>
+            <div nz-row nzGutter="30">
+                <div nz-col nzSpan="4" class="events-filter-container-row">
+                    <section class="events-filter-container">
+                        <div class="title-container left-bar-title">Schedule</div>
+                        <form [nzLayout]="'vertical'" nz-form>
+                            <nz-form-item>
+                                <nz-form-label nzFor="eventDate">Select date</nz-form-label>
+                                <nz-form-control>
+                                    <nz-date-picker id="eventDate" name="eventDate" 
+                                    [nzFormat]="dateFormat" [(ngModel)]="selectedDate"></nz-date-picker>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label nzFor="businessUnits">Business Units</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select name="businessUnits" id="businessUnits"
+                                        nzPlaceHolder="Select Business Unit(s)" nzMode="multiple"
+                                        [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate">
+                                        <nz-option *ngFor="let businessUnit of businessUnits" [nzValue]="businessUnit" nzLabel="{{businessUnit.name | titlecase}}"></nz-option>
+                                    </nz-select>
+                                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label nzFor="technicians">Technicians</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select name="technicians" id="technicians"
+                                        nzPlaceHolder="Select Technician(s)" nzMode="multiple"
+                                        [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate">
+                                        <nz-option *ngFor="let technician of technicians" [nzValue]="technician" nzLabel="{{technician.fullName | titlecase}}"></nz-option>
+                                    </nz-select>
+                                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label nzFor="jobTypes">Job Types</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select name="jobTypes" id="jobTypes"
+                                        nzPlaceHolder="Select Job Type(s)" nzMode="multiple"
+                                        [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate">
+                                        <nz-option *ngFor="let jobType of jobTypes" [nzValue]="jobType" nzLabel="{{jobType.name | titlecase}}"></nz-option>
+                                    </nz-select>
+                                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label nzFor="tags">Tags</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select name="tags" id="tags"
+                                        nzPlaceHolder="Select Tag(s)" nzMode="multiple"
+                                        [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate">
+                                        <nz-option *ngFor="let tag of tags" [nzValue]="tag" nzLabel="{{tag.name | titlecase}}"></nz-option>
+                                    </nz-select>
+                                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                                </nz-form-control>
+                            </nz-form-item>
+                            <nz-form-item>
+                                <nz-form-label nzFor="job">Job</nz-form-label>
+                                <nz-form-control>
+                                    <app-searchbar></app-searchbar>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </form>
+                    </section>
+                </div>
+                <div nz-col nzSpan="20" class="events-calendar-container-row">
+                    <section class="events-calendar-container">
+                        <app-general-calendar></app-general-calendar>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </nz-spin>
+</section>

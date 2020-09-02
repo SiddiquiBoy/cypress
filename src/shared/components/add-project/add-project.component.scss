@@ -1,0 +1,82 @@
+.add-project-container {
+  width: 100%;
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  .page-header-container {
+    margin-bottom: 20px;
+  }
+
+  .project-form-container {
+    width: 100%;
+    height: 100%;
+
+    .steps-container {
+      display: flex;
+      width: 100%;
+      border-top: 1px solid #8080802e;
+      border-bottom: 1px solid #8080802e;
+      margin-bottom: 15px;
+
+      .steps-element-container {
+        display: flex;
+        width: 100%;
+
+        nz-step {
+          .ant-steps-item-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .ant-steps-item-icon {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+
+    .step-content-container {
+      display: felx;
+      width: 100%;
+
+      nz-form-item {
+        &.ant-form-item {
+          .ant-form-item-label {
+            line-height: 1;
+
+            label {
+              margin-bottom: 0;
+            }
+          }
+          margin-bottom: 12px;
+        }
+
+        label {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .form-button-container-row {
+      margin-top: 20px;
+      display: flex;
+      // margin-top: 20px;
+
+      .form-button-container-col {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .button-container {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,147 @@
+<section class="company-detail-component-container">
+  <section nz-row nzGutter="30">
+    <section nz-col nzSpan="16">
+      <section nz-row nzGutter="30">
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="user">Company Name</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a company name">
+              <input [attr.data-cy]="'companyName'" class="text-capitalize" nz-input type="text" required name="name"
+                id="name" trim="blur" [(ngModel)]="company.name" [placeholder]="companyNamePlaceholder" changes
+                [changedValue]="company?.name" [changedType]="changedType" [changedField]="'name'"
+                [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'"
+                [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="phone">Phone Number</nz-form-label>
+            <!-- <nz-form-control nzErrorTip="Enter a valid phone number">
+              <input [attr.data-cy]="'companyContact'" required nz-input id="contact" name="contact" maxlength="14"
+                placeholder="1234567890" [pattern]="phoneRegex" [ngModel]="company.contact | phoneFormat"
+                (ngModelChange)="company.contact=$event" trim="blur" changes [changedValue]="company?.contact"
+                [changedType]="changedType" [changedField]="'contact'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Phone Number'" [trimValue]="true" />
+            </nz-form-control> -->
+            <nz-form-control [nzValidateStatus]="companyContactValidationStatus" [nzHasFeedback]="hasFeedback"
+              [nzErrorTip]="companyContactValidTemplate">
+              <input [attr.data-cy]="'companyContact'" required nz-input id="contact" name="contact" maxlength="14"
+                [placeholder]="companyPhonePlaceholder" [pattern]="phoneRegex" [ngModel]="company.contact | phoneFormat"
+                (ngModelChange)="company.contact=$event" trim="blur" changes [changedValue]="company?.contact"
+                [changedType]="changedType" [changedField]="'contact'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Phone Number'" [trimValue]="true"
+                (input)="onCompanyContactInput()" />
+            </nz-form-control>
+            <ng-template #companyContactValidTemplate>
+              <ng-container *ngIf="!validContact">
+                Invalid phone number
+              </ng-container>
+              <ng-container *ngIf="companyContactValidationStatus === 'error' && validContact">
+                Duplicate phone number
+              </ng-container>
+            </ng-template>
+          </nz-form-item>
+        </section>
+      </section>
+
+      <section nz-row nzGutter="30">
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="Country">Country</nz-form-label>
+            <nz-form-control nzErrorTip="Select a country">
+              <nz-select [attr.data-cy]="'companyCountry'" required name="country" nzShowSearch
+                [nzPlaceHolder]="companyCountryPlaceholder" [(ngModel)]="company.addresses[0].country" changes
+                [changedValue]="company?.addresses[0]?.country" [changedType]="changedType"
+                [changedField]="'addresses/0.country'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'Country'" (ngModelChange)="onCountrySelect()">
+                <nz-option *ngFor="let country of countries" nzLabel="{{country.name | titlecase}}"
+                  nzValue="{{country.name}}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="State">State</nz-form-label>
+            <nz-form-control nzErrorTip="Select a state">
+              <nz-select [attr.data-cy]="'companyState'" required name="state" nzShowSearch
+                [nzPlaceHolder]="companyStatePlaceholder" [(ngModel)]="company.addresses[0].state" changes
+                [changedValue]="company?.addresses[0]?.state" [changedType]="changedType"
+                [changedField]="'addresses/0.state'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'State'">
+                <nz-option *ngFor="let state of states" nzLabel="{{state.name | titlecase}}" nzValue="{{state.name}}">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+
+      <section nz-row nzGutter="30">
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="city">City</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid city ">
+              <input [attr.data-cy]="'companyCity'" required class="text-capitalize" nz-input type="text" name="city"
+                id="city" trim="blur" [(ngModel)]="company.addresses[0].city" maxlength="20"
+                [placeholder]="companyCityPlaceholder" [pattern]="cityNameRegex" changes
+                [changedValue]="company?.addresses[0]?.city" [changedType]="changedType"
+                [changedField]="'addresses/0.city'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'City'" [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="street">Street</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a Street">
+              <input [attr.data-cy]="'companyStreet'" class="text-capitalize" nz-input type="text" name="street"
+                id="street" trim="blur" [(ngModel)]="company.addresses[0].street"
+                [placeholder]="companyStreetPlaceholder" changes [changedValue]="company?.addresses[0]?.street"
+                [changedType]="changedType" [changedField]="'addresses/0.street'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Address'" [trimValue]="true" required />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+
+      <section nz-row nzGutter="30">
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="zip">Postal Code</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid postal code">
+              <input [attr.data-cy]="'companyPostalCode'" required nz-input name="zipcode" id="zipcode" maxlength="5"
+                [placeholder]="companyPostalCodePlaceholder" [pattern]="zipcodeRegex"
+                [(ngModel)]="company.addresses[0].postalCode" trim="blur" changes
+                [changedValue]="company?.addresses[0]?.postalCode" [changedType]="changedType"
+                [changedField]="'addresses/0.postalCode'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'Postal Code'" [trimValue]="true" />
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="role">Status</nz-form-label>
+            <nz-form-control nzErrorTip="Select a Status">
+              <nz-select [attr.data-cy]="'companyStatus'" name="companyStatus" [nzDisabled]="!company?.id"
+                [(ngModel)]="company.status" [nzPlaceHolder]="companyStatusPlaceholder" changes
+                [changedValue]="company?.status" [changedType]="changedType" [changedField]="'status'"
+                [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+    </section>
+    <section nz-col nzSpan="8">
+      <section class="mt-4">
+        <app-file-upload [uploadText]="imageUploadText" [imageUrl]="company?.imageUrl"
+          (emitImageLoadingStatus)="handleImageLoading($event)" (emitImageUrl)="setImageUrl($event)">
+        </app-file-upload>
+      </section>
+    </section>
+  </section>
+</section>

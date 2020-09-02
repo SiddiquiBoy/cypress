@@ -1,0 +1,28 @@
+.followups-layout-container {
+    $sidebar-menu-width: 190px;
+  
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    background: #fff;
+    display: flex;
+  
+    .sidebar-section {
+      width: $sidebar-menu-width;
+      height: 100%;
+      // border-right: 2px solid #8080803d;
+    }
+  
+    .main-section {
+      width: calc(100% - 190px);
+      // padding: 15px;
+  
+      padding-top: 12px;
+      // padding-left: 20px;
+      // padding-right: 20px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+  

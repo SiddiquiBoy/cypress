@@ -1,0 +1,29 @@
+<section class="sidebar-navigation-menu-component-container" [ngStyle]="{'width': sidebarMenuWidth}">
+  <nz-layout class="sidebar-layout">
+    <nz-sider nzWidth="100%" nzTheme="light">
+      <section *ngIf="sidebarHeading" class="header-section">
+        {{sidebarHeading | titlecase}}
+      </section>
+      <ul nz-menu nzMode="inline" class="sidebar-menu-list">
+        <section *ngFor="let item of menuItemsGroup">
+
+          <li *ngIf="item.items && item.items.length" nz-submenu nzTitle="{{ item?.label }}">
+            <ul class="submenu-item-list">
+              <li *ngFor="let subitem of item?.items" nz-menu-item (click)="onMenuItemClick(subitem)" nzMatchRouter>
+                <a [routerLink]="subitem.routeTo">
+                  {{subitem?.label}}
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li *ngIf="!item.items || !item.items.length" nz-menu-item (click)="onMenuItemClick(item)" nzMatchRouter>
+            <a [routerLink]="item.routeTo">
+              {{item?.label}}
+            </a>
+          </li>
+        </section>
+      </ul>
+    </nz-sider>
+  </nz-layout>
+</section>

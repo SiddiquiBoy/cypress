@@ -1,0 +1,26 @@
+<div class="settings-layout-container">
+  <!-- <nz-layout class="inner-layout">
+    <nz-sider nzWidth="200px" nzTheme="light">
+      <ul nz-menu nzMode="inline" class="sider-menu">
+          <li nz-menu-item nzMatchRouter><a routerLink="billings">Billing</a></li>
+          <li nz-menu-item nzMatchRouter><a routerLink="profile">Company Profile</a></li>
+          <li nz-menu-item nzMatchRouter><a routerLink="people">People</a></li>
+          <li nz-menu-item nzMatchRouter><a routerLink="operations">Operations</a></li>
+          <li nz-menu-item nzMatchRouter><a routerLink="roles">Roles</a></li>
+          <li nz-menu-item nzMatchRouter><a routerLink="tags">Tags</a></li>
+          <li nz-menu-item nzMatchRouter><a routerLink="timesheets">Timesheet</a></li>
+        </ul>
+    </nz-sider>
+    <div style="width: 100%;">
+      <router-outlet></router-outlet>
+    </div>
+  </nz-layout> -->
+  <section class="sidebar-section">
+    <app-sidebar-navigation-menu *ngIf="sidebarMenuItems?.length" [menuItemsGroup]="sidebarMenuItems"
+      [sidebarMenuWidth]="sidebarMenuWidth" [sidebarHeading]="'Settings'">
+    </app-sidebar-navigation-menu>
+  </section>
+  <section class="main-section">
+    <router-outlet></router-outlet>
+  </section>
+</div>

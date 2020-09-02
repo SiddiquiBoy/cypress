@@ -1,0 +1,100 @@
+<section class="customer-view-address-container">
+  <nz-spin [nzSpinning]="isSpinning">
+    <hr>
+    <h5>Addresses</h5>
+    <app-general-table *ngIf="columns?.length" [tableData]="addresses" [showSearchBox]="true" [showColShowHide]="false"
+      [searchPlaceholder]="searchPlaceholder" [tableConfig]="tableConfig" [customPaginationData]="paginationData"
+      (paginatedData)="onPaginationChange($event)" [tableActionButtons]="tableActionButtons"
+      (eEmitSearchInput)="onSearchInput($event)" [totalRecords]="addresses.length" [customTemplate]="custom"
+      [customHeaderOptions]="columns">
+    </app-general-table>
+  </nz-spin>
+</section>
+
+<section class="dialog-container">
+  <app-app-dialog [withFooter]="false" [isVisible]="showAddAddressDialog" [okText]="'Ok'" [cancelText]="'Close'"
+    [title]="'Add Address'" (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()"
+    [hideDialogOnAction]="true">
+    <nz-spin [nzSpinning]="isSpinning">
+      <section class="add-edit-dialog-section" *ngIf="showAddAddressDialog">
+        <!-- <form nz-form #addressDetailsForm="ngForm" [autocomplete]="'off'" [nzLayout]="'vertical'"> -->
+        <!-- <app-customer-addresses
+                        [redirectUpdate]="false"
+                    ></app-customer-addresses> -->
+        <app-add-address [address]="address" [customerId]="customerId" (emitResponse)="handleResponse($event)" (emitOnAddressCreate)="onCustomerAddressCreate($event)">
+        </app-add-address>
+        <!-- <section class="text-right">
+                        <a type="link" class="link mr-4" (click)="onCancelClick()">Cancel</a>
+                        <button (click)="addAddress()" [disabled]="!addressDetailsForm.valid" nz-button nzType="primary">
+                          Add
+                        </button>
+                    </section> -->
+        <!-- </form> -->
+      </section>
+    </nz-spin>
+  </app-app-dialog>
+</section>
+
+<section class="dialog-container">
+  <app-app-dialog [withFooter]="false" [isVisible]="showEditAddressDialog" [okText]="'Ok'" [cancelText]="'Close'"
+    [title]="'Edit Address'" (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()"
+    [hideDialogOnAction]="true">
+    <nz-spin [nzSpinning]="isSpinning">
+      <section class="add-edit-dialog-section" *ngIf="showEditAddressDialog">
+        <!-- <form nz-form #addressDetailsForm="ngForm" [autocomplete]="'off'" [nzLayout]="'vertical'">
+                    <app-customer-addresses
+                        [redirectUpdate]="false"
+                    ></app-customer-addresses>
+                    <section class="text-right">
+                        <a type="link" class="link mr-4" (click)="onCancelClick()">Cancel</a>
+                        <button (click)="updateAddress()" [disabled]="!addressDetailsForm.valid" nz-button nzType="primary">
+                          Edit
+                        </button>
+                    </section>
+                </form> -->
+        <app-add-address [address]="address" (emitResponse)="handleResponse($event)"
+          (emitOnAddressUpdate)="onCustomerAddressUpdate($event)"></app-add-address>
+      </section>
+    </nz-spin>
+  </app-app-dialog>
+</section>
+
+<section class="dialog-container">
+  <app-app-dialog [isVisible]="showDeleteConfirmationDialog" [okText]="'Yes'" [cancelText]="'No'"
+    [title]="'Confirmation Dialog'" (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()">
+    <nz-spin [nzSpinning]="isSpinning">
+      Are you sure you want to delete this address?
+    </nz-spin>
+  </app-app-dialog>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.columnMap === 'street'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'state'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap=== 'city'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap=== 'country'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <ng-container *permission="editButtonPermission">
+    <span *ngIf="key.columnMap === 'action'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="Edit" nz-icon nzType="edit" class="mr-2" nzTheme="outline"
+          (click)="onRowEditClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+  <ng-container *permission="deleteButtonPermission">
+    <span *ngIf="key.columnMap === 'action'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="Delete" nz-icon nzType="delete" nzTheme="outline"
+          (click)="onRowDeleteClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+</ng-template>

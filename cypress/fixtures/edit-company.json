@@ -1,0 +1,21 @@
+{
+  "name": "Breitenberg, Leuschke and Hilll",
+  "contact": "357-864-2153",
+  "addresses": [
+    {
+      "country": "United States",
+      "state": "Alabama",
+      "city": "Haneberg",
+      "street": "Corwin Bridge",
+      "postalCode": "49071"
+    }
+  ],
+  "employees": [
+    {
+      "firstName": "Benedict",
+      "lastName": "Carter",
+      "officePhone": "119-641-8278",
+      "email": "Cyrus_McGlynn61@hotmail.com"
+    }
+  ]
+}

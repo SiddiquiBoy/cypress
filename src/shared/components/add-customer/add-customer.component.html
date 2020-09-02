@@ -1,0 +1,61 @@
+<section class="add-customer-container">
+  <nz-spin class="customer-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="customer-form-container mb-5">
+      <form nz-form #customerForm="ngForm" [autocomplete]="'off'" [appMatchFields]="['officePhone', 'homePhone']" [nzLayout]="'vertical'" nz-form>
+        <section class="steps-container">
+          <nz-steps class="steps-element-container" [nzType]="'navigation'" [nzCurrent]="activeIndex" [nzSize]="'small'"
+            (nzIndexChange)="isCustomerImageUploading ? null : onIndexChange($event)">
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(0)" nzTitle="Details"></nz-step>
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(1)" nzTitle="Addresses"></nz-step>
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(2)" nzTitle="Projects"></nz-step>
+            <!-- <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(3)" nzTitle="Jobs"></nz-step> -->
+          </nz-steps>
+        </section>
+        <section class="step-content-container">
+          <ng-container *ngIf="activeIndex === 0">
+            <app-customer-detail *ngIf="isBusinessUnitsFetched" [changedType]="changedType"
+              [businessUnits]="businessUnits" [customer]="customer">
+            </app-customer-detail>
+          </ng-container>
+          <ng-container *ngIf="activeIndex === 1">
+            <app-customer-addresses [customer]="customer" [changedType]="changedType" (eEmitIsAddressTabValid)="isAddressTabValid()">
+            </app-customer-addresses>
+          </ng-container>
+          <ng-container *ngIf="activeIndex === 2">
+            <app-customer-projects [customer]="customer" [changedType]="changedType" (eEmitIsProjectTabValid)="isProjectTabValid()">
+            </app-customer-projects>
+          </ng-container>
+          <!-- <ng-container *ngIf="activeIndex === 3">
+            <app-customer-jobs [customer]="customer" (eEmitIsJobTabValid)="isJobTabValid()"></app-customer-jobs>
+          </ng-container> -->
+        </section>
+        <section class="form-button-container-row" nz-row nzGutter="30">
+          <section class="form-button-container-col" nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-control>
+                <section class="button-container">
+                  <a type="link" class=" link mr-4" (click)="onCancel()">Cancel</a>
+                  {{isCurrentTabValid()}}{{isCurrentTabPristine()}}
+                  <button class="mr-4" *ngIf="activeIndex !== 0" nz-button [disabled]="isCustomerImageUploading"
+                    (click)="onPrevClick()" nzType="primary">Previous</button>
+                  <button class="mr-auto" *ngIf="activeIndex !== 2" nz-button [disabled]="isCustomerImageUploading"
+                    (click)="onNextClick()" nzType="primary">Next</button>
+                  <button *ngIf="activeIndex === 2" nz-button [disabled]="!isFormValid || isCustomerImageUploading"
+                    class="mr-auto" (click)="onSubmit()" nzType="primary">{{customer?.id ? 'Update' : 'Add'}}</button>
+                </section>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+      </form>
+    </section>
+
+    <app-app-dialog [isVisible]="showConfirmDialog" [okText]="'Yes'" [cancelText]="'No'" [title]="'Confirmation Dialog'"
+      (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()">
+      {{confirmDialogMessage}}
+    </app-app-dialog>
+  </nz-spin>
+</section>

@@ -1,0 +1,57 @@
+<section class="estimate-job-list-container">
+    <nz-spin [nzSpinning]="isSpinning">
+        <hr>
+        <h5>Jobs</h5>
+        <app-general-table *ngIf="columns?.length" [tableData]="jobs" [showSearchBox]="true"
+        [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableConfig]="tableConfig"
+        [customPaginationData]="paginationData" (eEmitSearchInput)="onSearchInput($event)" 
+        [totalRecords]="totalRecords" [customTemplate]="custom"
+        [customHeaderOptions]="columns">
+    </app-general-table>
+    </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+    <span *ngIf="key.columnMap === 'jobType.name'">
+        {{data?.jobType?.name || '-' | titlecase}}
+    </span>
+    <span *ngIf="key.columnMap === 'startDate'">
+        {{data[key.columnMap] || '-' | date : defaultDateFormat}}
+    </span>
+    <span *ngIf="key.columnMap === 'startTime'">
+        {{getFormattedTime(data[key.columnMap] || '-')}}
+    </span>
+    <span *ngIf="key.columnMap === 'tags.name'">
+        <span *ngFor="let item of data?.tags let i = index">
+            <span *ngIf="i === data?.tags?.length - 1">
+                {{item.name | titlecase}}
+            </span>
+            <span *ngIf="i < data?.tags?.length - 1">
+                {{item.name | titlecase}},
+            </span>
+        </span>
+        <span *ngIf="!data?.tags?.length">
+            -
+        </span>
+    </span>
+    <span *ngIf="key.columnMap === 'summary'">
+        {{data[key.columnMap] || '-' | firstLetterCapital}}
+    </span>
+    <span *ngIf="key.columnMap === 'project.name'">
+        {{data?.project?.name || '-' | titlecase}}
+    </span>
+    <span *ngIf="key.columnMap === 'customer.fullName'">
+        {{data?.project?.customer?.fullName || '-' | titlecase}}
+    </span>
+    <span *ngIf="key.columnMap== 'status'">
+        {{data[key.columnMap] | titlecase }}
+    </span>
+    <ng-container *permission="viewButtonPermission">
+        <span *ngIf="key.columnMap === 'action'">
+            <a>
+            <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline"
+                (click)="onRowViewClick(data)"></i>
+            </a>
+        </span>
+    </ng-container>
+</ng-template>

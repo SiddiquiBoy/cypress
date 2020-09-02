@@ -1,0 +1,193 @@
+<section class="service-add-container">
+  <nz-spin class="service-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <!-- <section class="service-add-form-container"> -->
+    <div nz-row>
+      <div nz-row nzGutter="30">
+        <div nz-col nzSpan="16">
+          <form #serviceform="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form (ngSubmit)="onSubmit()">
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12" *ngIf="service?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="code">Service Code</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter Code">
+                    <input [placeholder]="serviceCodePlaceholder" nz-input trim="blur" [disabled]="serviceId"
+                      type="text" required name="code" [(ngModel)]="service.code" maxlength="50" changes
+                      [changedValue]="service?.code" [changedType]="changedType" [changedField]="'code'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Code'"
+                      [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="service?.id ? 12 : 24">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="name">Name</nz-form-label>
+                  <nz-form-control [nzValidateStatus]="serviceNameValidationStatus" nzHasFeedback
+                    [nzErrorTip]="'Invalid/Duplicate Name'">
+                    <input [placeholder]="serviceNamePlaceholder" trim="blur" class="titlecase" nz-input type="text"
+                      required name="name" [(ngModel)]="service.name" maxlength="50"
+                      (input)="onServiceNameInput($event)" changes [changedValue]="service?.name"
+                      [changedType]="changedType" [changedField]="'name'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'" [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="description">Description</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter Item Description">
+                    <textarea nz-input trim="blur" type="textarea" required name="description"
+                      [ngModel]="service.itemDescription | firstLetterCapital"
+                      [placeholder]="serviceDescriptionPlaceholder" (ngModelChange)="service.itemDescription = $event"
+                      changes [changedValue]="service?.itemDescription" [changedType]="changedType"
+                      [changedField]="'itemDescription'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Item Description'" [trimValue]="true"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="categories">Categories</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Category">
+                    <nz-select name="categories" [(ngModel)]="service.categories"
+                      [nzPlaceHolder]="serviceCategoriesPlaceholder" nzMode="multiple" required
+                      [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate" changes
+                      [changedValue]="service?.categories" [changedType]="changedType" [changedField]="'categories'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Categories'">
+                      <nz-option *ngFor="let item of categories" [nzLabel]="item.name" [nzValue]="item">
+                      </nz-option>
+                    </nz-select>
+                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzFor="price">Price</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter a valid amount">
+                    <nz-input-group nzPrefixIcon="dollar">
+                      <input nz-input type="text" name="price" maxlength="10" [(ngModel)]="service.price"
+                        [placeholder]="servicePricePlaceholder" [pattern]="priceRegex" changes
+                        [changedValue]="service?.price" [changedType]="changedType" [changedField]="'price'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Price'" [trimValue]="false" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzFor="memberPrice">Member Price</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter a valid amount">
+                    <nz-input-group nzPrefixIcon="dollar">
+                      <input nz-input type="text" name="memberPrice" maxlength="10" [(ngModel)]="service.memberPrice"
+                        [placeholder]="serviceMemberPricePlaceholder" [pattern]="priceRegex" changes
+                        [changedValue]="service?.memberPrice" [changedType]="changedType" [changedField]="'memberPrice'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Member Price'" [trimValue]="false" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzFor="addOnPrice">Add On Price</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter a valid amount">
+                    <nz-input-group nzPrefixIcon="dollar">
+                      <input nz-input type="text" name="addOnPrice" maxlength="10" [(ngModel)]="service.addOnPrice"
+                        [placeholder]="serviceAddonPricePlaceholder" [pattern]="priceRegex" changes
+                        [changedValue]="service?.addOnPrice" [changedType]="changedType" [changedField]="'addOnPrice'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Add On Price'" [trimValue]="false" />
+                    </nz-input-group>
+                  </nz-form-control>
+                  <!-- <nz-form-label nzRequired nzFor="hours">General Ledger Account</nz-form-label>
+                        <nz-form-control nzErrorTip="Enter Hours">
+                            <input class="titlecase" nz-input type="text" required name="hours" [(ngModel)]="service.generalLedgerAccount">
+                      </nz-form-control> -->
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzFor="bonus">Bonus</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter a valid amount">
+                    <nz-input-group nzPrefixIcon="dollar">
+                      <input nz-input type="text" name="bonus" maxlength="10" [(ngModel)]="service.bonus"
+                        [placeholder]="serviceBonusPlaceholder" [pattern]="priceRegex" changes
+                        [changedValue]="service?.bonus" [changedType]="changedType" [changedField]="'bonus'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Bonus'" [trimValue]="false" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzFor="videoLink">Video Link</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter Video Link">
+                    <input nz-input type="url" [pattern]="urlRegex" name="videoLink" [(ngModel)]="service.videoLink"
+                      [placeholder]="serviceVideoLinkPlaceholder" changes [changedValue]="service?.videoLink"
+                      [changedType]="changedType" [changedField]="'videoLink'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Video Link'" [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzFor="status">Status</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Status">
+                    <nz-select name="serviceStatus" [nzDisabled]="!service?.id" [(ngModel)]="service.status"
+                      [nzPlaceHolder]="serviceStatusPlaceholder" changes [changedValue]="service?.status"
+                      [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                      <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <nz-form-item nz-row class="register-area mt-4 text-right">
+              <nz-form-control>
+                <a type="link" class="link mr-4" [class.disabled]="isImageLoading" (click)="onCancel()">Cancel</a>
+                <button nz-button [disabled]="
+                    serviceform.invalid ||
+                    isImageLoading ||
+                    serviceNameValidationStatus === 'error' ||
+                    serviceNameValidationStatus === 'validating'
+                  " class="mr-auto" type="submit" nzType="primary">
+                  {{ service?.id ? 'Update' : 'Add' }}
+                </button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+        <div nz-col nzSpan="8">
+          <div class="mt-4">
+            <app-file-upload [uploadText]="'Upload Service Image'" [imageUrl]="service?.imageUrl"
+              (emitImageLoadingStatus)="handleImageLoading($event)" (emitImageUrl)="setImageUrl($event)" changes
+              [changedValue]="service?.imageUrl" [changedType]="changedType" [changedField]="'imageUrl'"
+              [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Image Url'">
+            </app-file-upload>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </section> -->
+  </nz-spin>
+</section>

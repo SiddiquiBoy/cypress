@@ -1,0 +1,170 @@
+<section class="add-employee-container">
+  <nz-spin class="employee-spin-container" [nzSpinning]="isSpinning">
+    <div class="page-header-container mr-auto">
+      <app-page-header></app-page-header>
+    </div>
+
+    <div>
+      <div nz-row>
+        <div nz-row nzGutter="30">
+          <div nz-col nzSpan="16">
+            <form #employeeform="ngForm" nz-form autocomplete="off" [appMatchFields]="['officePhone', 'homePhone']"
+              (ngSubmit)="onSubmit()">
+              <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="firstname">First Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter a valid first name">
+                      <input class="text-capitalize" nz-input type="text" required name="firstName" id="firstname"
+                        trim="blur" [(ngModel)]="employee.firstName" [placeholder]="employeeFirstNamePlaceholder"
+                        [pattern]="nameRegex" changes [changedValue]="employee?.firstName" [changedType]="changedType"
+                        [changedField]="'firstName'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'First Name'" [trimValue]="true" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="lastname">Last Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter a valid last name">
+                      <input class="text-capitalize" nz-input type="text" required name="lastName" id="lastname"
+                        trim="blur" [(ngModel)]="employee.lastName" [placeholder]="employeeLastNamePlaceholder"
+                        [pattern]="nameRegex" changes [changedValue]="employee?.lastName" [changedType]="changedType"
+                        [changedField]="'lastName'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Last Name'" [trimValue]="true" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired>Office Phone</nz-form-label>
+                    <nz-form-control [nzErrorTip]="officePhoneErrorTemplate">
+                      <input nz-input type="text" required name="officePhone" id="officephone"
+                        [ngModel]="employee.officePhone | phoneFormat" (ngModelChange)="employee.officePhone=$event"
+                        maxlength="14" [placeholder]="employeeOfficePhonePlaceholder" [pattern]="phoneRegex"
+                        #officePhone="ngModel" changes [changedValue]="employee?.officePhone"
+                        [changedType]="changedType" [changedField]="'officePhone'" [changeDescription]="'-'"
+                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Office Phone'"
+                        [trimValue]="true" />
+                    </nz-form-control>
+                    <ng-template #officePhoneErrorTemplate>
+                      <ng-container *ngIf="officePhone.errors?.required || officePhone.errors?.pattern">Enter a valid
+                        Phone Number</ng-container>
+                    </ng-template>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label>Home Phone</nz-form-label>
+                    <nz-form-control [nzErrorTip]="homePhoneErrorTemplate">
+                      <input nz-input type="text" name="homePhone" id="homephone"
+                        [ngModel]="employee.homePhone | phoneFormat" (ngModelChange)="employee.homePhone=$event"
+                        maxlength="14" [placeholder]="employeeHomePhonePlaceholder" [pattern]="phoneRegex"
+                        #homePhone="ngModel" changes [changedValue]="employee?.homePhone" [changedType]="changedType"
+                        [changedField]="'homePhone'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Home Phone'" [trimValue]="true" />
+                    </nz-form-control>
+                    <ng-template #homePhoneErrorTemplate>
+                      <ng-container *ngIf="homePhone.errors?.pattern">
+                        Enter a valid Phone Number
+                      </ng-container>
+                      <ng-container *ngIf="homePhone.errors?.phoneMatch">
+                        Home Phone cannot be same as Office Phone
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-item>
+                </div>
+              </div>
+              <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter a valid Email">
+                      <input nz-input type="text" required name="email" id="email" trim="blur"
+                        [ngModel]="employee.email | lowercase" (ngModelChange)="employee.email=$event"
+                        [placeholder]="employeeEmailPlaceholder" [pattern]="emailRegex" changes
+                        [changedValue]="employee?.email" [changedType]="changedType" [changedField]="'email'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Email'" [trimValue]="true" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="Country">Business Unit</nz-form-label>
+                    <nz-form-control nzErrorTip="Select Business Unit">
+                      <nz-select required name="businessUnit" id="businessunit" class="text-capitalize"
+                        [(ngModel)]="employee.businessUnit" [nzPlaceHolder]="employeeBusinessUnitPlaceholder" changes
+                        [changedValue]="employee?.businessUnit" [changedType]="changedType"
+                        [changedField]="'businessUnit'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Business Unit'">
+                        <nz-option *ngFor="let unit of businessUnits" [nzValue]="unit"
+                          [nzLabel]="unit?.name | titlecase"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+              <div nz-row nzGutter="30">
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="role">Role</nz-form-label>
+                    <nz-form-control nzErrorTip="Select a Role">
+                      <nz-select [nzPlaceHolder]="employeeRolePlaceholder" required name="role" id="role"
+                        [(ngModel)]="employee.roles[0]" [nzDisabled]="isTechnician" changes
+                        [changedValue]="employee?.roles[0]" [changedType]="changedType" [changedField]="'roles'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Role'">
+                        <!-- <nz-option *ngIf="!isTechnician" nzValue="admin" nzLabel="Admin"></nz-option> -->
+                        <nz-option *ngIf="!isTechnician" nzValue="orgAdmin" nzLabel="Company Admin"></nz-option>
+                        <nz-option *ngIf="isTechnician" nzValue="technician" nzLabel="Technician"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzSpan="12">
+                  <nz-form-item>
+                    <nz-form-label nzFor="role">Status</nz-form-label>
+                    <nz-form-control nzErrorTip="Select a Status">
+                      <nz-select [nzPlaceHolder]="employeeStatusPlaceholder" name="status" id="status"
+                        [(ngModel)]="employee.status" [nzDisabled]="!employee?.id" changes
+                        [changedValue]="employee?.status" [changedType]="changedType" [changedField]="'status'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Status'">
+                        <!-- <nz-option nzValue="active" nzLabel="Active"></nz-option>
+                        <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option> -->
+                        <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+
+              <nz-form-item nz-row class="register-area mt-4 text-right">
+                <nz-form-control>
+                  <a type="link" class="link mr-4" [class.disabled]="imageLoading" (click)="cancel()">Cancel</a>
+                  <button nz-button [disabled]="employeeform.invalid || imageLoading" class="mr-auto" type="submit"
+                    nzType="primary">
+                    <span *ngIf="!employee.id">Add</span>
+                    <span *ngIf="employee.id">Update</span>
+                  </button>
+                </nz-form-control>
+              </nz-form-item>
+            </form>
+          </div>
+          <div nz-col nzSpan="8">
+            <div class="mt-4">
+              <app-file-upload [uploadText]="isTechnician ? 'Upload Technician Image' : 'Upload Employee Image'"
+                [imageUrl]="employee?.imageUrl" (emitImageLoadingStatus)="handleImageLoading($event)"
+                (emitImageUrl)="imageUrl($event)"></app-file-upload>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</section>

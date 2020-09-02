@@ -1,0 +1,63 @@
+<section class="card-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <div>
+    <section class="table-action-list text-right" *permission="addButtonPermission">
+      <button [attr.data-cy]="'addCard'" class="ml-auto" nz-button nzType="primary" routerLink="/settings/billings/card/add">Add</button>
+    </section>
+
+    <div class="text-center w-50 mx-auto mt-5" *ngIf="cards && cards.length == 0 && !isSpinning">
+      <nz-alert
+      nzType="info"
+      nzMessage="Card is Not Available"
+      nzDescription="Click to ADD button to add card."></nz-alert>
+    </div>
+    <nz-spin class="project-spin-container" [nzSpinning]="isSpinning">
+      <div>
+          <div [attr.data-cy]="'listCard'" class="cc-container" *ngFor="let card of cards;let i = index">
+            <div class="cc">
+                <span class="chip"></span>
+                <span class="nubank-logo"></span>
+                <!-- <span class="mastercard">MasterCard</span> -->
+                <span class="cc-number">xxxx-xxxx-xxxx-{{card.last4}}</span>
+                <span [attr.data-cy]="'cardExpiry'"class="cc-date expedition">{{ card.exp_month}}/{{card.exp_year}}</span>
+                <!-- <span class="cc-date expiry">01/99</span> -->
+                <!-- <span class="cc-name">Cassio Cardoso</span> -->
+              </div>
+  
+              <div class="mt-5 justify-content-around d-flex" *ngIf="card.id == defaultCard">
+                <h6 class="default-text">Default Card</h6>
+              </div>
+  
+              <div class="mt-5 justify-content-around d-flex"  *ngIf="card.id != defaultCard">
+                <button nz-button nzType="primary" [nzSize]="'medium'"
+                nz-popconfirm
+                nzPopconfirmTitle="Are you sure make it default?"
+                (nzOnConfirm)="confirm(card.id)"
+                (nzOnCancel)="cancel('setDefault')"
+                nzOkText = "Yes"
+                nzCancelText = "No"
+                nzPopconfirmPlacement="topLeft"
+                [attr.data-cy]="'listCardDefault'"
+                nz-button>
+                  Set as Default
+                </button>
+                <button nz-button nzType="default" [nzSize]="'medium'"
+                nz-popconfirm
+                nzPopconfirmTitle="Are you sure delete this Card?"
+                (nzOnConfirm)="remove(card.id)"
+                (nzOnCancel)="cancel('delete')"
+                nzPopconfirmPlacement="topRight"
+                [attr.data-cy]="'listCardRemove'"
+                nz-button>
+                 Delete
+                </button>
+              </div>
+  
+  
+          </div>
+      </div>
+    </nz-spin>
+  </div>
+</section>

@@ -1,0 +1,55 @@
+<section class="vender-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="project-spin-container" [nzSpinning]="isSpinning">
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="vendors" [showSearchBox]="true"
+        [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+        [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+        (selectedRows)="onRowsSelectionChange($event)" [tableConfig]="tableConfig"
+        [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)"
+        (eEmitSearchInput)="onSearchInput($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.type == 'activeinactive'">
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'active'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'inactive'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+  </span>
+  <span *ngIf="key.columnMap === 'vendorName'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'phone'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'fax'">
+    {{data[key?.columnMap] || '-' | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'tags'">
+    <span *ngFor="let item of data[key.columnMap] let i = index">
+      <span *ngIf="i === data[key.columnMap].length - 1">
+        {{item?.name || '-' | titlecase}}
+      </span>
+      <span *ngIf="i < data[key.columnMap].length - 1">
+        {{item?.name || '-' | titlecase}},
+      </span>
+    </span>
+    <span *ngIf="!data[key?.columnMap]?.length">
+      -
+    </span>
+  </span>
+  <ng-container>
+    <span *ngIf="key.columnMap === 'edit'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="Edit" nz-icon nzType="edit" nzTheme="outline" (click)="onRowEditClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+</ng-template>

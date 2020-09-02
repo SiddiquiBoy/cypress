@@ -1,0 +1,130 @@
+<section class="job-type-add-component-container">
+  <nz-spin class="job-type-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="jobtype-add-form-container">
+      <form #jobTypeform="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form (ngSubmit)="onSubmit()">
+
+        <div nz-row nzGutter="30">
+          <div nz-col nzSpan="14">
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="30">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="name"> Name</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter  Name" [nzValidateStatus]="jobtypeNameValidationStatus"
+                    nzHasFeedback [nzErrorTip]="'Invalid/Duplicate Name'">
+                    <input [placeholder]="jobTypeNamePlaceholder" class="titlecase" nz-input type="text" required
+                      name="name" trim="blur" [(ngModel)]="jobType.name" (input)="onJobtypeNameInput()" changes
+                      [changedValue]="jobType?.name" [changedType]="changedType" [changedField]="'name'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'"
+                      [trimValue]="true">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+            </div>
+
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="tags"> Tags</nz-form-label>
+              <nz-form-control nzErrorTip="Select Tags">
+                <!-- <input nz-input type="text" required name="tagName" [(ngModel)]="jobType.tags"> -->
+                <nz-select required class="custom-job-type-tag-select" name="tags" id="tags" nzMode="multiple"
+                  [nzCustomTemplate]="customTagTemplate" [(ngModel)]="jobType.tags"
+                  [nzPlaceHolder]="jobTypeTagsPlaceholder" [nzDropdownClassName]="'custom-tag-dropdown'"
+                  [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate" changes
+                  [changedValue]="jobType?.tags" [changedType]="changedType" [changedField]="'tags'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Tags'">
+                  <nz-option *ngFor="let tag of tags" nzCustomContent [nzLabel]="tag.name" [nzValue]="tag">
+                    <nz-avatar [ngStyle]="{ 'background-color': tag.color ,'border': '1px solid #80808040' }"
+                      [nzShape]="'square'" nzSize="small"></nz-avatar>
+                    <span class="tag-option-name">
+                      {{tag.name | titlecase}}
+                    </span>
+                  </nz-option>
+                </nz-select>
+                <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+
+                <ng-template #customTagTemplate let-selected>
+                  <span class="custom-tag-template-container">
+                    <!-- <nz-tag [nzColor]="selected.nzValue.color"
+                      [ngClass]="{'black-color': selected.nzValue.color === '#ffffff'}">
+                      <span class="custom-tag-selected-option">
+                        {{selected.nzLabel}}
+                      </span>
+                    </nz-tag> -->
+                    {{selected.nzLabel | titlecase}}
+                  </span>
+                </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+
+            <div nz-row nzGutter="30">
+
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="priority">Priority</nz-form-label>
+                  <nz-select required name="priority" id="priority" [(ngModel)]="jobType.priority"
+                    [nzPlaceHolder]="jobTypePriorityPlaceholder" changes [changedValue]="jobType?.priority"
+                    [changedType]="changedType" [changedField]="'priority'" [changeDescription]="'-'"
+                    [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Priority'">
+                    <nz-option *ngFor="let item of priorityDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="status">Status</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Status">
+                    <nz-select [nzPlaceHolder]="jobTypeStatusPlaceholder" required name="status"
+                      [nzDisabled]="!jobType?.id" [(ngModel)]="jobType.status" changes [changedValue]="jobType?.status"
+                      [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                      <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <nz-form-item>
+              <nz-form-label nzFor="summary">Summary</nz-form-label>
+              <nz-form-control nzErrorTip="Enter Summary">
+                <!-- <input class="uppercase" nz-input id="code" type="text" required name="code"
+                    [(ngModel)]="jobType.summary"> -->
+                <textarea [placeholder]="jobTypeSummaryPlaceholder" id="summary" name="summary" rows="3" trim="blur"
+                  nz-input [ngModel]="jobType.summary | firstLetterCapital" (ngModelChange)="jobType.summary=$event"
+                  changes [changedValue]="jobType?.summary" [changedType]="changedType" [changedField]="'summary'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Summary'"
+                  [trimValue]="true"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+
+            <!-- <div nz-row ngGutter="30">
+              <div nz-col nzSpan="12">
+                <label name="conversionCheckbox" [(ngModel)]="tags.conversionCheckbox" nz-checkbox >Conversion Opportunity</label>
+              </div>
+              <div nz-col nzSpan="12">
+                <label nz-checkbox name="dispatchCheckbox" [(ngModel)]="tags.dispatchCheckbox" >Show on Dispatch Board</label>
+              </div>
+            </div> -->
+
+            <nz-form-item nz-row class="register-area mt-4 text-right">
+              <nz-form-control>
+                <a type="link" class=" link mr-4" (click)="onCancel()">Cancel</a>
+                <button nz-button
+                  [disabled]="jobTypeform.invalid || jobtypeNameValidationStatus === 'error' || jobtypeNameValidationStatus === 'validating'"
+                  class="mr-auto" type="submit" nzType="primary">{{jobType?.id ? 'Update' : 'Add'}}</button>
+              </nz-form-control>
+            </nz-form-item>
+
+          </div>
+        </div>
+      </form>
+    </section>
+  </nz-spin>
+</section>

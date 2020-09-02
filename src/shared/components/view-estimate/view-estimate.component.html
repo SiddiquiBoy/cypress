@@ -1,0 +1,11 @@
+<section class="view-estimate-container">
+    <nz-spin class="view-estimate-spin-container" [nzSpinning]="isSpinning">
+        <section class="estimate-summary-parent-container">
+            <app-estimate-summary *ngIf="estimate?.id" [estimate]="estimate"></app-estimate-summary>
+        </section>
+        <section class="estimate-joblist-table-container" *ngIf="estimate?.id">
+            <app-estimate-job-list [jobs]="estimate?.jobs">
+            </app-estimate-job-list>
+          </section>
+    </nz-spin>
+</section>

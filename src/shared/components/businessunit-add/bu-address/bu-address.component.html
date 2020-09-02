@@ -1,0 +1,92 @@
+<section class="bu-address-component-container">
+  <section nz-row nzGutter="30">
+    <section nz-col [nzSpan]="16">
+
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="24">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="street">Street</nz-form-label>
+            <nz-form-control nzErrorTip="Enter Street">
+              <input [placeholder]="businessUnitAddressStreetPlaceholder" nz-input id="street" class="text-capitalize"
+                trim="blur" type="text" name="street" required maxlength="128" [(ngModel)]="businessUnit.street" changes
+                [changedValue]="businessUnit?.street" [changedType]="changedType" [changedField]="'street'"
+                [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Street'"
+                [trimValue]="true">
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+
+      <div nz-row nzGutter="30">
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="country">Country</nz-form-label>
+            <nz-form-control nzErrorTip="Select Country">
+              <!-- <nz-select nzShowSearch required [(ngModel)]="businessUnit.country" name="country"
+                        (ngModelChange)="selectState($event)" changes [changedValue]="businessUnit?.country"
+                        [changedType]="changedType" [changedField]="'country'" [changeDescription]="'-'"
+                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Country'">
+                         <nz-option *ngFor="let country of countries" nzValue="{{country?.country}}"
+                          nzLabel="{{country?.country}}">
+                        </nz-option>
+                      </nz-select> -->
+              <nz-select [nzPlaceHolder]="businessUnitAddressCountryPlaceholder" nzShowSearch required
+                [(ngModel)]="businessUnit.country" name="country" changes [changedValue]="businessUnit?.country"
+                [changedType]="changedType" [changedField]="'country'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Country'">
+                <!-- <nz-option *ngFor="let country of countries" nzValue="{{country?.country}}"
+                          nzLabel="{{country?.country}}">
+                        </nz-option> -->
+                <nz-option *ngFor="let country of countries" [nzLabel]="country.name | titlecase"
+                  [nzValue]="country.name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="state">State</nz-form-label>
+            <nz-form-control nzErrorTip="Select State">
+              <nz-select [nzPlaceHolder]="businessUnitAddressStatePlaceholder" nzShowSearch required
+                [(ngModel)]="businessUnit.state" name="state" changes [changedValue]="businessUnit?.state"
+                [changedType]="changedType" [changedField]="'state'" [changeDescription]="'-'"
+                [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'State'">
+                <nz-option *ngFor="let state of states" [nzLabel]="state.name | titlecase" [nzValue]="state.name">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="30">
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="city">City</nz-form-label>
+            <nz-form-control nzErrorTip="Enter a valid city">
+              <input nz-input id="city" type="text" class="text-capitalize" required maxlength="28" name="city"
+                [(ngModel)]="businessUnit.city" [placeholder]="businessUnitAddressCityPlaceholder" trim="blur"
+                pattern="^[A-Za-z\'\s\.\,]+$" changes [changedValue]="businessUnit?.city" [changedType]="changedType"
+                [changedField]="'city'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                [changedFieldDisplayName]="'City'" [trimValue]="true">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="zipcode">Zipcode</nz-form-label>
+            <nz-form-control nzErrorTip="Enter Zipcode">
+              <input nz-input id="zipcode" type="text" maxlength="5" required name="zipcode" pattern="^[0-9]*$"
+                trim="blur" [(ngModel)]="businessUnit.zipCode" [placeholder]="businessUnitAddressZipCodePlaceholder"
+                changes [changedValue]="businessUnit?.zipCode" [changedType]="changedType" [changedField]="'zipCode'"
+                [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Zip Code'"
+                [trimValue]="true">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </section>
+  </section>
+</section>

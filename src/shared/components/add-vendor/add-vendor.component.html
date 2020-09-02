@@ -1,0 +1,51 @@
+<section class="add-vendor-container">
+  <nz-spin class="vendor-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="vendor-form-container mb-5">
+      <form nz-form #vendorForm="ngForm" [autocomplete]="'off'" [appMatchFields]="['officePhone', 'homePhone']" [nzLayout]="'vertical'" nz-form>
+        <section class="steps-container">
+          <nz-steps class="steps-element-container" [nzType]="'navigation'" [nzCurrent]="activeIndex" [nzSize]="'small'"
+          (nzIndexChange)="onIndexChange($event)">
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(0)" nzTitle="Details"></nz-step>
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(1)" nzTitle="Contacts"></nz-step>
+          </nz-steps>
+        </section>
+        <section class="step-content-container">
+          <ng-container *ngIf="activeIndex === 0">
+            <app-vendor-detail *ngIf="isTagsFetched" [changedType]="changedType" [vendor]="vendor">
+            </app-vendor-detail>
+          </ng-container>
+          <ng-container *ngIf="activeIndex === 1">
+            <app-vendor-contact [vendor]="vendor" [tags]="tags" [changedType]="changedType" (eEmitIsDetailTabValid)="isDetailTabValid()">
+            </app-vendor-contact>
+          </ng-container>
+        </section>
+        <section class="form-button-container-row" nz-row nzGutter="30">
+          <section class="form-button-container-col" nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-control>
+                <section class="button-container">
+                  <a type="link" class=" link mr-4" (click)="onCancel()">Cancel</a>
+                  {{isCurrentTabValid()}}{{isCurrentTabPristine()}}
+                  <button class="mr-4" *ngIf="activeIndex !== 0" nz-button (click)="onPrevClick()"
+                    nzType="primary">Previous</button>
+                  <button class="mr-auto" *ngIf="activeIndex !== 1" nz-button (click)="onNextClick()"
+                    nzType="primary">Next</button>
+                  <button *ngIf="activeIndex === 1" nz-button [disabled]="!isFormValid" class="mr-auto"
+                    (click)="onSubmit()" nzType="primary">{{vendor?.id ? 'Update' : 'Add'}}</button>
+                </section>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+      </form>
+    </section>
+
+    <app-app-dialog [isVisible]="showConfirmDialog" [okText]="'Yes'" [cancelText]="'No'" [title]="'Confirmation Dialog'"
+      (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()">
+      {{confirmDialogMessage}}
+    </app-app-dialog>
+  </nz-spin>
+</section>

@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1",
+        "firstName": "Duffy",
+        "lastName": "Matthessen",
+        "userId": "abc@ted.com",
+        "fullName": "Duffy Matthessen",
+        "roles": ["super-admin"],
+        "password": "password"
+    },
+    {
+        "id": "2",
+        "firstName": "Prudi",
+        "lastName": "Muncey",
+        "userId": "abc1@ted.com",
+        "fullName": "Prudi Muncey",
+        "roles": ["admin"],
+        "password": "password"
+    },
+    {
+        "id": "3",
+        "firstName": "Ardelle",
+        "lastName": "Flecknell",
+        "userId": "abc2@ted.com",
+        "fullName": "Ardelle Flecknell",
+        "roles": ["customer"],
+        "password": "password"
+    }
+]

@@ -1,0 +1,38 @@
+<section class="company-component-container">
+  <nz-spin class="company-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="companies"
+        [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons" [showSearchBox]="true"
+        [customHeaderOptions]="columns" [tableConfig]="tableConfig" [totalRecords]="totalRecords"
+        [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (eEmitSelectedFilters)="onFilter($event)" (eEmitSearchInput)="onSearchInput($event)"
+        (sortObj)="onSortChange($event)" [customTemplate]="custom">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.type === 'phone'">
+    {{data[key.columnMap] | phoneFormat}}
+  </span>
+  <span *ngIf="key.columnMap === 'name'">
+    {{data[key.columnMap] | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'addresses[0].street'">
+    {{data?.addresses[0]?.street || '-' | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'addresses[0].city'">
+    {{data?.addresses[0]?.city || '-' | titlecase}}
+  </span>
+  <ng-container *permission="editButtonPermission">
+    <span [attr.data-cy]="'editButton'" *ngIf="key.columnMap === 'edit'">
+      <a>
+        <i nz-icon nzType="edit" nzTheme="outline" nz-tooltip nzTooltipTitle="Edit" (click)="onRowEditClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+</ng-template>

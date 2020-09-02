@@ -1,0 +1,657 @@
+.main-component-container {
+  $header-height: 50px;
+  $sidebar-width: 64px;
+  $list-item-height: 40px;
+  $content-left: 65px;
+
+  :host {
+    display: flex;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .app-layout {
+    height: 100vh;
+  }
+
+  .menu-sidebar {
+    // position: relative;
+
+    // ============ new code start ======================
+
+    position: fixed;
+
+    // ============ new code end ========================
+
+    /*=============================================
+    =            new width            =
+    =============================================*/
+
+    // width: 64px !important;
+    // max-width: 64px !important;
+    // min-width: 64px !important;
+    // flex: 0 0 64px !important;
+
+    width: $sidebar-width !important;
+    max-width: $sidebar-width !important;
+    min-width: $sidebar-width !important;
+    flex: 0 0 $sidebar-width !important;
+
+    /*=====  End of new width  ======*/
+
+    z-index: 10;
+    min-height: 100vh;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+
+    // ============= new code start =====================
+
+    .menu-list {
+      /*=============================================
+      =            new width            =
+      =============================================*/
+
+      // width: 64px;
+      // max-width: 64px;
+      // min-width: 64px;
+
+      width: $sidebar-width;
+      max-width: $sidebar-width;
+      min-width: $sidebar-width;
+
+      height: calc(100vh - 105px);
+      min-height: calc(100vh - 105px);
+      max-height: calc(100vh - 105px);
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      /*=====  End of new width  ======*/
+
+      li {
+        /*=============================================
+        =            new width            =
+        =============================================*/
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // height: 30px;
+
+        /*=============================================
+        =            new height of list item            =
+        =============================================*/
+
+        height: $list-item-height;
+
+        /*=====  End of new height of list item  ======*/
+
+        /*=============================================
+        =            for setting            =
+        =============================================*/
+
+        &.setting-position {
+          position: absolute;
+          bottom: 10px;
+        }
+
+        /*=====  End of for setting  ======*/
+
+        .ant-menu-submenu-title {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /*=====  End of new width  ======*/
+
+        a {
+          i {
+            display: flex;
+          }
+        }
+      }
+    }
+
+    // .reverse-menu-list {
+    //   position: absolute;
+    //   bottom: 10px;
+    //   margin-top: 10px;
+
+    //   /*=============================================
+    //   =            new width            =
+    //   =============================================*/
+
+    //   width: 64px;
+    //   max-width: 64px;
+    //   min-width: 64px;
+
+    //   /*=====  End of new width  ======*/
+
+    //   li {
+    //     /*=============================================
+    //     =            new width            =
+    //     =============================================*/
+
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: center;
+    //     height: 30px;
+
+    //     .ant-menu-submenu-title {
+    //       display: flex;
+    //       align-items: center;
+    //       justify-content: center;
+    //     }
+
+    //     /*=====  End of new width  ======*/
+
+    //     a {
+    //       i {
+    //         display: flex;
+    //       }
+    //     }
+
+    //     // ul.reposition::parent::parent {
+    //     //   top: 200px !important;
+    //     // }
+    //   }
+    // }
+
+    // ============ new code end ========================
+  }
+
+  .custom-profile-menu {
+    .user-name {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      justify-content: center;
+    }
+
+    .user-role {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      justify-content: center;
+      text-transform: capitalize;
+    }
+  }
+
+  .custom-settings-menu {
+    // li :not(:last-child) {
+    //   border-bottom: 2px solid #595959;
+    // }
+  }
+
+  .trigger:hover {
+    color: #1890ff;
+  }
+
+  .sidebar-logo {
+    position: relative;
+    // height: 64px;
+    // padding-left: 24px;
+    padding-left: 15px;
+    overflow: hidden;
+    // line-height: 64px;
+    background: #001529;
+    transition: all 0.3s;
+
+    /*=============================================
+    =            new height of logo            =
+    =============================================*/
+
+    height: $header-height;
+    line-height: $header-height;
+
+    /*=====  End of new height of logo  ======*/
+  }
+
+  .sidebar-logo img {
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+  }
+
+  .sidebar-logo h1 {
+    display: inline-block;
+    margin: 0 0 0 20px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+  }
+
+  nz-header {
+    padding: 0 !important;
+    // position: fixed;
+    width: 100%;
+    z-index: 2;
+
+    /*=============================================
+    =            new code for reduced header height            =
+    =============================================*/
+
+    &.ant-layout-header {
+      height: $header-height;
+      line-height: $header-height;
+    }
+
+    /*=====  End of new code for reduced header height  ======*/
+
+    .app-header {
+      // position: relative;
+      // position: relative;
+      // width: 100%;
+      // height: 64px;
+
+      /*=============================================
+      =            new height            =
+      =============================================*/
+
+      height: $header-height;
+
+      /*=====  End of new height  ======*/
+
+      padding: 0;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+      //  ======  new code start ===================
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: fixed;
+      // width: 100%;
+
+      width: calc(100% - 64px);
+      left: $sidebar-width;
+
+      // ========  new code end  ==================
+
+      .header-left-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .header-trigger {
+          // height: 64px;
+
+          /*=============================================
+          =            new height for reduced header            =
+          =============================================*/
+
+          height: $header-height;
+
+          /*=====  End of new height for reduced header  ======*/
+
+          padding: 0 24px;
+          font-size: 20px;
+          cursor: pointer;
+          transition: all 0.3s, padding 0s;
+
+          // ============ new code start ======================
+
+          position: relative;
+          // left: 256px;
+          visibility: collapse;
+          display: none;
+
+          // ============ new code end ========================
+
+          &.collapsed-trigger {
+            left: 70px;
+          }
+        }
+
+        .header-client-logo {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 20px;
+
+          img {
+            height: 45px;
+          }
+
+          p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1;
+          }
+
+          span {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1;
+          }
+        }
+      }
+
+      .search-bar-container {
+        width: 35%;
+      }
+
+      .header-right-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row-reverse;
+
+        .header-profile-menu-trigger {
+          // height: 64px;
+
+          /*=============================================
+          =            new height for reduced header            =
+          =============================================*/
+
+          height: $header-height;
+
+          /*=====  End of new height for reduced header  ======*/
+
+          // margin: 0 24px;
+          margin: 0 24px 0 10px;
+          font-size: 20px;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            height: 32px;
+            width: 32px;
+          }
+
+          .header-profile-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: whitesmoke;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+
+            .header-profile-initials {
+            }
+
+            .header-profile-image {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              img {
+                border-radius: 50%;
+                width: 35px;
+              }
+            }
+          }
+        }
+
+        .settings-container {
+          // height: 64px;
+
+          /*=============================================
+          =            new height for reduced header            =
+          =============================================*/
+
+          height: $header-height;
+
+          /*=====  End of new height for reduced header  ======*/
+
+          // margin: 0 24px;
+          margin: 0 5px 0 5px;
+          font-size: 18px;
+          margin-top: -5px;
+          cursor: pointer;
+        }
+
+        .header-user-details-container {
+          height: $header-height;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          padding-top: 2px;
+          // justify-content: center;
+
+          .user-name-container {
+            display: flex;
+            height: 25px;
+            font-size: 14px;
+            align-items: center;
+            /* justify-content: space-between; */
+            font-weight: 500;
+            color: black;
+            text-transform: capitalize;
+          }
+
+          .user-role-container {
+            display: flex;
+            height: 15px;
+            align-items: center;
+            text-transform: capitalize;
+          }
+        }
+
+        .notification-container {
+          // height: 64px;
+
+          /*=============================================
+          =            new height for reduced header            =
+          =============================================*/
+
+          height: $header-height;
+
+          /*=====  End of new height for reduced header  ======*/
+
+          // margin: 0 24px;
+          margin: 0 15px 0 5px;
+          font-size: 18px;
+          margin-top: -5px;
+          cursor: pointer;
+
+          &.low-count {
+            margin: 0 5px;
+
+            nz-badge {
+              .ant-badge-count {
+                right: -5px;
+              }
+            }
+          }
+
+          &.no-count {
+            margin: 0 5px;
+
+            nz-badge {
+              margin-right: 10px;
+            }
+          }
+
+          nz-badge {
+            margin-right: 20px;
+
+            a i {
+              color: #595959;
+            }
+
+            .ant-badge-count {
+              min-width: 15px;
+              height: 15px;
+              font-size: 10px;
+              line-height: 15px;
+              border-radius: 10px;
+              right: -10px;
+            }
+          }
+
+          .custom-notification-drawer {
+            background-color: wheat !important;
+          }
+        }
+      }
+    }
+  }
+
+  nz-content {
+    // margin: 10px;
+
+    // ====================  new code start  =====================
+
+    // margin: 25px; // comment this for no margin inner content
+
+    // =====================  new code end  =======================
+  }
+
+  .inner-content {
+    // padding: 24px;
+    background: #fff;
+    // height: 100%;
+
+    // ============= new code start =======================
+
+    // height: calc(100% - 81px);
+    // max-height: calc(100% - 81px);
+    // min-height: calc(100% - 81px);
+
+    // =============== new code start =========================
+
+    // height: calc(100% - 113px);
+    // max-height: calc(100% - 113px);
+    // min-height: calc(100% - 113px);
+
+    height: calc(100% - 50px);
+    max-height: calc(100% - 50px);
+    min-height: calc(100% - 50px);
+
+    // =============== new code end ============================
+
+    /*=============================================
+    =            no margin for inner content          =
+    =============================================*/
+    // also need to comment margin in nz-content
+
+    // height: calc(100% - 60px);
+    // max-height: calc(100% - 60px);
+    // min-height: calc(100% - 60px);
+
+    /*=====  End of no margin for inner content  ======*/
+
+    position: fixed;
+    width: calc(100% - 276px);
+    max-width: calc(100% - 276px);
+    min-width: calc(100% - 276px);
+    overflow: auto;
+    left: 266px;
+    // padding: 15px;
+    transition: all 0.3s;
+
+    // ============= new code end =========================
+  }
+
+  .collapsed-inner-content {
+    // width: calc(100% - 105px);
+    // max-width: calc(100% - 105px);
+    // min-width: calc(100% - 105px);
+    overflow: auto;
+    // left: 93px;
+
+    // =================== new code start =====================
+
+    // width: calc(100% - 129px);
+    // max-width: calc(100% - 129px);
+    // min-width: calc(100% - 129px);
+    // left: 106px;
+
+    // ================== new code end ========================
+
+    /*=============================================
+    =            new width            =
+    =============================================*/
+
+    // width: calc(100% - 109px);
+    // max-width: calc(100% - 109px);
+    // min-width: calc(100% - 109px);
+    // left: 86px;
+
+    width: calc(100% - 65px);
+    max-width: calc(100% - 65px);
+    min-width: calc(100% - 65px);
+    left: $content-left;
+
+    /*=====  End of new width  ======*/
+
+    /*=============================================
+    =            no margin for inner content            =
+    =============================================*/
+
+    // also need to comment margin in nz-content
+
+    // width: calc(100% - 84px);
+    // max-width: calc(100% - 84px);
+    // min-width: calc(100% - 84px);
+    // left: 80px;
+
+    /*=====  End of no margin for inner content  ======*/
+
+    transition: all 0.3s;
+  }
+}
+
+.cdk-overlay-pane {
+  .ant-drawer-right.ant-drawer-open {
+    width: 250px !important;
+  }
+  .ant-drawer-content-wrapper .custom-notification-drawer {
+    color: wheat !important;
+  }
+
+  .ant-modal-content {
+    // position: relative;
+    // background-color: #fff;
+    // background-clip: padding-box;
+    // border: 0;
+    // border-radius: 4px;
+    // pointer-events: auto;
+    // width: 100%;
+    .ant-modal-close {
+      &:focus {
+        outline: none;
+      }
+
+      .ant-modal-close-x {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    .app-dialog-content {
+      // font-size: 16px;
+      // font-weight: 550;
+    }
+  }
+}
+
+// .change-password-dialog-container {
+.change-password-dialog-section {
+  width: 500px;
+  // height: 400px;
+  overflow-y: auto;
+  padding: 0 20px;
+}
+// }
+
+// .cdk-overlay-container {
+//   .cdk-overlay-pane {
+//     top: 200px !important;
+//   }
+// }

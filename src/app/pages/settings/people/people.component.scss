@@ -1,0 +1,17 @@
+.people-container section {
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.people-container .button-group {
+    margin-left:auto;
+    margin-right:0;
+}
+
+.button-group button {
+    margin-left: 5px;
+}
+
+.people-container i {
+    vertical-align: unset;
+}

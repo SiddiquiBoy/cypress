@@ -1,0 +1,66 @@
+<section class="categories-component-container">
+
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="employee-spin-container" [nzSpinning]="isSpinning">
+    <section class="table-container">
+      <section class="table-container text-capitalize">
+
+        <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="categories" [showSearchBox]="true"
+          [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+          [customHeaderOptions]="columns" [totalRecords]="totalRecords" [customTemplate]="custom"
+          [tableConfig]="tableConfig" [tableActionButtons]="tableActionButtons"
+          [customPaginationData]="customPaginationData" (paginatedData)="changePagination($event)"
+          (eEmitSearchInput)="search($event)" (selectedRows)="showSelectedRows($event)"
+          (sortObj)="handleSorting($event)" (editRow)="editCategory($event)" (eEmitSelectedCols)="onSelectedColsChange($event)"
+          (eEmitSelectedFilters)="onFilter($event)">
+        </app-general-table>
+      </section>
+    </section>
+  </nz-spin>
+  <ng-template #custom let-data="data" let-key="key">
+    <span *ngIf="key.type == 'activeinactive'">
+      <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'active'" nzColor="green">
+        {{ data[key.columnMap] | uppercase }}
+      </nz-tag>
+      <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'inactive'" nzColor="red">
+        {{ data[key.columnMap] | uppercase }}
+      </nz-tag>
+    </span>
+
+    <span *ngIf="key.columnMap === 'services'">
+      <span *ngFor="let item of data[key.columnMap] let i = index">
+        <span *ngIf="i === data[key.columnMap].length - 1">
+          {{item.name | titlecase}}
+        </span>
+        <span *ngIf="i < data[key.columnMap].length - 1">
+          {{item.name | titlecase}},
+        </span>
+      </span>
+      <span *ngIf="!data[key.columnMap].length">
+        -
+      </span>
+    </span>
+
+    <span *ngIf="key.columnMap === 'code'">
+      {{ data[key.columnMap] | uppercase }}
+    </span>
+    <span *ngIf="key.columnMap === 'businessUnit'">
+      {{ data[key.columnMap]?.name | titlecase }}
+    </span>
+
+    <span class="image-data-column-span" *ngIf="key.columnMap === 'imageUrl'">
+      <img src="{{ data[key.columnMap] || this.dummyImage }}" alt="">
+    </span>
+
+    <ng-container *permission="editButtonPermission">
+      <span *ngIf="key.columnMap === 'edit'">
+        <a>
+          <i nz-icon nzType="edit" nzTheme="outline" (click)="editCategory(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+
+
+  </ng-template>

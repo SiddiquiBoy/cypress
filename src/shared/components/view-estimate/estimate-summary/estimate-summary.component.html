@@ -1,0 +1,95 @@
+<section class="estimate-summary-section">
+    <section class="estimate-summary-detail-block">
+        <nz-page-header  nzBackIcon>
+            <nz-page-header-title>
+                Estimate Details
+            </nz-page-header-title>
+            <nz-page-header-content>
+                <nz-row nzType="flex">
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'CODE', body: estimate?.code, displayFormat: 'uppercase', icon: 'barcode', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'NAME', body: estimate?.name, displayFormat: 'titlecase', icon: 'form', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'FOLLOW-UP ON', body: estimate?.followUpOn, displayFormat: 'datetime', icon: 'calendar', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'JOB TYPE', body: estimate?.jobType?.name, displayFormat: 'titlecase', icon: 'reconciliation', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'STATUS', body: estimate?.status, displayFormat: 'titlecase', icon: 'container', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'BUSINESS UNIT', body: estimate?.businessUnit?.name, displayFormat: 'titlecase', icon: 'shop', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'TECHNICIANS', body: estimate?.technicians, displayFormat: 'titlecase', icon: 'user', type: 'list',
+                    listProperties: { icon: '', columnName: 'fullName' } }}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'SERVICES', body: estimate?.services, displayFormat: 'titlecase', icon: 'sliders', type: 'list',
+                    listProperties: { icon: '', columnName: 'name' } }}">
+                    </ng-container>
+
+                </nz-row>
+                <hr>
+                <nz-row nzType="flex">
+                    
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'SUB TOTAL', body: estimate?.subTotal, displayFormat: 'currency', icon: 'dollar', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'TAX', body: estimate?.tax, displayFormat: 'currency', icon: 'dollar', type: 'text'}}">
+                    </ng-container>
+
+                    <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                    context: {'data': {title: 'TOTAL', body: estimate?.total, displayFormat: 'currency', icon: 'dollar', type: 'text'}}">
+                    </ng-container>
+
+                </nz-row>                
+            </nz-page-header-content>
+        </nz-page-header>
+    </section>
+    <ng-template #viewDetailTemplate let-data="data">
+        <nz-statistic [nzTitle]="titleTemplate" [nzValueTemplate]="valueTemplate">
+            <ng-template #titleTemplate>
+                <i nz-icon nzType="{{data.icon}}"></i><span class="statistic-title-span">{{data.title}}</span>
+            </ng-template>
+            <ng-template #valueTemplate>
+                <ng-container *ngIf="data.type === 'text'">
+                    <span *ngIf="!data.displayFormat">{{data.body || '-'}}</span>
+                    <span *ngIf="data.displayFormat === 'titlecase'">{{data.body || '-' | titlecase}}</span>
+                    <span *ngIf="data.displayFormat === 'phoneFormat'">{{data.body || '-' | phoneFormat}}</span>
+                    <span *ngIf="data.displayFormat === 'lowercase'">{{data.body || '-' | lowercase}}</span>
+                    <span *ngIf="data.displayFormat === 'uppercase'">{{data.body || '-' | uppercase}}</span>
+                    <span *ngIf="data.displayFormat === 'currency'">{{data.body | currency}}</span>
+                    <span *ngIf="data.displayFormat === 'datetime'">{{data.body || '-' | date}} {{getFormattedTimeFromDateString(data.body)}}</span>
+                </ng-container>
+                <ng-container *ngIf="data.type === 'list'">
+                    <span *ngFor="let item of data.body" [ngClass]="data.listProperties.icon ? 'flex-center' : ''">
+                        <ng-container *ngIf="data.listProperties.icon">
+                            <i nz-icon nzType="{{data.listProperties.icon}}" class="mr-2"></i>
+                        </ng-container>
+                        <ng-container *ngIf="!data.displayFormat">
+                            {{item[data.listProperties.columnName] || '-'}}
+                        </ng-container>
+                        <ng-container *ngIf="data.displayFormat === 'titlecase'">
+                            {{item[data.listProperties.columnName] || '-' | titlecase}}
+                        </ng-container>
+                    </span>
+                </ng-container>
+            </ng-template>
+        </nz-statistic>
+    </ng-template>
+</section>

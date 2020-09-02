@@ -1,0 +1,67 @@
+<section class="employee-component-container">
+  <!-- <app-spinner *ngIf="isSpinning"></app-spinner> -->
+  <!-- [nzIndicator]="indicatorTemplate" -->
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="employee-spin-container" [nzSpinning]="isSpinning">  
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="employees" [showSearchBox]="true"
+        [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+        [customHeaderOptions]="columns" [totalRecords]="totalRecords" [customTemplate]="custom" (selectedRows)="onRowsSelectionChange($event)"
+        [tableConfig]="tableConfig" [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)" (eEmitsortData)="onSort($event)"
+        (eEmitSearchInput)="onSearchInput($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span class="image-data-column-span" *ngIf="key.type == 'image'">
+    <img src="{{ data[key.columnMap].url }}.{{ data[key.columnMap].extension }}" alt=""
+      onerror="this.src='./assets/images/org-logo.png'">
+  </span>
+  <span class="image-data-column-span" *ngIf="key.type == 'boolean'">
+    <span *ngIf="data[key.columnMap]">
+      <i class="font-size-20" nz-icon nzType="check-circle" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
+    </span>
+    <span *ngIf="!data[key.columnMap]">
+      <i class="font-size-20" nz-icon nzType="exclamation-circle" nzTheme="twotone" [nzTheme]="'twotone'"
+        [nzTwotoneColor]="'#eb2f96'"></i>
+    </span>
+  </span>
+  <span *ngIf="key.name === 'Role'">
+    {{getRole(data[key.columnMap])}}
+  </span>
+  <span *ngIf="key.type == 'activeinactive'">
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'active'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'inactive'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+  </span>
+  <span *ngIf="key.type == 'custom'">
+    {{data[key.columnMap] | titlecase}}
+  </span>
+  <span *ngIf="key.type == 'nested'">
+    <span *ngIf="data[key.columnMap] && data[key.columnMap][key.columnMap2]">
+      {{data[key.columnMap][key.columnMap2]  | titlecase}}
+    </span>
+    <span *ngIf="!data[key.columnMap] || !data[key.columnMap][key.columnMap2]">
+      {{'-'}}
+    </span>
+  </span>
+  <span *ngIf="key.type === 'phone'">
+    {{data[key.columnMap] | phoneFormat}}
+  </span>
+
+  <ng-container *permission="editButtonPermission">
+    <span *ngIf="key.columnMap === 'edit'">
+      <a>
+        <i nz-icon nzType="edit" nzTheme="outline" (click)="onRowEditClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+</ng-template>
+
+<!-- <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i> </ng-template> -->

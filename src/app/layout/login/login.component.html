@@ -1,0 +1,67 @@
+<div class="login-container">
+  <section nz-row nzGutter="30">
+    <section nz-col nzSpan="12">
+      <div class="left-section-container">
+        <a href="{{compassProHomePageLink}}" target="_blank">
+          <img src="./../../../assets/images/CP-logo.png" alt="">
+        </a>
+      </div>
+    </section>
+    <section nz-col nzSpan="12">
+      <section class="login-form-component">
+        <!-- <nz-spin class="login-spin-container" [nzSpinning]="isSpinning"> -->
+        <section class="login-form-container">
+          <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+            <nz-spin class="login-spin-container" [nzSpinning]="isSpinning">
+              <div class="login-image-container">
+                <img src={{tenantLogo}} alt="logo">
+              </div>
+              <h3 class="text-center mb-4 text-uppercase">
+                Welcome to
+              </h3>
+              <h6 id="companyName" class="text-center mb-4">
+                CompassPro
+              </h6>
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Please input a valid email!">
+                  <nz-input-group nzPrefixIcon="user">
+                    <input trim="blur" type="text" nz-input formControlName="userName" placeholder="Email" />
+                  </nz-input-group>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-control nzErrorTip="Please input your password!">
+                  <!-- <nz-input-group nzPrefixIcon="lock">
+                    <input type="password" nz-input formControlName="password" placeholder="Password" />
+                  </nz-input-group> -->
+                  <nz-input-group [nzSuffix]="suffixTemplate" nzPrefixIcon="lock">
+                    <input [type]="passwordVisible ? 'text' : 'password'" nz-input formControlName="password"
+                      placeholder="Password" />
+                  </nz-input-group>
+                  <ng-template #suffixTemplate>
+                    <i class="eye-icon" nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                      (click)="passwordVisible = !passwordVisible"></i>
+                  </ng-template>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item class="margin-bottom-5">
+                <nz-form-control>
+                  <label nz-checkbox formControlName="remember">
+                    <span>Remember me</span>
+                  </label>
+                  <a class="login-form-forgot" [routerLink]="['/public/reset']" class="login-form-forgot">Forgot
+                    password</a>
+                  <button nz-button class="login-form-button" [nzType]="'primary'" [disabled]="!loginForm.valid">Log
+                    in</button>
+                  Or
+                  <a id="registerLink" href="{{compassProRegistrationLink}}" target="_blank">register now!</a>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-spin>
+          </form>
+        </section>
+        <!-- </nz-spin> -->
+      </section>
+    </section>
+  </section>
+</div>

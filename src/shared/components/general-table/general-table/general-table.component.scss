@@ -1,0 +1,74 @@
+.general-table-container {
+  /*=============================================
+  =            table specific components scss            =
+  =============================================*/
+
+  .table-action-list {
+    width: 100%;
+    display: flex;
+    // margin-bottom: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    // justify-content: flex-end;
+
+    .search-bar-container {
+      // width: 250px;
+      width: 550px;
+      // width: 345px;
+    }
+
+    .date-filter-container {
+      width: 310px;
+      margin-left: 15px;
+    }
+
+    .buttons-container {
+      display: flex;
+      align-items: center;
+      // justify-content: center;
+      margin-left: 15px;
+
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    .col-show-hide-container {
+      display: flex;
+      align-items: center;
+      margin-left: 15px;
+
+      nz-select {
+        &#showHideSelect {
+          width: 205px;
+        }
+      }
+    }
+  }
+
+  /*=====  End of table specific components scss  ======*/
+
+  .image-data-column-span {
+    height: 30px;
+    width: 30px;
+
+    img {
+      height: inherit;
+      width: inherit;
+    }
+  }
+
+  .ant-pagination.mini .ant-pagination-next,
+  .ant-pagination.mini .ant-pagination-prev {
+    vertical-align: inherit;
+  }
+
+  .general-table-container .ant-pagination.mini .ant-pagination-next,
+  .general-table-container .ant-pagination.mini .ant-pagination-prev {
+    vertical-align: inherit;
+  }
+}
+
+.cdk-overlay-pane {
+  .custom-show-hide-dropdown {
+  }
+}

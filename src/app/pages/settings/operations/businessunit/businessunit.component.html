@@ -1,0 +1,98 @@
+<section class="bunit-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="employee-spin-container" [nzSpinning]="isSpinning">
+    <!-- <section class="table-action-list">
+      <section class="search-bar-container">
+        <app-searchbar [searchPlaceholder]="'Search by Internal Name, Official Name, Email'" (searchValue)="search($event)"></app-searchbar>
+      </section>
+      <section class="buttons-container">
+        <button class="flex-center" nz-button nzType="primary" nzGhost nz-dropdown [nzDropdownMenu]="menu">Actions<i
+            nz-icon nzType="down"></i></button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item [nzDisabled]="item?.disabled" *ngFor="let item of actionButtonDropdownMenu">
+              <a (click)="onMenuItemClick(item)">{{item?.label}}</a>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+        <button [routerLink]="['/settings/operations/businessunit/add']" class="ml-10" nz-button nzType="primary"
+          >Add</button>
+      </section>
+    </section> -->
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad"
+        [tableData]="businessUnits"
+        [showSearchBox]="true"
+        [showColShowHide]="false"
+        [searchPlaceholder]="'Search by internal name, official name & email'"
+        [tableActionButtons]="tableActionButtons"
+        [customHeaderOptions]="columns"
+        [totalRecords]="totalRecords"
+        [customTemplate]="custom"
+        [tableConfig]="tableConfig"
+        [tableActionButtons]="tableActionButtons"
+        [customPaginationData]="customPaginationData"
+        (paginatedData)="changePagination($event)"
+        (eEmitSearchInput)="search($event)"
+        (selectedRows)="showSelectedRows($event)"
+        (sortObj)="handleSorting($event)"
+        (editRow)="edit($event)"
+        (eEmitSelectedCols)="onSelectedColsChange($event)"
+        (eEmitSelectedFilters)="onFilter($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span class="image-data-column-span" *ngIf="key.type == 'image'">
+    <img src="{{ data[key.columnMap].url }}.{{ data[key.columnMap].extension }}" alt=""
+      onerror="this.src='./assets/images/org-logo.png'">
+  </span>
+
+  <span *ngIf="key.type == 'activeinactive'">
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'active'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'inactive'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+  </span>
+
+  <span class="image-data-column-span" *ngIf="key.type == 'boolean'">
+    <span *ngIf="data[key.columnMap]">
+      <i class="font-size-20" nz-icon nzType="check-circle" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
+    </span>
+    <span *ngIf="!data[key.columnMap]">
+      <i class="font-size-20" nz-icon nzType="exclamation-circle" nzTheme="twotone" [nzTheme]="'twotone'"
+        [nzTwotoneColor]="'#eb2f96'"></i>
+    </span>
+  </span>
+  <span class=" text-nowrap "  *ngIf="key.columnMap === 'minPostDate'">
+    {{data[key.columnMap] | date }}
+  </span>
+  <span *ngIf="key.columnMap === 'name'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'officialName'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'street'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'city'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'email'">
+    {{data[key.columnMap] | lowercase }}
+  </span>
+
+  <ng-container *permission="editButtonPermission">
+    <span *ngIf="key.columnMap === 'edit'">
+      <a>
+        <i nz-icon nzType="edit" nzTheme="outline" (click)="edit(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+
+</ng-template>

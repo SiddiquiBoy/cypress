@@ -1,0 +1,352 @@
+.card-component-container {
+    .page-header-container {
+        margin-bottom: 10px;
+    }
+
+  // --- panel ------------------------------------------------------------------
+
+  .panel {
+    width: 600px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    text-align: center;
+  }
+
+  // --- CARD: font -------------------------------------------------------------
+
+//   @font-face {
+//     font-family: 'OCRA';
+//     src: url('fonts/OCRA.otf');
+//     src: url('fonts/OCRA.otf?#iefix') format('embedded-opentype'),
+//     url('fonts/OCRA.ttf') format('truetype')
+//   }
+
+  // --- CARD -------------------------------------------------------------------
+
+//   .card {
+//     font: 16px/1.5 'Helvetica Neue', Helvetica, sans-serif;
+//     position: relative;
+//     display: inline-block;
+//     vertical-align: middle;
+//     width: 425px;
+//     height: 270px;
+//     text-align: left;
+//     padding: 30px;
+//     margin-bottom: 50px;
+//     color: #fff;
+//     border-radius: 20px;
+//     box-sizing: border-box;
+//     background: url(data:image/jpg;base64,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) no-repeat 0 0 #141819;
+
+//     &__number {
+//       font-size: 30px;
+//       padding: 90px 0 15px;
+//       text-align: center;
+//     }
+
+//     &__expiry-date {
+//       font-size: 14px;
+//       padding-bottom: 20px;
+//       text-align: center;
+//     }
+
+//     &__owner {
+//       text-align: left;
+//     }
+
+//     &__logo {
+//       position: absolute;
+//       right: 20px;
+//       bottom: 20px;
+//     }
+
+//     &__strip {
+//       background: #000;
+//       height: 50px;
+//       margin-bottom: 30px;
+//     }
+
+//     &__signature {
+//       float: left;
+//       width: 65%;
+//       height: 40px;
+//       margin-left: 10px;
+//       background: #999;
+//     }
+
+//     &__ccv {
+//       float: left;
+//       margin-top: 5px;
+//       padding: 7px;
+//       background: #fff;
+//       color: #111;
+//       line-height: 1;
+//     }
+
+//     &--front {
+//       font-size: 16px;
+//       font-family: 'Source Code Pro';
+//       text-shadow: 0 1px 1px rgba(0, 0, 0, .6);
+//     }
+
+//     &--back {
+//       padding-left: 0;
+//       padding-right: 0;
+//       text-align: left;
+//     }
+//   }
+
+
+  .container {
+    background: linear-gradient(to bottom, #245e69, #85aeaa);
+    bottom: 0;
+    color: #e3e3e3;
+    display: block;
+    left: 0;
+    padding-top: 40px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+  }
+
+  h1 {
+    font-size: 60px;
+    font-weight: normal;
+  }
+
+  /*
+   * The Card
+   *
+   * ==================== */
+   .cc-container{
+    width: 325px;
+    display: inline-block;
+    margin: 30px 20px 30px 0;
+    vertical-align: top;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #d8d8d8;
+    box-shadow: 0 0px 20px #999;
+    min-height: 320px;
+    .default-text{
+      color: #6e2b77;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+   }
+  .cc,
+  .cc-back {
+    background-color: #6e2b77;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px #bbb;
+    height: 192px;
+    letter-spacing: 0.1rem;
+    position: relative;
+    text-align: left;
+    text-transform: uppercase;
+    width: 100%;
+    *{
+      box-sizing: border-box;
+      font-family: 'Consolas', monospace;
+      font-size: 14px;
+    }
+  }
+
+  .chip {
+    background: #efb77f;
+    border-radius: 5px;
+    display: block;
+    height: 30px;
+    left: 30px;
+    position: absolute;
+    top: 50px;
+    width: 40px;
+  }
+
+  .nubank-logo {
+    background-image: url('https://www.nubank.com.br/images/eeb5478f.header_logo.png');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 80px;
+    display: block;
+    filter: grayscale(100%);
+  }
+  .nubank-logo:after {
+    background: linear-gradient(#eee, #999);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    content: 'Platinum';
+    display: block;
+    text-align: center;
+    padding-top: 60px;
+  }
+
+  .cc-number {
+    background: linear-gradient(#eee, #999);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    bottom: 75px;
+    font-size: 20px;
+    left: 30px;
+    position: absolute;
+  }
+
+  .cc-date {
+    background: linear-gradient(#eee, #999);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    bottom: 40px;
+    left: 30px;
+    position: absolute;
+  }
+
+  .cc-date.expiry {
+    left: 125px;
+  }
+  .cc-date.expiry:after {
+    -webkit-text-fill-color: #52185b;
+    content: 'Valid thru';
+    font-size: 8px;
+    left: -30px;
+    position: absolute;
+    text-transform: none;
+    top: -10px;
+  }
+
+  .cc-name {
+    background: linear-gradient(#eee, #999);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    bottom: 15px;
+    left: 30px;
+    position: absolute;
+  }
+
+  /*
+   * Card back
+   */
+  .cc-magnet {
+    background-color: #c0c0c0;
+    display: block;
+    height: 30px;
+    position: absolute;
+    top: 15%;
+    width: 100%;
+  }
+
+  /*
+   * MasterCard logo in pure CSS in just ONE element
+   * by Jaime Caballero (jaicab.com)
+   */
+
+  // @import url(https://fonts.googleapis.com/css?family=Droid+Sans:700);
+
+  $mcd-red: #cd0001;
+  $mcd-orange: #fe9900;
+  $cirrus-dark-blue: #345399;
+  $cirrus-light-blue: #0085c6;
+
+  $mcd-width: 5rem;
+  $mcd-height: $mcd-width * 3/5;
+
+  .mastercard{
+    font-family: "Droid Sans", Helvetica, sans-serif;
+    position: absolute;
+    width: $mcd-width;
+
+    font-size: 12px;
+    line-height: $mcd-height;
+    letter-spacing: -$mcd-width/75;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+    text-shadow: -$mcd-height/75 $mcd-height/75 0 #16226a;
+    text-transform: none;
+    top: 35px;
+    right: 30px;
+    z-index: 2;
+
+    //Circles here
+    &::before{
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      display: inline-block;
+      border-radius: 50%;
+      width: $mcd-height;
+      height: $mcd-height;
+      z-index: -1;
+
+      //Gradient
+      background: linear-gradient($mcd-orange 50%, $mcd-red 50%);
+      background-size: $mcd-height/8 $mcd-height/8;
+
+      //A shadow for the red one (inset) and another for the orange one
+      box-shadow: ($mcd-width - $mcd-height) 0 0 0 $mcd-orange,
+         ($mcd-width - $mcd-height) 0 0 0 $mcd-red inset;
+    }
+
+    //Registered trademark
+    &::after{
+      content: '\00ae';
+      padding-left: .5em;
+
+      font: .25em Helvetica,sans-serif lighter normal;
+      text-shadow: none;
+    }
+  }
+
+  .cirrus{
+    font-family: "Droid Sans", Helvetica, sans-serif;
+    position: absolute;
+    width: 4em;
+
+    font-size: 12px;
+    line-height: $mcd-height/1.5;
+    letter-spacing: -$mcd-width/75;
+    text-align: center;
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+    text-shadow: -$mcd-height/75 $mcd-height/75 0 #16226a;
+    text-transform: none;
+    top: -20px;
+    left: 15px;
+    margin: 20vh auto;
+    z-index: 2;
+
+    //Circles here
+    &::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: inline-block;
+      border-radius: 50%;
+      width: $mcd-height/1.5;
+      height: $mcd-height/1.5;
+      z-index: -1;
+
+      //Gradient
+      background: linear-gradient($cirrus-light-blue 50%, $cirrus-dark-blue 50%);
+      background-size: $mcd-height/8 $mcd-height/8;
+
+      //A shadow for the red one (inset) and another for the orange one
+      box-shadow: (($mcd-width - $mcd-height)/1.5) 0 0 0 $cirrus-light-blue,
+         (($mcd-width - $mcd-height)/1.5) 0 0 0 $cirrus-dark-blue inset;
+    }
+
+    //Registered trademark
+    &::after{
+      content: '\00ae';
+      font: .25em Helvetica,sans-serif lighter normal;
+      padding-left: .5em;
+      text-shadow: none;
+    }
+  }
+}

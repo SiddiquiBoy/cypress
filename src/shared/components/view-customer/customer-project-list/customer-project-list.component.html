@@ -1,0 +1,97 @@
+<section class="customer-view-projects-container">
+  <nz-spin [nzSpinning]="isSpinning">
+    <hr>
+    <h5>Projects</h5>
+    <app-general-table *ngIf="columns?.length" [tableData]="projects" [showSearchBox]="true"
+    [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableConfig]="tableConfig"
+    [customPaginationData]="paginationData" (eEmitSearchInput)="onSearchInput($event)" 
+    [tableActionButtons]="tableActionButtons" [totalRecords]="projects.length" [customTemplate]="custom"
+    [customHeaderOptions]="columns">
+    </app-general-table>
+  </nz-spin>
+</section>
+
+<app-app-dialog [withFooter]="false" [isVisible]="showAddprojectDialog" [title]="'Add Project'" 
+  (eEmitOnCancelClick)="onCancelClick()" [hideDialogOnAction]="true">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="edit-project-section" *ngIf="showAddprojectDialog">
+      <form nz-form #projectDetailsForm="ngForm" [autocomplete]="'off'" [nzLayout]="'vertical'">
+        <section class="add-project-detail-form-container">
+          <app-project-detail [redirectUpdate]="false" [redirectFrom]="'customer'" [customers]="[customer]"
+          [project]="project" [changedType]="changedType"></app-project-detail>
+        </section>
+        <section class="text-right">
+          <a type="link" class="link mr-4" (click)="onCancelClick()">Cancel</a>
+          <button (click)="addProject()" [disabled]="!projectDetailsForm.valid" nz-button nzType="primary">
+            Add
+          </button>
+        </section>
+      </form>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [withFooter]="false" [isVisible]="showEditprojectDialog" [title]="'Edit Project'" 
+  (eEmitOnCancelClick)="onCancelClick()" [hideDialogOnAction]="true">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="edit-project-section" *ngIf="showEditprojectDialog">
+      <form nz-form #projectDetailsForm="ngForm" [autocomplete]="'off'" [nzLayout]="'vertical'">
+        <section class="edit-project-detail-form-container">
+          <app-project-detail [redirectUpdate]="false" [redirectFrom]="'customer'" [customers]="[customer]"
+          [project]="project" [changedType]="changedType"></app-project-detail>
+        </section>
+        <section class="text-right">
+          <a type="link" class="link mr-4" (click)="onCancelClick()">Cancel</a>
+          <button (click)="updateProject()" [disabled]="!projectDetailsForm.valid" nz-button nzType="primary">
+            Update
+          </button>
+        </section>
+      </form>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<ng-template #custom let-data="data" let-key="key">
+    <span *ngIf="key.type == 'activeinactive'">
+      <nz-tag *ngIf="data[key?.columnMap] && data[key?.columnMap].toLowerCase() == 'active'" nzColor="green">
+        {{ data[key.columnMap] | uppercase }}
+      </nz-tag>
+      <nz-tag *ngIf="data[key?.columnMap] && data[key?.columnMap].toLowerCase() == 'inactive'" nzColor="red">
+        {{ data[key.columnMap] | uppercase }}
+      </nz-tag>
+    </span>
+    <span *ngIf="key.columnMap === 'name'">
+      {{data[key?.columnMap] || '-' | titlecase }}
+    </span>
+    <span *ngIf="key.columnMap === 'code'">
+      {{data[key?.columnMap] || '-' | uppercase }}
+    </span>
+    <span *ngIf="key.columnMap === 'jobs'">
+      <span *ngFor="let item of data[key.columnMap] let i = index">
+        <span *ngIf="i === data[key.columnMap].length - 1">
+          {{item?.jobType?.name || '-' | titlecase}}
+        </span>
+        <span *ngIf="i < data[key.columnMap].length - 1">
+          {{item?.jobType?.name || '-' | titlecase}},
+        </span>
+      </span>
+      <span *ngIf="!data[key?.columnMap]?.length">
+        -
+      </span>
+    </span>
+    <ng-container *permission="viewButtonPermission">
+      <span *ngIf="key.columnMap === 'action'">
+        <a>
+          <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline" (click)="onRowViewClick(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+    <ng-container *permission="editButtonPermission">
+      <span *ngIf="key.columnMap === 'action'">
+        <a>
+          <i nz-tooltip nzTooltipTitle="Edit" nz-icon nzType="edit" nzTheme="outline"  (click)="onRowEditClick(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+  
+  </ng-template>

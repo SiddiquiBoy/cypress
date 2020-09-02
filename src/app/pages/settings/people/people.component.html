@@ -1,0 +1,24 @@
+<!-- <section class="people-container">
+    <nz-tabset>
+        <nz-tab [nzTitle]="titleTemplate">
+            <ng-template #titleTemplate> <i nz-icon [nzType]="'gitlab'"></i>Employees</ng-template>
+            <ng-template nz-tab>
+                <section>
+                    <app-searchbar></app-searchbar>
+                    <section class="button-group">
+                        <button nz-button nzType="primary" nzGhost>Actions</button>
+                        <button nz-button nzType="primary" nzGhost>Add</button>
+                    </section>
+                </section>
+                <app-general-table [tableHeads]="servicesTableHeadings" [tableData]="listOfData"></app-general-table>
+            </ng-template>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate2">
+            <ng-template #titleTemplate2> <i nz-icon [nzType]="'github'"></i>Technicians</ng-template>
+            <ng-template nz-tab>
+                <app-general-table></app-general-table>
+            </ng-template>
+        </nz-tab>
+    </nz-tabset>
+</section> -->
+<router-outlet></router-outlet>

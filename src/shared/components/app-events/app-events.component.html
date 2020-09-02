@@ -1,0 +1,45 @@
+<section class="event-component-container">
+  <nz-spin class="event-spin-container" [nzSpinning]="isSpinning">
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="auditLogs" [showSearchBox]="false"
+        [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="null"
+        [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+        [tableConfig]="tableConfig" [indexToExpand]="indexToExpand" [rowExpandableTemplate]="rowExpandableTemplate">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.columnMap === 'userName'">
+    {{data[key.columnMap] || '-' | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'updatedAt'">
+    <!-- | date : defaultDateFormat -->
+    {{data[key.columnMap] || '-'}}
+  </span>
+  <span *ngIf="key.columnMap === 'roles'">
+    {{getRole(data[key.columnMap])}}
+  </span>
+  <span *ngIf="key.columnMap === 'op'">
+    {{getAction(data[key.columnMap])}}
+  </span>
+</ng-template>
+
+<ng-template #rowExpandableTemplate let-data="data">
+  <table>
+    <tr>
+      <th>Field Name</th>
+      <th>Old Value</th>
+      <th>New Value</th>
+      <!-- <th>Description</th> -->
+    </tr>
+    <ng-template ngFor let-difference [ngForOf]="data?.diff">
+      <tr>
+        <td>{{difference?.path[0] || '-'}}</td>
+        <td>{{difference?.oldVal || '-'}}</td>
+        <td>{{difference?.val || '-'}}</td>
+      </tr>
+    </ng-template>
+  </table>
+</ng-template>

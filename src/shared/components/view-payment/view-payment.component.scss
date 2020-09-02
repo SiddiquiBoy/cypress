@@ -1,0 +1,26 @@
+.view-project-container {
+  width: 100%;
+  height: 100%;
+  // padding-left: 30px;
+  padding-right: 30px;
+  // margin-top: 25px;
+
+  .project-spin-container {
+      width: 100%;
+      height: 100%;
+
+      .project-summary-parent-container {
+          width: 100%;
+          height: 100%;
+      }
+  }
+}
+
+
+.ant-modal-close {
+  outline: none !important;
+  span{
+    outline: none !important;
+  }
+}
+

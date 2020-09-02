@@ -1,0 +1,31 @@
+
+      section.registration{
+        background: #eee;
+        display: table;
+        margin: auto;
+        padding: 25px;
+        width: 100%;
+        [nz-form] {
+          max-width: 800px;
+          border: 1px solid #ddd;
+          box-shadow: 0 0 4px #ccc;
+          padding: 25px 0;
+          background: #fff;
+          margin: auto;
+          width: 100%;
+          h3{
+            margin-bottom: 25px;
+            text-align: center;
+          }
+        }
+      }
+     
+
+      .phone-select {
+        width: 70px;
+      }
+
+      .register-are {
+        margin-bottom: 8px;
+      }
+    

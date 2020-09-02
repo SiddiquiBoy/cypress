@@ -1,0 +1,10 @@
+{
+  
+  "OrgAdmin_url": "http://localhost:4200",
+  "base_url": "http://localhost:4200",
+  "OrgAdmin_username": "pulkit@crownstack.com",
+  "OrgAdmin_password": "password",
+  "superAdmin_username": "aman@crownstack.com",
+  "superAdmin_password": "password",
+  "image_path": "images/Test_image.jpg"
+}

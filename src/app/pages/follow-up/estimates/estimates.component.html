@@ -1,0 +1,74 @@
+<section class="services-component-container">
+    <section class="page-header-container">
+        <app-page-header></app-page-header>
+    </section>
+    <nz-spin class="services-spin-container" [nzSpinning]="isSpinning">
+        <section class="table-container">
+        <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="estimates" [showSearchBox]="true"
+            [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+            [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+            [tableConfig]="tableConfig"
+            [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+            (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)"
+            (eEmitSearchInput)="onSearchInput($event)">
+        </app-general-table>
+        </section>
+    </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+    <span *ngIf="key.columnMap === 'name'">
+      {{data?.name || '-' | titlecase}}
+    </span>
+    <span *ngIf="key.columnMap === 'code'">
+      {{data?.code || '-' | uppercase}}
+    </span>
+    <span *ngIf="key.columnMap === 'jobType.name'">
+      {{data?.jobType?.name || '-' | titlecase}}
+    </span>
+    <span *ngIf="key.columnMap === 'status'">
+      {{ data[key.columnMap] | titlecase }}
+    </span>
+    <span *ngIf="key.columnMap === 'subTotal'">
+      <span>{{ data[key.columnMap] | currency }}</span>
+    </span>
+    <span *ngIf="key.columnMap === 'technicians'">
+      <ng-container *ngIf="data[key.columnMap] && data[key.columnMap].length">
+        <span *ngFor="let item of data[key.columnMap]; let i = index">
+          <span *ngIf="i === data[key.columnMap].length - 1">
+            {{ item.fullName | titlecase }}
+          </span>
+          <span *ngIf="i < data[key.columnMap].length - 1">
+            {{ item.fullName | titlecase }},
+          </span>
+        </span>
+      </ng-container>
+      <span *ngIf="!data[key.columnMap] || !data[key.columnMap].length">
+        -
+      </span>
+    </span>
+    <span *ngIf="key.columnMap === 'services'">
+      <ng-container *ngIf="data[key.columnMap] && data[key.columnMap].length">
+        <span *ngFor="let item of data[key.columnMap]; let i = index">
+          <span *ngIf="i === data[key.columnMap].length - 1">
+            {{ item.name | titlecase }}
+          </span>
+          <span *ngIf="i < data[key.columnMap].length - 1">
+            {{ item.name | titlecase }},
+          </span>
+        </span>
+      </ng-container>
+      <span *ngIf="!data[key.columnMap] || !data[key.columnMap].length">
+        -
+      </span>
+    </span>
+    <ng-container *permission="viewButtonPermission">
+      <span *ngIf="key.columnMap === 'action'">
+        <a>
+          <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline"
+            (click)="onRowViewClick(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+  </ng-template>
+  

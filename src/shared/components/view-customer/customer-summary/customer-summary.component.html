@@ -1,0 +1,94 @@
+<section class="customer-summary-section">
+    <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="24">
+            <section class="customer-summary-detail-block">
+              <!-- (nzBack)="onBack()" -->
+                <nz-page-header  nzBackIcon>
+                    <nz-page-header-title>
+                        <a class="customer-image">
+                            <img [src]="customer.imageUrl || './assets/images/avatar-new.png'" alt="logo">
+                        </a>
+                        Customer Details
+                    </nz-page-header-title>
+                    <nz-page-header-tags *ngIf="customer?.status">
+                        <i nz-tooltip [nzTooltipTitle]="(customer.jobNotification) ? 'Job Notifications: Enabled' : 'Job Notifications: Disabled'"
+                        nz-icon class="mr-2" nzType="bell" [nzTheme]="(customer.jobNotification ? 'fill' : 'outline')"></i>
+
+                        <nz-tag [nzColor]="(customer.status === 'active') ? 'green' : 'red'">
+                            {{customer.status | uppercase}}
+                        </nz-tag>
+
+                        <i nz-tooltip [nzTooltipTitle]="'Edit'" (click)="onEdit()"
+                        nz-icon class="ml-2 pointer" nzType="edit" [nzTheme]="'outline'"></i>
+                    </nz-page-header-tags>
+                    <nz-page-header-content>
+                        <nz-row nzType="flex">
+
+                            <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                            context: {'data': {title: 'NAME', body: customer?.fullName, displayFormat: 'titlecase', icon: 'user'}}">
+                            </ng-container>
+
+                            <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                            context: {'data': {title: 'HOME PHONE', body: customer?.homePhone, displayFormat: 'phoneFormat', icon: 'phone'}}">
+                            </ng-container>
+
+                            <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                            context: {'data': {title: 'OFFICE PHONE', body: customer?.officePhone, displayFormat: 'phoneFormat', icon: 'phone'}}">
+                            </ng-container>
+
+                            <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                            context: {'data': {title: 'EMAIL', body: customer?.email, displayFormat: 'lowercase', icon: 'mail'}}">
+                            </ng-container>
+
+                            <ng-container *ngTemplateOutlet="viewDetailTemplate;
+                            context: {'data': {title: 'BUSINESS UNIT', body: customer?.businessUnit?.name, displayFormat: 'titlecase', icon: 'shop'}}">
+                            </ng-container>
+
+                        </nz-row>
+                    </nz-page-header-content>
+                </nz-page-header>
+            </section>
+        </section>
+        <!-- <section class="padding-top-10" nz-col [nzSpan]="6">
+            <section class="job-action-container">
+                <div class="action-button">
+                    <button class="mr-4" nz-button nzType="default">Edit</button>
+                </div>
+            </section>
+        </section> -->
+    </section>
+    <ng-template #viewDetailTemplate let-data="data">
+        <nz-statistic [nzTitle]="titleTemplate" [nzValueTemplate]="valueTemplate">
+            <ng-template #titleTemplate>
+                <i nz-icon nzType="{{data.icon}}"></i><span class="statistic-title-span">{{data.title}}</span>
+            </ng-template>
+            <ng-template #valueTemplate>
+                <span *ngIf="!data.displayFormat">{{data.body || '-'}}</span>
+                <span *ngIf="data.displayFormat === 'titlecase'">{{data.body || '-' | titlecase}}</span>
+                <span *ngIf="data.displayFormat === 'phoneFormat'">{{data.body || '-' | phoneFormat}}</span>
+                <span *ngIf="data.displayFormat === 'lowercase'">{{data.body || '-' | lowercase}}</span>
+            </ng-template>
+        </nz-statistic>
+    </ng-template>
+</section>
+
+<section class="dialog-container">
+    <app-app-dialog [withFooter]="false" [isVisible]="showEditCustomerDialog" [title]="'Edit Customer'"
+    (eEmitOnCancelClick)="onCancelClick()" [hideDialogOnAction]="true">
+        <nz-spin [nzSpinning]="isSpinning">
+            <section class="edit-summary-section" *ngIf="showEditCustomerDialog && isBusinessUnitsFetched">
+                <form nz-form #customerForm="ngForm" [appMatchFields]="['officePhone', 'homePhone']" [autocomplete]="'off'" [nzLayout]="'vertical'">
+                    <section class="customer-detail-form-container">
+                        <app-customer-detail [customer]="customerCopy" [businessUnits]="businessUnits" [changedType]="changedType">
+                        </app-customer-detail>
+                    </section>
+                    <section class="action-buttons-container text-right">
+                        <a type="link" class="link mr-4" [class.disabled]="isCustomerImageUploading" (click)="onCancelClick()">Cancel</a>
+                        <button (click)="updateCustomer()" [disabled]="!customerForm.valid || isCustomerImageUploading" nz-button nzType="primary">Update
+                        </button>
+                    </section>
+                </form>
+            </section>
+        </nz-spin>
+    </app-app-dialog>
+</section>

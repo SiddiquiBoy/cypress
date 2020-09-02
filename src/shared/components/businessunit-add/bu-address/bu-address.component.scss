@@ -1,0 +1,19 @@
+.bu-address-component-container {
+    nz-form-item {
+      &.ant-form-item {
+        .ant-form-item-label {
+          line-height: 1;
+  
+          label {
+            margin-bottom: 0;
+          }
+        }
+        margin-bottom: 12px;
+      }
+  
+      label {
+        margin-bottom: 0;
+      }
+    }
+  }
+  

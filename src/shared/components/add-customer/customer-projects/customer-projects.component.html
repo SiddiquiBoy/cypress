@@ -1,0 +1,109 @@
+<section class="customer-projects-component-container">
+  <ng-container>
+    {{ isProjectTabValid() }}
+    <section *ngIf="customer?.projects?.length < 1" nz-col [nzSpan]="24"
+      class="project-button-container text-center height-150">
+      <section class="add-button-container">
+        <button nz-button class="mr-auto width-150" nzType="primary" (click)="addProject()">
+          <i nz-icon [nzType]="addButtonIcon"></i>
+          Add project
+        </button>
+      </section>
+    </section>
+  </ng-container>
+  <ng-container *ngFor="let project of customer.projects; let i = index">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="16">
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="name">
+                Name
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a name">
+                <input [disabled]="project?.id" required nz-input name="name{{ i }}" class="titlecase" maxlength="20"
+                  [placeholder]="customerProjectNamePlaceholder" [(ngModel)]="customer.projects[i].name" trim="blur"
+                  changes [changedValue]="project?.name" [changedType]="changedType"
+                  [changedField]="'projects/' + i + '.name'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Name'" [checkOnlyObjectId]="false"
+                  [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12" *ngIf="project?.id">
+            <nz-form-item>
+              <nz-form-label nzFor="code">
+                Code
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a code">
+                <input [disabled]="project?.id" required nz-input name="code{{ i }}" class="uppercase" maxlength="20"
+                  [placeholder]="customerProjectCodePlaceholder" [(ngModel)]="customer.projects[i].code" trim="blur"
+                  changes [changedValue]="project?.code" [changedType]="changedType"
+                  [changedField]="'projects/' + i + '.code'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Code'" [checkOnlyObjectId]="false"
+                  [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12" *ngIf="!project?.id">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="projectStatus">
+                Status
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a staus">
+                <!-- [nzDisabled]="customer?.projects[i]?.id" -->
+                <nz-select required name="projectStatus" nzDisabled [(ngModel)]="customer.projects[i].status"
+                  [nzPlaceHolder]="customerProjectStatusPlaceholder" changes [changedValue]="project?.status"
+                  [changedType]="changedType" [changedField]="'projects/' + i + '.status'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'" [checkOnlyObjectId]="false">
+                  <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12" *ngIf="project?.id">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="projectStatus">
+                Status
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a staus">
+                <!-- [nzDisabled]="customer?.projects[i]?.id" -->
+                <nz-select required name="projectStatus" nzDisabled [(ngModel)]="customer.projects[i].status"
+                  [nzPlaceHolder]="customerProjectStatusPlaceholder" changes [changedValue]="project?.status"
+                  [changedType]="changedType" [changedField]="'projects/' + i + '.status'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'" [checkOnlyObjectId]="false">
+                  <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30" *ngIf="i !== customer?.projects?.length - 1">
+          <hr />
+        </section>
+      </section>
+      <section *ngIf="i === customer?.projects?.length - 1" nz-col [nzSpan]="8" class="project-button-container">
+        <section class="add-button-container">
+          {{ isProjectTabValid() }}
+          <button nz-button [disabled]="!isProjTabValid" class="mr-auto width-150" nzType="primary"
+            (click)="addProject()">
+            <i nz-icon [nzType]="addButtonIcon"></i>
+            Add project
+          </button>
+        </section>
+      </section>
+      <section nz-col [nzSpan]="8" *ngIf="!project?.id" class="project-button-container">
+        <section class="add-button-container">
+          <button nz-button class="mr-auto width-150" nzType="danger" (click)="removeProject(i)">
+            <i nz-icon [nzType]="removeButtonIcon"></i>
+            Remove project
+          </button>
+        </section>
+      </section>
+    </section>
+  </ng-container>
+</section>

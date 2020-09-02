@@ -1,0 +1,38 @@
+.customer-detail-component-container {
+  nz-form-item {
+    &.ant-form-item {
+      .ant-form-item-label {
+        line-height: 1;
+
+        label {
+          margin-bottom: 0;
+        }
+      }
+      margin-bottom: 12px;
+    }
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .job-notification-container {
+    bottom: 0.4rem;
+
+    .switch-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 5px;
+
+      .switch-label {
+        color: rgba(0, 0, 0, 0.85);
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .file-upload-container {
+    margin-top: 1.7rem;
+  }
+}

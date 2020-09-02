@@ -1,0 +1,55 @@
+<section class="file-upload-component-container">
+  <nz-spin [nzSpinning]="isSpinning">
+    <nz-upload nzType="drag" [nzAction]="'-'" [nzMultiple]="multiple" [nzAccept]="'image/*'"
+      (nzChange)="handleChange($event)" [nzCustomRequest]="customReq" [nzFileList]="images"
+      [nzListType]="multiple ? 'picture-card' : 'text'" [nzShowUploadList]="multiple ? false : true">
+      <ng-container *ngIf="!multiple">
+        <span [hidden]="avatarUrl">
+          <p class="ant-upload-drag-icon">
+            <i nz-icon nzType="inbox"></i>
+          </p>
+          <p class="ant-upload-text">
+            {{uploadText}}
+          </p>
+          <p class="ant-upload-hint">
+            {{uploadHint}}
+          </p>
+        </span>
+        <span [hidden]="!avatarUrl">
+          <img [attr.data-cy]="'file-upload'" style="width: 50%;" src="{{avatarUrl}}" alt="" (load)="imageLoaded()">
+        </span>
+      </ng-container>
+      <ng-container *ngIf="multiple">
+        <span>
+          <p class="ant-upload-drag-icon">
+            <i nz-icon nzType="inbox"></i>
+          </p>
+          <p class="ant-upload-text">
+            {{uploadText}}
+          </p>
+          <p class="ant-upload-hint">
+            {{uploadHint}}
+          </p>
+        </span>
+      </ng-container>
+    </nz-upload>
+
+    <section *ngIf="multiple">
+      <section [hidden]="!avatarUrls?.length" class="image-list-container">
+        <section *ngFor="let url of avatarUrls; let i = index" class="image-list-item-container">
+          <section class="image-list-item-image-container">
+            <img [attr.data-cy]="'file-upload'" style="width: 90%;" src="{{url}}" alt="" (load)="onImageLoad(i)">
+          </section>
+          <section class="image-list-item-name-container">
+            <section>
+              {{files[i]?.name}}
+            </section>
+            <section class="close-icon">
+              <i nz-icon nzType="close" nzTheme="outline" (click)="removeImage(i)"></i>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
+  </nz-spin>
+</section>

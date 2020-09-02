@@ -1,0 +1,112 @@
+<section class="timesheet-code-add-container">
+  <nz-spin class="timesheet-code-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <div nz-row>
+      <div nz-row nzGutter="30">
+        <div nz-col nzSpan="16">
+          <form #timesheetcodeform="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form (ngSubmit)="onSubmit()">
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12" *ngIf="timesheetCode?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="code">Timesheet Code</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter a Code">
+                    <input nz-input trim="blur" type="text" required name="code"
+                      [placeholder]="timesheetCodeCodePlaceholder" [disabled]="timesheetCodeId"
+                      [(ngModel)]="timesheetCode.code" changes [changedValue]="timesheetCode?.code"
+                      [changedType]="changedType" [changedField]="'code'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Code'" [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="name">Type</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Type">
+                    <nz-select name="type" [nzPlaceHolder]="timesheetCodeTypePlaceholder"
+                      [(ngModel)]="timesheetCode.type" changes [changedValue]="timesheetCode?.type"
+                      [changedType]="changedType" [changedField]="'type'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Type'">
+                      <nz-option *ngFor="let item of typeDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12" *ngIf="!timesheetCode?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="status">Status</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Status">
+                    <nz-select name="status" [nzDisabled]="!timesheetCode?.id" [(ngModel)]="timesheetCode.status"
+                      [nzPlaceHolder]="timesheetCodeStatusPlaceholder" changes [changedValue]="timesheetCode?.status"
+                      [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                      <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12" *ngIf="timesheetCode?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="status">Status</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Status">
+                    <nz-select name="status" [nzDisabled]="!timesheetCode?.id" [(ngModel)]="timesheetCode.status"
+                      [nzPlaceHolder]="timesheetCodeStatusPlaceholder" changes [changedValue]="timesheetCode?.status"
+                      [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                      <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="timesheetCode?.id ? '12' : '24'">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="categories">Master Pay File Business Units
+                  </nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Business Unit">
+                    <nz-select name="categories" [nzPlaceHolder]="timesheetCodeBusinessUnitPlaceholder"
+                      [(ngModel)]="timesheetCode.businessUnit" required changes
+                      [changedValue]="timesheetCode?.businessUnit" [changedType]="changedType"
+                      [changedField]="'businessUnit'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Business Unit'">
+                      <nz-option *ngFor="let item of businessUnits" [nzLabel]="item.name" [nzValue]="item">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="description">Description</nz-form-label>
+              <nz-form-control nzErrorTip="Enter Item Description">
+                <textarea nz-input trim="blur" required name="description"
+                  [ngModel]="timesheetCode.description | firstLetterCapital"
+                  (ngModelChange)="timesheetCode.description = $event"
+                  [placeholder]="timesheetCodeDescriptionPlaceholder" changes
+                  [changedValue]="timesheetCode?.description" [changedType]="changedType" [changedField]="'description'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'Description'" [trimValue]="true"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row class="register-area mt-4 text-right">
+              <nz-form-control>
+                <a type="link" class="link mr-4" (click)="onCancel()">Cancel</a>
+                <button nz-button [disabled]="timesheetcodeform.invalid" class="mr-auto" type="submit" nzType="primary">
+                  {{ timesheetCode?.id ? 'Update' : 'Add' }}
+                </button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</section>

@@ -1,0 +1,132 @@
+<section class="add-category-component-container">
+  <nz-spin class="employee-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="mt-5 category-form-container">
+      <form ngForm [nzLayout]="'vertical'" #createCategoryform="ngForm" (ngSubmit)="onSubmitForm()" nz-form>
+        <div nz-row nzGutter="30">
+          <div nz-col nzSpan="16">
+
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="color">Name</nz-form-label>
+              <nz-form-control nzErrorTip="Enter Name" [nzValidateStatus]="categoryNameValidationStatus" nzHasFeedback
+                [nzErrorTip]="'Invalid/Duplicate Name'">
+                <input nz-input id="name" (input)="onCategoryNameInput()" [disabled]="categoryId" trim="blur" required
+                  [placeholder]="categoryNamePlaceholder" type="text" name="name" class=" text-capitalize "
+                  [(ngModel)]="category.name" changes [changedValue]="category?.name" [changedType]="changedType"
+                  [changedField]="'name'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'Name'" [trimValue]="true">
+              </nz-form-control>
+            </nz-form-item>
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="bu">Business Unit</nz-form-label>
+                  <nz-form-control nzErrorTip="Select Business Unit">
+                    <nz-select nzShowSearch required [nzPlaceHolder]="categoryBusinessUnitPlaceholder"
+                      [(ngModel)]="category.businessUnit" name="selectBusinessUnit" id="bu" changes
+                      [changedValue]="category?.businessUnit" [changedType]="changedType"
+                      [changedField]="'businessUnit'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Business Unit'" [checkOnlyObjectId]="true">
+                      <nz-option nzCustomContent *ngFor="let data of businessUnits" [nzValue]="data"
+                        [nzLabel]="data?.name">
+                        <span class="ml-2 text-capitalize"> {{ data?.name}} </span>
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12" *ngIf="category?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="code">Code</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter Code">
+                    <input [placeholder]="categoryCodePlaceholder" class="uppercase" nz-input id="code" trim="blur" [disabled]="categoryId" type="text" required
+                      name="code" [(ngModel)]="category.code" changes [changedValue]="category?.code"
+                      [changedType]="changedType" [changedField]="'Code'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Code'" [trimValue]="true">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12" *ngIf="!category?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="suggestedUnit">Services</nz-form-label>
+                  <nz-form-control nzErrorTip="Select Service(s)">
+                    <nz-select nzMode="multiple" [nzPlaceHolder]="categoryServicesPlaceholder" nzShowSearch
+                      [(ngModel)]="category.services" name="services" id="suggestedUnit"
+                      [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate" changes
+                      [changedValue]="category?.services" [changedType]="changedType" [changedField]="'services'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [checkOnlyObjectId]="true"
+                      [changedFieldDisplayName]="'Services'">
+                      <nz-option nzCustomContent *ngFor="let service of serviceList" [nzValue]="service"
+                        [nzLabel]="service?.name">
+                        <span class="ml-2 text-capitalize"> {{ service?.name}} </span>
+                      </nz-option>
+                    </nz-select>
+                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+
+            <div nz-row nzGutter="30">
+              <div nz-col nzSpan="12" *ngIf="category?.id">
+                <nz-form-item>
+                  <nz-form-label nzFor="suggestedUnit">Services</nz-form-label>
+                  <nz-form-control nzErrorTip="Select Service(s)">
+                    <nz-select nzMode="multiple" [nzPlaceHolder]="categoryServicesPlaceholder" nzShowSearch
+                      [(ngModel)]="category.services" name="services" id="suggestedUnit"
+                      [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate" changes
+                      [changedValue]="category?.services" [changedType]="changedType" [changedField]="'services'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [checkOnlyObjectId]="true"
+                      [changedFieldDisplayName]="'Services'">
+                      <nz-option nzCustomContent *ngFor="let service of serviceList" [nzValue]="service"
+                        [nzLabel]="service?.name">
+                        <span class="ml-2 text-capitalize"> {{ service?.name}} </span>
+                      </nz-option>
+                    </nz-select>
+                    <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="12">
+                <div>
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="status">Status</nz-form-label>
+                    <nz-form-control nzErrorTip="Select a Status">
+                      <nz-select name="status" [nzDisabled]="!categoryId" [(ngModel)]="category.status"
+                        [nzPlaceHolder]="categoryStatusPlaceholder" changes [changedValue]="category?.status"
+                        [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'status'">
+                        <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+
+              </div>
+            </div>
+            <nz-form-item nz-row class="register-area mt-4 text-right">
+              <nz-form-control>
+                <a type="link" class=" link mr-4" [class.disabled]="imageLoading" (click)="onCancel()">Cancel</a>
+                <button nz-button
+                  [disabled]="createCategoryform.invalid || this.imageLoading || categoryNameValidationStatus === 'error' || categoryNameValidationStatus === 'validating'"
+                  class="mr-auto" type="submit" nzType="primary">{{categoryId ? 'Update' : 'Add'}}</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="8">
+            <div class="mt-4">
+              <div class="mt-4">
+                <app-file-upload [uploadText]="'Upload Category Image'" [imageUrl]="category?.imageUrl"
+                  (emitImageUrl)="setImageUrl($event)" (emitImageLoadingStatus)="handleImageLoading($event)">
+                </app-file-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </nz-spin>
+</section>

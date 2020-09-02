@@ -1,0 +1,149 @@
+<section class="user-profile-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="user-profile-spin-container" [nzSpinning]="isSpinning">
+    <section class="user-profile-form-container">
+      <form #usesrProfileForm="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form
+        [appMatchFields]="['officePhone', 'homePhone']" (ngSubmit)="onSubmit()">
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="16">
+            <section nz-row nzGutter="30">
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="firstName">
+                    First Name
+                  </nz-form-label>
+                  <nz-form-control nzErrorTip="Enter valid first name">
+                    <input [attr.data-cy]="'userProfileFirstName'" class="titlecase" [pattern]="nameRegex" nz-input
+                      type="text" required name="firstName" maxLength="20" placeholder="John"
+                      [(ngModel)]="user.firstName" trim="blur" changes [changedValue]="user?.firstName"
+                      [changedType]="changedType" [changedField]="'firstName'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'First Name'"
+                      [checkOnlyObjectId]="false" [trimValue]="true">
+                  </nz-form-control>
+                </nz-form-item>
+              </section>
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="lastName">
+                    Last Name
+                  </nz-form-label>
+                  <nz-form-control nzErrorTip="Enter valid last name">
+                    <input [attr.data-cy]="'userProfileLastName'" class="titlecase" [pattern]="nameRegex" nz-input
+                      type="text" required name="lastName" maxLength="20" placeholder="Doe" [(ngModel)]="user.lastName"
+                      trim="blur" changes [changedValue]="user?.lastName" [changedType]="changedType"
+                      [changedField]="'lastName'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Last Name'" [checkOnlyObjectId]="false" [trimValue]="true">
+                  </nz-form-control>
+                </nz-form-item>
+              </section>
+            </section>
+            <section nz-row nzGutter="30">
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="homePhone">
+                    Home Phone
+                  </nz-form-label>
+                  <nz-form-control [nzErrorTip]="homePhoneErrorTemplate">
+                    <input [attr.data-cy]="'userProfileHomePhone'" id="homePhone" #homePhone="ngModel" nz-input
+                      maxLength="14" type="text" required name="homePhone" placeholder="1234567890"
+                      [ngModel]="user.homePhone | phoneFormat" (ngModelChange)="user.homePhone=$event" trim="blur"
+                      [pattern]="phoneRegex" changes [changedValue]="user?.homePhone" [changedType]="changedType"
+                      [changedField]="'homePhone'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Home Phone'" [checkOnlyObjectId]="false" [trimValue]="true"
+                      [formatterType]="'phone'">
+                  </nz-form-control>
+                  <ng-template #homePhoneErrorTemplate>
+                    <ng-container *ngIf="homePhone.errors?.required || homePhone.errors?.pattern">
+                      Enter a valid Phone Number
+                    </ng-container>
+                    <ng-container *ngIf="homePhone.errors?.phoneMatch">
+                      Home phone cannot be same as office phone
+                    </ng-container>
+                  </ng-template>
+                </nz-form-item>
+              </section>
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="officePhone">
+                    Office Phone
+                  </nz-form-label>
+                  <nz-form-control nzErrorTip="Enter valid phone number">
+                    <input [attr.data-cy]="'userProfileOfficePhone'" nz-input [pattern]="phoneRegex" maxLength="14"
+                      type="text" required name="officePhone" placeholder="1234567890"
+                      [ngModel]="user.officePhone | phoneFormat" (ngModelChange)="user.officePhone=$event" trim="blur"
+                      changes [changedValue]="user?.officePhone" [changedType]="changedType"
+                      [changedField]="'officePhone'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                      [changedFieldDisplayName]="'Office Phone'" [checkOnlyObjectId]="false" [trimValue]="true"
+                      [formatterType]="'phone'">
+                  </nz-form-control>
+                </nz-form-item>
+              </section>
+            </section>
+            <section nz-row nzGutter="30">
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter a valid Email">
+                    <input [attr.data-cy]="'userProfileEmail'" nz-input type="text" required name="email" id="email"
+                      trim="blur" [ngModel]="user.email | lowercase" (ngModelChange)="user.email=$event"
+                      placeholder="johndoe@abc.com" [pattern]="emailRegex" changes [changedValue]="user?.email"
+                      [changedType]="changedType" [changedField]="'email'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Email'" [trimValue]="true" />
+                  </nz-form-control>
+                </nz-form-item>
+              </section>
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="role">Role</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Role">
+                    <nz-select [attr.data-cy]="'userProfileRole'" required name="role" id="role"
+                      [(ngModel)]="user.roles[0]" [nzDisabled]="user?.id" changes [changedValue]="user?.roles[0]"
+                      [changedType]="changedType" [changedField]="'roles'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Role'">
+                      <nz-option nzValue="admin" nzLabel="Admin"></nz-option>
+                      <nz-option nzValue="orgAdmin" nzLabel="Company Admin"></nz-option>
+                      <nz-option nzValue="technician" nzLabel="Technician"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </section>
+            </section>
+            <section nz-row nzGutter="30">
+              <section nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="role">Status</nz-form-label>
+                  <nz-form-control nzErrorTip="Select a Status">
+                    <nz-select [attr.data-cy]="'userProfileStatus'" required name="status" id="status"
+                      [(ngModel)]="user.status" [nzDisabled]="user?.id" changes [changedValue]="user?.status"
+                      [changedType]="changedType" [changedField]="'status'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                      <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </section>
+            </section>
+            <nz-form-item nz-row class="register-area mt-4 text-right">
+              <nz-form-control>
+                <a [attr.data-cy]="'form-cancel-link'" type="link" class=" link mr-4" (click)="onCancel()">Cancel</a>
+                <button [attr.data-cy]="'form-submit-button'" id="user-profile-update-button" nz-button
+                  [disabled]="usesrProfileForm.invalid || isImageLoading" class="mr-auto" type="submit"
+                  nzType="primary">Update</button>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="8">
+            <section class="file-upload-container">
+              <app-file-upload [uploadText]="fileUploadText" [imageUrl]="user?.imageUrl"
+                (emitImageLoadingStatus)="handleImageLoading($event)" (emitImageUrl)="setImageUrl($event)">
+              </app-file-upload>
+            </section>
+          </section>
+        </section>
+      </form>
+    </section>
+  </nz-spin>
+</section>

@@ -1,0 +1,18 @@
+<section class="view-payment-container">
+  <nz-spin class="payment-spin-container" [nzSpinning]="isSpinning">
+    <section class="payment-transaction-parent-container">
+      <div class="payment-transaction">
+        <app-payment-summary (emitRefreshData)="refreshData($event)" *ngIf="payment?.id" [payment]="payment">
+        </app-payment-summary>
+      </div>
+      <div class="payment">
+        <app-payment-detail (emitRefreshData)="refreshData($event)" *ngIf="payment?.id" [payment]="payment">
+        </app-payment-detail>
+      </div>
+      <div class="payment">
+        <app-payment-transaction (emitRefreshData)="refreshData($event)" *ngIf="payment?.id" [payment]="payment">
+        </app-payment-transaction>
+      </div>
+    </section>
+  </nz-spin>
+</section>

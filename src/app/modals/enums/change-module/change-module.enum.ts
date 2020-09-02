@@ -1,0 +1,20 @@
+export enum ChangeModule {
+  TAG = 'Tag',
+  BUSINESS_UNIT = 'Business Unit',
+  JOB_TYPE = 'Job Type',
+  TIMESHEET_CODE = 'Timesheet Code',
+  TECHNICIAN = 'Technician',
+  EMPLOYEE = 'Employee',
+  USER = 'User',
+  CATEGORY = 'Category',
+  SERVICE = 'Service',
+  JOB = 'Job',
+  PROJECT = 'Project',
+  CUSTOMER = 'Customer',
+  COMPANY_PROFILE = 'Company Profile',
+  ADDRESS = 'Address',
+  VENDOR = 'Vendor',
+  COMPANY = 'Company',
+  DISPATCH_BOARD_EVENT = 'Dispatch Board Event',
+}
+

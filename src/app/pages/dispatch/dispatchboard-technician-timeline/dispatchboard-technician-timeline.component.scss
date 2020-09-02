@@ -1,0 +1,59 @@
+.dispatch-calendar-header {
+    nz-form-item {
+        &.ant-form-item {
+            .ant-form-item-label {
+            line-height: 1;
+
+            label {
+                margin-bottom: 0;
+            }
+            }
+
+            margin-bottom: 0px;
+        }
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.event-info-dialog {
+    width: 500px;
+    padding: 20px;
+
+    span {
+        color: #000000;
+        font-size: 16px;
+        padding: 15px;
+    }
+}
+
+.event-add-dialog {
+    width: 600px;
+
+    .register-area {
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+    }
+
+    .ant-form-item {
+
+        .ant-form-item-label {
+            line-height: 1;
+
+            label {
+                margin-bottom: 0;
+            }
+
+        }
+
+        .ant-form-item-control-wrapper {
+
+            textarea {
+                width: 100%;
+                padding: 5px;
+            }
+        }
+    }
+}

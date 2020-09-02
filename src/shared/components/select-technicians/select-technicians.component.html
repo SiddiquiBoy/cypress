@@ -1,0 +1,35 @@
+<section class="edit-technician-popup-container">
+    <nz-select
+        [nzMaxTagCount]="selectMaxCount"
+        [nzMaxTagPlaceholder]="tagPlaceHolder"
+        nzMode="multiple"
+        [nzPlaceHolder]="placeholder"
+        [(ngModel)]="selectedTechnicians"
+        (ngModelChange)="technicianUpdated()">
+        <nz-option *ngFor="let technician of technicians" [nzLabel]="technician.fullName | titlecase" [nzValue]="technician"></nz-option>
+    </nz-select>
+    <ng-template #tagPlaceHolder let-selectedList> + {{ selectedList.length }} more </ng-template>
+
+    <!-- Technician List -->
+    <nz-list [nzDataSource]="selectedTechnicians" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+        <ng-template #item let-item>
+            <nz-list-item [nzActions]="[editAction]">
+                <ng-template #editAction>
+                    <!-- <a></a> -->
+                </ng-template>
+                <nz-list-item-meta
+                    [nzTitle]="item?.fullName"
+                    [nzAvatar]="item?.imageUrl || './assets/images/avatar-new.png'"
+                    [nzDescription]="technicianinfo">
+                </nz-list-item-meta>
+                <ng-template #technicianinfo>
+                    <span class="flex-center">
+                        <i class="mr-2" nz-icon nzType="phone" nzTheme="outline"></i>{{item?.officePhone || '-' | phoneFormat}}
+                        <span class="mr-2 ml-2">{{ '|' }}</span>
+                        <i class="mr-2" nz-icon nzType="mail" nzTheme="outline"></i>{{item?.email || '-'}}
+                    </span>
+                </ng-template>
+            </nz-list-item>
+        </ng-template>
+    </nz-list>
+</section>

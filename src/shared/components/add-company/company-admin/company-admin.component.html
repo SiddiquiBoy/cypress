@@ -1,0 +1,129 @@
+<section class="company-admin-component-container">
+  <ng-container *ngFor="let employee of company.employees; let i = index">
+    <section nz-row nzGutter="30">
+      <section nz-col nzSpan="24">
+        <section nz-row nzGutter="30">
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="firstname">First Name</nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid first name">
+                <input [attr.data-cy]="'companyEmployeeFirstName'" class="text-capitalize" nz-input type="text" required
+                  name="firstName_{{i}}" id="firstname" trim="blur" [(ngModel)]="employee.firstName"
+                  [placeholder]="companyAdminFirstNamePlaceholder" [pattern]="nameRegex" changes
+                  [changedValue]="employee?.firstName" [changedType]="changedType"
+                  [changedField]="'employees/0.firstName'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'First Name'" [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="lastName">Last Name</nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid last name">
+                <input [attr.data-cy]="'companyEmployeeLastName'" class="text-capitalize" nz-input type="text" required
+                  name="lastName_{{i}}" id="lastName" trim="blur" [(ngModel)]="employee.lastName"
+                  [placeholder]="companyAdminLastNamePlaceholder" [pattern]="nameRegex" changes
+                  [changedValue]="employee?.lastName" [changedType]="changedType"
+                  [changedField]="'employees/0.lastName'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'Last Name'" [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+
+        <section nz-row nzGutter="30">
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>Office Phone</nz-form-label>
+              <nz-form-control [nzErrorTip]="officePhoneErrorTemplate">
+                <input [attr.data-cy]="'companyEmployeeOfficePhone'" nz-input type="text" required
+                  name="officePhone" id="officephone" [ngModel]="employee.officePhone | phoneFormat"
+                  (ngModelChange)="employee.officePhone=$event" maxlength="14"
+                  [placeholder]="companyAdminOfficePhonePlaceholder" [pattern]="phoneRegex" #officePhone="ngModel"
+                  changes [changedValue]="employee?.officePhone" [changedType]="changedType"
+                  [changedField]="'employees/0.officePhone'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Office Phone'" [trimValue]="true" />
+              </nz-form-control>
+              <ng-template #officePhoneErrorTemplate>
+                <ng-container *ngIf="officePhone.errors?.required || officePhone.errors?.pattern">Enter a valid phone
+                  number</ng-container>
+              </ng-template>
+            </nz-form-item>
+          </section>
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label>Home Phone</nz-form-label>
+              <nz-form-control [nzErrorTip]="homePhoneErrorTemplate">
+                <input [attr.data-cy]="'companyEmployeeHomePhone'" nz-input type="text" name="homePhone"
+                  id="homephone" [ngModel]="employee.homePhone | phoneFormat"
+                  (ngModelChange)="employee.homePhone=$event" maxlength="14"
+                  [placeholder]="companyAdminHomePhonePlaceholder" [pattern]="phoneRegex" #homePhone="ngModel" changes
+                  [changedValue]="employee?.homePhone" [changedType]="changedType"
+                  [changedField]="'employees/0.homePhone'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'Home Phone'" [trimValue]="true" />
+              </nz-form-control>
+              <ng-template #homePhoneErrorTemplate>
+                <ng-container *ngIf="homePhone.errors?.required || homePhone.errors?.pattern">
+                  Enter a valid phone number
+                </ng-container>
+                <ng-container *ngIf="homePhone.errors?.phoneMatch">
+                  Home phone cannot be same as office phone
+                </ng-container>
+              </ng-template>
+            </nz-form-item>
+          </section>
+        </section>
+
+        <section nz-row nzGutter="30">
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid email">
+                <input [attr.data-cy]="'companyEmployeeEmail'" nz-input type="text" required name="email_{{i}}"
+                  id="email" trim="blur" [ngModel]="employee.email | lowercase" (ngModelChange)="employee.email=$event"
+                  [placeholder]="companyAdminEmailPlaceholder" [pattern]="emailRegex" changes
+                  [changedValue]="employee?.email" [changedType]="changedType" [changedField]="'employees/0.email'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Email'"
+                  [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="role">Role</nz-form-label>
+              <nz-form-control nzErrorTip="Select a role">
+                <nz-select [nzPlaceHolder]="companyAdminRolelaceholder" [attr.data-cy]="'companyEmployeeRole'" required
+                  name="role_{{i}}" id="role" [(ngModel)]="employee.roles[0]" [nzDisabled]="true" changes
+                  [changedValue]="employee?.roles" [changedType]="changedType" [changedField]="'employees/0.roles/0'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Role'">
+                  <nz-option nzValue="orgAdmin" nzLabel="Company Admin"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+
+        <section nz-row nzGutter="30">
+          <section nz-col nzSpan="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="status">Status</nz-form-label>
+              <nz-form-control nzErrorTip="Select a status">
+                <nz-select [attr.data-cy]="'companyEmployeeStatus'" name="companyEmployeeStatus_{{i}}"
+                  [nzDisabled]="!employee?.id" [(ngModel)]="employee.status"
+                  [nzPlaceHolder]="companyAdminStatusPlaceholder" changes [changedValue]="employee?.status"
+                  [changedType]="changedType" [changedField]="'employees/0.status'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'">
+                  <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+      </section>
+    </section>
+    <section nz-row nzGutter="30" *ngIf="i !== company?.employees?.length - 1">
+      <hr>
+    </section>
+  </ng-container>
+</section>

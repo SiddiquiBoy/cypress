@@ -1,0 +1,258 @@
+/* You can add global styles to this file, and also import other style files */
+
+// @import "~ng-zorro-antd/style/index.min.css"; /* Import basic styles */
+// @import "~ng-zorro-antd/button/style/index.min.css"; /* Import styles of the component */
+
+@import '../node_modules/ng-zorro-antd/ng-zorro-antd.min.css';
+@import 'styles/style';
+@import '../node_modules/angular-calendar/css/angular-calendar.css';
+
+/*=============================================
+=            notification            =
+=============================================*/
+
+.notification-background-success {
+  padding: 5px;
+  background-color: #0a800038;
+  font-weight: 450;
+  color: black;
+}
+
+.notification-background-error {
+  padding: 5px;
+  background-color: #ff000073;
+  font-weight: 450;
+  color: black;
+}
+
+.notification-background-info {
+  padding: 5px;
+  background-color: #009aff29;
+  font-weight: 450;
+  color: black;
+}
+
+.notification-background-warn {
+  padding: 5px;
+  background-color: #ffa5005e;
+  font-weight: 450;
+  color: black;
+}
+
+/*=====  End of notification  ======*/
+
+/*=============================================
+=            message box            =
+=============================================*/
+
+.cdk-overlay-pane {
+  .ant-message-notice-content {
+    .ant-message-custom-content {
+      i {
+        top: -2px;
+      }
+    }
+  }
+}
+
+/*=====  End of message box  ======*/
+
+/*=============================================
+=            pointer            =
+=============================================*/
+
+.pointer {
+  cursor: pointer;
+}
+
+/*=====  End of pointer  ======*/
+
+/*=============================================
+=            scrollbar            =
+=============================================*/
+
+/* Track */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #8595a7;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #11426d;
+}
+
+/*=====  End of scrollbar  ======*/
+
+/*=============================================
+=            margin classes            =
+=============================================*/
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+/*=====  End of margin classes  ======*/
+
+/*=============================================
+=            flex-related classes            =
+=============================================*/
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+/*=====  End of flex-related classes  ======*/
+
+/*=============================================
+=            text view related classes            =
+=============================================*/
+
+.titlecase {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+/*=====  End of text view related classes  ======*/
+
+input,
+.ant-select,
+textarea {
+  font-weight: 600;
+}
+
+.ant-descriptions-item-colon::after,
+.ant-form-item-label > label::after {
+  content: none;
+}
+
+/*=============================================
+=            display related classes            =
+=============================================*/
+
+.display-none {
+  display: none;
+}
+
+/*=====  End of display related classes  ======*/
+
+/*=============================================
+=            form button margin related classes            =
+=============================================*/
+
+.form-button-margin-right {
+  margin-right: 24px;
+}
+
+/*=====  End of form button margin related classes  ======*/
+
+/*=============================================
+=            date picker related classes            =
+=============================================*/
+
+nz-date-picker {
+  &.ant-calendar-picker {
+    width: 100%;
+
+    nz-picker {
+      width: 100%;
+
+      .ant-calendar-picker {
+        width: 100% !important;
+
+        .ant-calendar-picker-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+/*=====  End of date picker related classes  ======*/
+
+/*=============================================
+=            time picker related classes            =
+=============================================*/
+
+nz-time-picker {
+  // &.ant-calendar-picker {
+  //   width: 100%;
+
+  //   nz-picker {
+  //     width: 100%;
+
+  //     .ant-calendar-picker {
+  //       width: 100% !important;
+
+  //       .ant-calendar-picker-icon {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  //       }
+  //     }
+  //   }
+  // }
+  &.ant-time-picker {
+    width: 100%;
+
+    .ant-time-picker-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+/*=====  End of time picker related classes  ======*/
+
+/*=============================================
+=            padding and margin classes            =
+=============================================*/
+
+.padding-0 {
+  padding: 0 !important;
+}
+
+.margin-0 {
+  margin: 0 !important;
+}
+
+/*=====  End of padding and margin classes  ======*/
+
+/*=============================================
+=            nz select related classes            =
+=============================================*/
+
+nz-select {
+  &.show-placeholder {
+    .ant-select-selection {
+      .ant-select-selection__rendered {
+        .ant-select-selection__placeholder {
+          display: block !important;
+        }
+        ul {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+/*=====  End of nz select related classes  ======*/

@@ -1,0 +1,37 @@
+<section class="vender-component-container">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <nz-spin class="project-spin-container" [nzSpinning]="isSpinning">
+      <section class="table-container">
+        <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="payments"  [showSearchBox]="false"
+          [showColShowHide]="false" [showRangeDateFilter]="true" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+          [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+          (selectedRows)="onRowsSelectionChange($event)" [tableConfig]="tableConfig"
+          [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+          (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)"
+          (eEmitSearchInput)="onSearchInput($event)" (eEmitRangeDateFilter)="onFilterRangeDate($event)">
+        </app-general-table>
+      </section>
+    </nz-spin>
+  </section>
+
+  <ng-template #custom let-data="data" let-key="key">
+    <span *ngIf="key.columnMap === 'month'">
+      {{data[key?.columnMap] | monthFormat }}
+    </span>
+    <ng-container *permission="viewButtonPermission">
+      <span *ngIf="key.columnMap === 'action'">
+        <a>
+          <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline"
+            (click)="onRowViewClick(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+    <span *ngIf="key.columnMap == 'status'">
+      <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'paid'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+      </nz-tag>
+      <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'due'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+      </nz-tag>
+    </span>
+</ng-template>

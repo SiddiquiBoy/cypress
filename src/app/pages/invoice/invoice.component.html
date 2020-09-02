@@ -1,0 +1,25 @@
+<section class="invoice-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="invoice-spin-container" [nzSpinning]="isSpinning">
+    <section class="table-container">
+      <app-general-table [tableData]="invoices" [showSearchBox]="false" [showColShowHide]="false"
+        [showRangeDateFilter]="true" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+        [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+        [tableConfig]="tableConfig" [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (sortObj)="onSortChange($event)" (eEmitSelectedFilters)="onFilter($event)"
+        (eEmitSearchInput)="onSearchInput($event)" (eEmitRangeDateFilter)="onFilterRangeDate($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.columnMap == 'status'">
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'paid'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'due'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+  </span>
+</ng-template>

@@ -1,0 +1,117 @@
+<section class="payment-summary-container">
+  <nz-spin class="payment-summary-spin-container" [nzSpinning]="isSpinning">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="24">
+        <section class="payment-summary-detail-block">
+          <!-- (nzBack)="onBack()" -->
+          <nz-page-header nzBackIcon>
+            <nz-page-header-title>
+              Payment Details
+            </nz-page-header-title>
+            <!-- <nz-page-header-tags>
+              <nz-tag [nzColor]="(project?.status === 'active') ? 'green' : 'red'">
+                {{project?.status | uppercase}}
+              </nz-tag>
+              <i nz-tooltip nzTooltipTitle="Edit" class="pointer ml-3" (click)="editDetails()" nz-icon nzType="edit"
+                nzTheme="outline">
+              </i>
+            </nz-page-header-tags> -->
+            {{ payment}}
+            <nz-page-header-content>
+
+              <nz-row nzType="flex">
+                <nz-statistic [nzTitle]="year" [nzValue]="payment?.year">
+                  <ng-template #year><i nz-icon nzType="calendar"></i><span class="statistic-title-span">
+                      YEAR</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="month" [nzValue]="payment?.month | monthFormat">
+                  <ng-template #month><i nz-icon nzType="calendar"></i><span class="statistic-title-span">
+                      MONTH</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="amount" [nzValue]="payment?.amount">
+                  <ng-template #amount><i nz-icon nzType="dollar"></i><span class="statistic-title-span">
+                      AMOUNT</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="status" [nzValue]="payment?.status | titlecase">
+                  <ng-template #status><i nz-icon nzType="book"></i><span class="statistic-title-span">
+                      STATUS</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="orgAdminCharge" [nzValue]="payment?.orgAdminCharge">
+                  <ng-template #orgAdminCharge><i nz-icon nzType="dollar"></i><span class="statistic-title-span">
+                      Org Admin Charge/Month</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="technicianCharge" [nzValue]="payment?.technicianCharge">
+                  <ng-template #technicianCharge><i nz-icon nzType="dollar"></i><span class="statistic-title-span">
+                      Technician Charge/Month</span></ng-template>
+                </nz-statistic>
+                <!-- <nz-statistic [nzValueTemplate]="createdAtTemplate" [nzTitle]="createdDate">
+                  <ng-template  #createdDate>
+                    <i nz-icon nzType="calendar" nzTheme="outline"></i>
+                    <span class="statistic-title-span">CREATED DATE</span>
+                  </ng-template>
+                  <ng-template #createdAtTemplate>
+                    {{project?.createdAt | date : defaultDateFormat }}
+                  </ng-template>
+                </nz-statistic> -->
+
+                <!-- <ng-container
+                  *ngTemplateOutlet="viewDetailTemplate;
+                  context: {'data': {title: 'CODE', body: project?.code , displayFormat: 'uppercase', icon: 'barcode'}}">
+                </ng-container>
+
+                <ng-container
+                  *ngTemplateOutlet="viewDetailTemplate;
+                  context: {'data': {title: 'NAME', body: project?.name , displayFormat: 'titlecase', icon: 'project'}}">
+                </ng-container>
+
+                <ng-container
+                  *ngTemplateOutlet="viewDetailTemplate;
+                  context: {'data': {title: 'CUSTOMER', body: project?.customer?.fullName , displayFormat: 'titlecase', icon: 'user'}}">
+                </ng-container>
+
+                <ng-container
+                  *ngTemplateOutlet="viewDetailTemplate;
+                  context: {'data': {title: 'STATUS', body: project?.status , displayFormat: 'titlecase', icon: 'bell'}}">
+                </ng-container> -->
+              </nz-row>
+            </nz-page-header-content>
+          </nz-page-header>
+        </section>
+      </section>
+    </section>
+  </nz-spin>
+</section>
+
+<!-- <ng-template #viewDetailTemplate let-data="data">
+  <nz-statistic [nzTitle]="titleTemplate" [nzValueTemplate]="valueTemplate">
+    <ng-template #titleTemplate>
+      <i nz-icon nzType="{{data.icon}}"></i><span class="statistic-title-span">{{data.title}}</span>
+    </ng-template>
+    <ng-template #valueTemplate>
+      <span *ngIf="!data.displayFormat">{{data.body || '-'}}</span>
+      <span *ngIf="data.displayFormat === 'titlecase'">{{data.body || '-' | titlecase}}</span>
+      <span *ngIf="data.displayFormat === 'uppercase'">{{data.body || '-' | uppercase}}</span>
+    </ng-template>
+  </nz-statistic>
+</ng-template> -->
+
+<!-- <app-app-dialog [withFooter]="false" [isVisible]="showDetailsDialog" [okText]="'Ok'" [cancelText]="'Close'"
+  [title]="'Edit Project Detail'" [hideDialogOnAction]="true">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="edit-project-section" *ngIf="showDetailsDialog">
+      <form nz-form #projectDetailsForm="ngForm" [autocomplete]="'off'" [nzLayout]="'vertical'">
+        <div class="project-details-summary">
+          <app-project-detail [redirectUpdate]="false" [project]="projectCopy" [changedType]="changedType"
+            [customers]="customers">
+          </app-project-detail>
+          <div class="text-right">
+            <a class="link mr-4" (click)="onCancelClick()" type="link">Cancel</a>
+            <button (click)="updateProject()" [disabled]="!projectDetailsForm.valid" nz-button nzType="primary">
+              Update
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </nz-spin>
+</app-app-dialog> -->

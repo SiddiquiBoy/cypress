@@ -1,0 +1,26 @@
+.customer-projects-component-container {
+  .project-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .add-button-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.7rem;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

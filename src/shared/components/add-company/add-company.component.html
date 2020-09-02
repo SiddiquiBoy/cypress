@@ -1,0 +1,54 @@
+<section class="add-company-component-container">
+  <nz-spin class="add-company-spin-container" [nzSpinning]="isSpinning">
+    <section class="page-header-container">
+      <app-page-header></app-page-header>
+    </section>
+    <section class="add-company-form-container">
+      <form #addCompanyForm="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form
+        [appMatchFields]="['officePhone', 'homePhone']">
+        <section class="steps-container">
+          <nz-steps class="steps-element-container" [nzType]="'navigation'" [nzCurrent]="activeIndex" [nzSize]="'small'"
+            (nzIndexChange)="isImageLoading ? null : onIndexChange($event)">
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(0)" nzTitle="Details"></nz-step>
+            <nz-step [nzDisabled]="false" [nzStatus]="getTabStatus(1)" nzTitle="Admin"></nz-step>
+          </nz-steps>
+        </section>
+        <section class="step-content-container">
+          <ng-container *ngIf="activeIndex === 0">
+            <app-company-detail [changedType]="changedType" [company]="company"></app-company-detail>
+          </ng-container>
+          <ng-container *ngIf="activeIndex === 1">
+            <app-company-admin *ngIf="company" [changedType]="changedType" [company]="company"
+              (eEmitIsAdminTabValid)="isAdminTabValid()"></app-company-admin>
+          </ng-container>
+        </section>
+        <section class="form-button-container-row" nz-row nzGutter="30">
+          <section class="form-button-container-col" nz-col [nzSpan]="16">
+            <nz-form-item>
+              <nz-form-control>
+                <section class="button-container">
+                  <a [attr.data-cy]="'addCompanyFormCancelLink'" type="link" class=" link mr-4"
+                    (click)="onCancel()">Cancel</a>
+                  {{isCurrentTabValid()}}{{isCurrentTabPristine()}}
+                  <button [attr.data-cy]="'addCompanyFormPreviousButton'" class="mr-4" *ngIf="activeIndex === 1"
+                    nz-button [disabled]="isImageLoading" (click)="onPrevClick()" nzType="primary">Previous</button>
+                  <button [attr.data-cy]="'addCompanyFormNextButton'" class="mr-auto" *ngIf="activeIndex === 0"
+                    nz-button [disabled]="isImageLoading" (click)="onNextClick()" nzType="primary">Next</button>
+                  <button [attr.data-cy]="'addCompanyFormSubmitButton'" *ngIf="activeIndex === 1" nz-button
+                    [disabled]="!isFormValid || isImageLoading" class="mr-auto" (click)="onSubmit()"
+                    nzType="primary">{{company?.id ? 'Update' : 'Add'}}</button>
+                </section>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+      </form>
+    </section>
+
+    <app-app-dialog [isVisible]="showConfirmDialog" [okText]="'Yes'" [cancelText]="'No'" [title]="'Confirmation Dialog'"
+      (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()">
+      {{confirmDialogMessage}}
+    </app-app-dialog>
+
+  </nz-spin>
+</section>

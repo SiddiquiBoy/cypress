@@ -1,0 +1,25 @@
+.spinner-component-container {
+  /* width and height are set so that the spinner covers the inner content section completely */
+
+  background: #f8f8ff8c;
+
+  // calculated based on the inner-content class padding, width and height
+  // width: calc(100% - 159px);
+  // height: calc(100% - 143px);
+
+  // width: calc(100% - 129px);
+  // height: calc(100% - 113px);
+  // margin: -15px 0 0 -15px;
+  // top: 89px;
+  // left: 105px;
+
+  width: calc(100% - 65px);
+  height: calc(100% - 50px);
+  top: 50px;
+  left: 65px;
+
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

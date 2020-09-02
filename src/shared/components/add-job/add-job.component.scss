@@ -1,0 +1,46 @@
+.add-job-component-container {
+  width: 100%;
+  height: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  .page-header-container {
+    margin-bottom: 20px;
+  }
+
+  nz-select {
+    ul {
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+
+  nz-form-item {
+    &.ant-form-item {
+      .ant-form-item-label {
+        line-height: 1;
+
+        label {
+          margin-bottom: 0;
+        }
+      }
+
+      margin-bottom: 12px;
+    }
+
+    label {
+      margin-bottom: 0;
+    }
+  }
+
+  .file-upload-container {
+    margin-top: 1.3rem;
+  }
+}

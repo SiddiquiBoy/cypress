@@ -1,0 +1,11 @@
+<div class="followups-layout-container">
+    <section class="sidebar-section">
+      <app-sidebar-navigation-menu *ngIf="sidebarMenuItems?.length" [menuItemsGroup]="sidebarMenuItems"
+        [sidebarMenuWidth]="sidebarMenuWidth" [sidebarHeading]="'Follow Ups'">
+      </app-sidebar-navigation-menu>
+    </section>
+    <section class="main-section">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+  

@@ -1,0 +1,180 @@
+<div class="general-table-container tableheadgrey">
+
+
+
+  <!-- table specific features start -->
+
+  <section class="table-action-list"
+    *ngIf="showSearchBox || tableActionButtons?.length || showColShowHide || showDateFilter || showRangeDateFilter">
+    <section class="search-bar-container" *ngIf="showSearchBox">
+      <app-searchbar [searchPlaceholder]="searchPlaceholder" (searchValue)="onSearchInput($event)"></app-searchbar>
+    </section>
+    <section class="date-filter-container" *ngIf="showDateFilter">
+      <nz-date-picker [nzFormat]="dateFormat" name="dateFilter" [(ngModel)]="selectedDate" [nzAllowClear]="true"
+        [nzPlaceHolder]="dateFilterPlaceholder" (ngModelChange)="onDateFilterChange()">
+      </nz-date-picker>
+    </section>
+    <section class="date-range-filter-container" *ngIf="showRangeDateFilter">
+      <nz-range-picker [(ngModel)]="dateRange" (ngModelChange)="onRangeDateFilterChange($event)"></nz-range-picker>
+    </section>
+    <section class="buttons-container" *ngIf="tableActionButtons?.length || showColShowHide">
+      <ng-container *ngIf="tableActionButtons?.length">
+        <ng-container *ngFor="let actionButton of tableActionButtons">
+          <ng-container [ngSwitch]="actionButton?.type">
+            <ng-container *ngSwitchCase="'single'">
+              <ng-container *ngTemplateOutlet="singleButtonTemplate; context: {'button': actionButton}">
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="'multiple'">
+              <ng-container *ngTemplateOutlet="multipleButtonTemplate; context: {'button': actionButton}">
+              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <ng-container *ngTemplateOutlet="singleButtonTemplate; context: {'button': actionButton}">
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="showColShowHide">
+        <section class="col-show-hide-container">
+          <nz-select class="show-placeholder" id="showHideSelect" name="showHideCol" [(ngModel)]="selectedCols"
+            (ngModelChange)="onSelectedColsChange()" nzMode="multiple" [nzCustomTemplate]="customColShowHideTemplate"
+            [nzDropdownClassName]="'custom-show-hide-dropdown'" [nzMaxTagCount]="maxShowHideColSelections"
+            [nzPlaceHolder]="selectedCols?.length ? selectedCols?.length + ' col(s) selected' : 'Select cols to show'">
+            <nz-option *ngFor="let col of showHideCols" [nzLabel]="col.name" [nzValue]="col">
+            </nz-option>
+          </nz-select>
+          <ng-template #customColShowHideTemplate let-selected>
+            <span>
+              {{selected.nzLabel}}
+            </span>
+          </ng-template>
+        </section>
+      </ng-container>
+    </section>
+  </section>
+
+  <!-- table specific features end -->
+
+
+  <nz-table #generalTable [nzScroll]="{ x: scrollWidth }" [nzFrontPagination]="tableConfig?.frontEnd"
+    [nzData]="listofDisplayData" [(nzPageSize)]="paginationData.size" [nzTitle]="tableTitle" [nzSize]="tableSize"
+    [nzTotal]="totalRecords" [nzShowSizeChanger]="tableConfig?.showPagination"
+    [nzPageSizeOptions]="tableConfig?.pageSizeOptions" [nzShowPagination]="tableConfig?.showPagination"
+    [(nzPageIndex)]="paginationData.page" (nzPageIndexChange)="pageIndexChanged($event)"
+    (nzPageSizeChange)="pageSizeChanged($event)">
+    <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <tr>
+
+        <!-- Additional column for Checkboxes START-->
+        <th *ngIf="tableConfig?.showCheckboxes" [nzShowCheckbox]="tableConfig?.showCheckboxes"
+          [(nzChecked)]="isAllRecordsChecked" (nzCheckedChange)="checkAll($event)" [nzIndeterminate]="isIndeterminate"
+          [nzWidth]="'50px'">
+        </th>
+        <!-- Additional column for Checkboxes END-->
+
+
+        <!-- row expansion -->
+
+        <th *ngIf="tableConfig?.expandableRows" nzShowExpand> </th>
+
+        <!-- End of row expansion -->
+
+
+
+        <!-- Additional column for Serial Numbers START-->
+        <th *ngIf="tableConfig?.showSerialNumbers" [nzWidth]="'50px'">
+          S.No
+        </th>
+        <!-- Additional column for Serial Numbers END-->
+
+        <th [nzShowSort]="head.showSort" [nzSortKey]="head.columnMap" [nzShowFilter]="head.showFilter"
+          [nzFilters]="(head.listOfFilters) ? (head.listOfFilters) : []"
+          (nzFilterChange)="filter($event, head.columnMap, head.filter)" *ngFor="let head of colsToDisplay"
+          [nzWidth]="head.width">
+          {{head.name | formatString}}
+        </th>
+        <th *ngIf="tableConfig?.showEditButton" [nzWidth]="'50px'"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- *ngFor="let data of generalTable.data; let i = index;" -->
+      <ng-template ngFor let-data let-i=index [ngForOf]="generalTable.data">
+        <tr>
+          <!-- Additional column for Checkboxes START-->
+          <td *ngIf="tableConfig?.showCheckboxes" [nzShowCheckbox]="tableConfig?.showCheckboxes"
+            [(nzChecked)]="selectedRowIds[data.id]" (nzCheckedChange)="handleCheckboxClick(data)">
+          </td>
+          <!-- Additional column for Checkboxes END-->
+
+
+          <!-- row expansion-->
+
+          <td *ngIf="tableConfig?.expandableRows" nzShowExpand [nzExpand]="getValueFromIndexMap(i)"
+            (nzExpandChange)="onRowExpansionChange($event, i)"></td>
+
+          <!-- End of row expansion-->
+
+
+
+          <!-- Additional column for Serial Numbers START-->
+          <td *ngIf="tableConfig?.showSerialNumbers">
+            {{ ((paginationData.page - 1) * paginationData.size) + (generalTable.data.indexOf(data) + 1) }}
+          </td>
+          <!-- Additional column for Serial Numbers END-->
+
+
+          <td *ngFor="let key of colsToDisplay">
+            <span *ngIf="key.type == 'text'">{{ data[key.columnMap] || '-' }}</span>
+
+            <span *ngIf="key.type != 'text'">
+              <ng-container *ngTemplateOutlet="currentTemplate;context:{data: data, key: key}">
+              </ng-container>
+            </span>
+          </td>
+
+          <td *ngIf="tableConfig?.showEditButton">
+            <a>
+              <i nz-icon nzType="edit" nzTheme="outline" (click)="edit(data)"></i>
+            </a>
+          </td>
+        </tr>
+
+        <tr *ngIf="tableConfig?.expandableRows" [nzExpand]="getValueFromIndexMap(i)"
+          (nzExpandChange)="onRowExpansionChange($event, i)">
+          <td></td>
+          <td colspan="100%">
+            <ng-container *ngTemplateOutlet="rowExpandableTemplate;context:{data: data}">
+            </ng-container>
+          </td>
+        </tr>
+
+      </ng-template>
+    </tbody>
+  </nz-table>
+</div>
+
+<ng-template #singleButtonTemplate let-button="button">
+  <button [attr.data-cy]="'single-table-action-button'" (click)="button?.onClick()" class="ml-10" nz-button
+    [nzType]="button?.nzType" [nzGhost]="button?.nzGhost">
+    {{button?.label}}
+    <i [attr.data-cy]="'single-table-action-button-icon'" *ngIf="button?.icon" nz-icon [nzType]="button?.icon"></i>
+  </button>
+</ng-template>
+
+<ng-template #multipleButtonTemplate let-button="button">
+  <button [attr.data-cy]="'multiple-table-action-button'" class="flex-center" nz-dropdown [nzDropdownMenu]="menu"
+    nz-button [nzType]="button?.nzType" [nzGhost]="button?.nzGhost">
+    {{button?.label}}
+    <i [attr.data-cy]="'multiple-table-action-button-icon'" *ngIf="button?.icon" nz-icon [nzType]="button?.icon"></i>
+  </button>
+
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item [nzDisabled]="item?.disabled" *ngFor="let item of button?.menu">
+        <a (click)="button.onChildClick(item)">{{item?.label}}</a>
+      </li>
+    </ul>
+  </nz-dropdown-menu>
+</ng-template>

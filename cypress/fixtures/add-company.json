@@ -1,0 +1,21 @@
+{
+  "name": "Strosin Inc",
+  "contact": "432-338-5596",
+  "addresses": [
+    {
+      "country": "United States",
+      "state": "Alabama",
+      "city": "Wymanland",
+      "street": "Kraig Shoals",
+      "postalCode": "52747-2487"
+    }
+  ],
+  "employees": [
+    {
+      "firstName": "Earlene",
+      "lastName": "Metz",
+      "officePhone": "052-165-5058",
+      "email": "Lenore_Bosco29@yahoo.com"
+    }
+  ]
+}

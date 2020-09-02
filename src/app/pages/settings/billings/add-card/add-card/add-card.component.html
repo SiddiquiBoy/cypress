@@ -1,0 +1,24 @@
+
+<nz-spin class="card-spin-container" [nzSpinning]="isSpinning">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <form novalidate (ngSubmit)="createToken()" [formGroup]="stripeTest">
+    <div class="card-form">
+      <div>
+        <nz-form-item>
+          <!-- <nz-form-label nzRequired nzFor="name">Name</nz-form-label> -->
+          <nz-form-control>
+            <input nz-input  [attr.data-cy]="'userName'" required class="text-capitalize" type="text" formControlName="name" placeholder="Name *">
+          </nz-form-control>
+        </nz-form-item>
+        <div class="clearfix">
+          <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
+        </div>
+      </div>
+    </div>
+    <button [attr.data-cy]="'saveCard'" nz-button nzType="primary" type="submit" [disabled]="!stripeTest.valid">
+      <span>Add</span>
+    </button>
+  </form>
+</nz-spin>

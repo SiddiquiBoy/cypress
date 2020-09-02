@@ -1,0 +1,10 @@
+<div class="pricebook-layout-container">
+  <section class="sidebar-section">
+    <app-sidebar-navigation-menu *ngIf="sidebarMenuItems?.length" [menuItemsGroup]="sidebarMenuItems"
+      [sidebarMenuWidth]="sidebarMenuWidth" [sidebarHeading]="'Price Book'">
+    </app-sidebar-navigation-menu>
+  </section>
+  <section class="main-section">
+    <router-outlet></router-outlet>
+  </section>
+</div>

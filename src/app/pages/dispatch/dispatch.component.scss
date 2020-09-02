@@ -1,0 +1,16 @@
+.schedule-container {
+    padding-left: 30px;
+    padding-right: 30px;
+    width: 100%;
+    height: 100%;
+
+    .page-header-container {
+        margin-bottom: 20px;
+    }
+
+    .schedule-spin-container {
+        .dispatch-calendar-container {
+            min-height: 800px;
+        }
+    }
+}

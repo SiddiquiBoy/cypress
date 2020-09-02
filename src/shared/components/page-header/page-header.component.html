@@ -1,0 +1,18 @@
+<section class="page-header-component-container">
+  <section class="title-content-container">
+    <section *ngIf="showBack" class="back-button-container">
+      <i class="pointer" nz-icon [nzType]="backIcon" nzTheme="outline" (click)="goBack()"></i>
+    </section>
+    <section *ngIf="showTitle" class="title-container">
+      {{pageTitle}}
+    </section>
+    <section *ngIf="showSubTitle && subTitle?.length" class="sub-title-container">
+      {{subTitle}}
+    </section>
+  </section>
+  <section class="description-content-container" [ngClass]="{'extra-padding': showBack}">
+    <section *ngIf="showDescription && pageDescription" class="description-container">
+      {{pageDescription}}
+    </section>
+  </section>
+</section>

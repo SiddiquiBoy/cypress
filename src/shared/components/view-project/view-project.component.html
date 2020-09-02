@@ -1,0 +1,14 @@
+<section class="view-project-container">
+  <nz-spin class="project-spin-container" [nzSpinning]="isSpinning">
+    <section class="project-summary-parent-container">
+      <div class="project-summary">
+        <app-project-summary (emitRefreshData)="refreshData($event)" *ngIf="project?.id" [project]="project">
+        </app-project-summary>
+      </div>
+      <div class="project-job">
+        <app-project-detail-job (emitRefreshData)="refreshData($event)" *ngIf="project?.id" [project]="project">
+        </app-project-detail-job>
+      </div>
+    </section>
+  </nz-spin>
+</section>

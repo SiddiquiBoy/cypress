@@ -1,0 +1,190 @@
+<section class="main-component-container">
+  <nz-layout class="app-layout">
+    <!-- nzBreakpoint="md" -->
+    <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+      <section class="sidebar-logo">
+        <a [routerLink]="['/']">
+          <img [src]="tenantLogo" alt="logo">
+          <h1>Markarian</h1>
+        </a>
+      </section>
+      <ul class="menu-list" nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ng-container *ngFor="let menuItem of menuItems">
+          <li [ngClass]="{'setting-position' : menuItem?.label ==='Settings'}" *ngIf="!menuItem?.items?.length"
+            nz-menu-item nz-tooltip nzTooltipPlacement="right" [nzTitle]="isCollapsed ? menuItem?.label : ''"
+            nzMatchRouter>
+            <a [routerLink]="menuItem?.routeTo">
+              <i *ngIf="menuItem?.icon" nz-icon [nzType]="menuItem?.icon" nzTheme="outline"></i>
+            </a>
+          </li>
+          <li *ngIf="menuItem?.items?.length" nz-submenu [nzTitle]="isCollapsed ? menuItem?.label : ''"
+            [nzIcon]="menuItem?.icon">
+            <ul>
+              <li *ngFor="let innerMenuItem of menuItem.items" nz-menu-item nzMatchRouter>
+                <a [routerLink]="innerMenuItem?.routeTo">
+                  <i *ngIf="innerMenuItem?.icon" nz-icon [nzType]="innerMenuItem?.icon" nzTheme="outline"></i>
+                  {{innerMenuItem?.label}}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+      </ul>
+      <!-- <ul class="reverse-menu-list" nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ng-container *ngFor="let menuItem of reverseMenuItems">
+          <li *ngIf="!menuItem?.items?.length" nz-menu-item nz-tooltip nzTooltipPlacement="right"
+            [nzTitle]="isCollapsed ? menuItem?.label : ''" nzMatchRouter>
+            <a [routerLink]="menuItem?.routeTo">
+              <i nz-icon [nzType]="menuItem?.icon" nzTheme="outline"></i>
+            </a>
+          </li>
+          <li *ngIf="menuItem?.items?.length" nz-submenu [nzTitle]="isCollapsed ? menuItem?.label : ''"
+            [nzIcon]="menuItem?.icon">
+            <ul [ngClass]="{'reposition' : menuItem?.label ==='Settings'}">
+              <li *ngFor="let innerMenuItem of menuItem.items" nz-menu-item nzMatchRouter>
+                <a [routerLink]="innerMenuItem?.routeTo">
+                  <i nz-icon [nzType]="innerMenuItem?.icon" nzTheme="outline"></i>
+                  {{innerMenuItem?.label}}
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+      </ul> -->
+    </nz-sider>
+    <nz-layout>
+      <nz-header>
+        <section class="app-header">
+          <section class="header-left-list">
+            <section class="header-trigger" [ngClass]="{'collapsed-trigger': isCollapsed}"
+              (click)="isCollapsed = !isCollapsed">
+              <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+            </section>
+            <section class="header-client-logo">
+              <p>{{organisationName | titlecase}}</p>
+              <span class="ml-2">{{ 'v' + currentApplicationVersion + ' (' + currentApplicationReleaseDate + ')' }}</span>
+            </section>
+          </section>
+          <!--Search Bar-->
+          <section class="search-bar-container" *permission="appSearchBarPermission">
+            <app-searchbar [inputSearchStyle]="'advanced'" (searchValue)="onSearchInput($event)"></app-searchbar>
+          </section>
+          <section class="header-right-list">
+            <section class="header-profile-menu-trigger">
+              <a [attr.data-cy]="'profile-icon'" id="profile-icon" class="header-profile-link" nz-dropdown
+                nzTrigger="click" [nzDropdownMenu]="menu">
+                <!-- <section class="header-profile-initials">
+                  {{profileInitials}}
+                </section> -->
+                <section class="header-profile-image">
+                  <img [src]="tenantLogo" alt="logo">
+                </section>
+              </a>
+              <nz-dropdown-menu id="user-profile-menu" #menu="nzDropdownMenu">
+                <ul nz-menu class="custom-profile-menu">
+                  <!-- <li nz-menu-item class="d-block d-md-block d-sm-block d-lg-none">
+                    {{currentUser?.firstName}}
+                    <small class="d-block border-bottom"><em>
+                        {{(currentUser?.roles[0] === 'orgAdmin') ? 'Company Admin' : currentUser?.roles[0]}}
+                      </em></small>
+                  </li> -->
+                  <li id="user-profile" nz-menu-item nzMatchRouter>
+                    <a routerLink="/profile">View Profile</a>
+                  </li>
+                  <li [attr.data-cy]="'changePassword'" id="password-change" *permission="changePasswordPermission"
+                    nz-menu-item (click)="changePassword()">
+                    Change Password
+                  </li>
+                  <li [attr.data-cy]="'logout'" nz-menu-item (click)="logout()">
+                    Logout
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </section>
+            <!-- <section class="settings-container">
+              <a *ngIf="checkRole('super-admin') || checkRole('admin')" nz-dropdown nzTrigger="click"
+                [nzDropdownMenu]="setting">
+                <i nz-icon nzType="setting" nzTheme="outline"></i>
+              </a>
+              <nz-dropdown-menu #setting="nzDropdownMenu" nzOverlayClassName="custom-settings-menu">
+                <ul nz-menu class="custom-settings-menu">
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/billings">Billings</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/profile">Company Profile</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/people">People</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/operations">Operations</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/roles">Roles</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/tags">Tags</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/timesheets">Timesheets</a>
+                  </li>
+                  <li nz-menu-item nzMatchRouter>
+                    <a routerLink="/settings/zones">Zones</a>
+                  </li>
+                </ul>
+              </nz-dropdown-menu>
+            </section> -->
+            <section class="header-user-details-container d-md-none d-none  d-sm-none d-lg-block">
+              <section class="user-name-container">
+                {{currentUser?.firstName}} {{ currentUser?.lastName }}
+              </section>
+              <section class="user-role-container">
+                {{(currentUser?.roles[0] === 'orgAdmin') ? 'Company Admin' : currentUser?.roles[0]}}
+              </section>
+            </section>
+            <section class="notification-container"
+              [ngClass]="{'low-count': notificationCount <= notificationOverflowCount, 'no-count': notificationCount === 0}">
+              <!-- routerLink="/notification" -->
+              <nz-badge *ngIf="checkPermission('menu:dashboard')" [nzCount]="notificationCount" [nzOverflowCount]="10">
+                <!-- *ngIf="checkRole('super-admin') || checkRole('admin')" -->
+                <a nz-tooltip nzTooltipTitle="Notification"
+                  nzTooltipPlacement="left" (click)="openNotificationPanel()">
+                  <i nz-icon nzType="bell" nzTheme="outline"></i>
+                </a>
+              </nz-badge>
+              <nz-drawer [nzClosable]="true" [nzVisible]="showNotificationPanel" nzPlacement="right"
+                [nzWrapClassName]="'custom-notification-drawer'" [nzMaskClosable]="false" [nzMask]="false" [nzZIndex]=0
+                [nzWidth]="250" nzTitle="Notifications" [nzMaskStyle]="{width: '250px'}"
+                (nzOnClose)="closeNotificationPanel()">
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+              </nz-drawer>
+            </section>
+          </section>
+        </section>
+      </nz-header>
+      <nz-content>
+        <section class="inner-content" [ngClass]="{'collapsed-inner-content': isCollapsed}">
+          <nz-spin [nzSpinning]="isSpinning">
+            <router-outlet></router-outlet>
+          </nz-spin>
+        </section>
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+
+  <!-- <section class="change-password-dialog-container">
+    <app-app-dialog [isVisible]="showPasswordChangeDialog" [title]="'Change Password'" [withFooter]="false"
+      [hideDialogOnAction]="false" (eEmitOnCancelClick)="onCancelClick()">
+      <nz-spin [nzSpinning]="isSpinning">
+        <section class="change-password-dialog-section" *ngIf="showPasswordChangeDialog">
+          <app-change-password (eEmitOnPassChange)="onPassChange()" (eEmitOnCancel)="onCancelClick()">
+          </app-change-password>
+        </section>
+      </nz-spin>
+    </app-app-dialog>
+  </section> -->
+
+</section>

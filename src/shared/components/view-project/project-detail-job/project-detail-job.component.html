@@ -1,0 +1,117 @@
+<section class="project-summary-container">
+  <nz-spin class="project-summary-spin-container" [nzSpinning]="isSpinning">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="24">
+        <section class="table-container pl-4">
+          <hr>
+          <h5>Jobs</h5>
+          <app-general-table *ngIf="columns?.length" [tableData]="jobsCopy" [showSearchBox]="true"
+            [showColShowHide]="false" [showDateFilter]="true" [searchPlaceholder]="searchPlaceholder" [customHeaderOptions]="columns" [customTemplate]="custom"
+            [tableActionButtons]="tableActionButtons" [totalRecords]="jobsCopy?.length" [tableConfig]="tableConfig"
+            [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+            (editRow)="onRowEditClick($event)"  (eEmitSelectedDate)="onDateFilter($event)" (eEmitSearchInput)="onSearchInput($event)">
+          </app-general-table>
+        </section>
+      </section>
+    </section>
+  </nz-spin>
+</section>
+
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.columnMap === 'jobType.name'">
+    {{data?.jobType?.name || '-' | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'startDate'">
+    {{data[key.columnMap] || '-' | date : defaultDateFormat}}
+  </span>
+  <span *ngIf="key.columnMap === 'startTime'">
+    {{getFormattedTime(data[key.columnMap] || '-')}}
+  </span>
+  <span *ngIf="key.columnMap === 'tags.name'">
+    <span *ngFor="let item of data?.tags let i = index">
+      <span *ngIf="i === data?.tags?.length - 1">
+        {{item.name | titlecase}}
+      </span>
+      <span *ngIf="i < data?.tags?.length - 1">
+        {{item.name | titlecase}},
+      </span>
+    </span>
+    <span *ngIf="!data?.tags?.length">
+      -
+    </span>
+  </span>
+  <span *ngIf="key.columnMap === 'project.technicians'">
+    <span *ngFor="let item of data?.technicians let i = index">
+      <span *ngIf="i === data?.technicians?.length - 1">
+        {{item.fullName | titlecase}}
+      </span>
+      <span *ngIf="i < data?.technicians?.length - 1">
+        {{item.fullName | titlecase}},
+      </span>
+    </span>
+    <span *ngIf="!data?.technicians?.length">
+      -
+    </span>
+  </span>
+  <span *ngIf="key.columnMap === 'summary'">
+    {{data[key.columnMap] || '-' | firstLetterCapital}}
+  </span>
+  <span *ngIf="key.columnMap== 'status'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+
+  <ng-container *permission="viewButtonPermission">
+    <span *ngIf="key.columnMap === 'action'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline"
+          (click)="onRowViewClick(data)">
+        </i>
+      </a>
+    </span>
+  </ng-container>
+  <ng-container *permission="editButtonPermission">
+    <ng-container *ngIf="!allNonEditableStatus.includes(data['status'])">
+      <span *ngIf="key.columnMap === 'action'">
+        <a>
+          <i nz-tooltip nzTooltipTitle="Edit" nz-icon nzType="edit" nzTheme="outline"
+            (click)="onRowEditClick(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<app-app-dialog [withFooter]="false" [isVisible]="showEditDialog" [okText]="'Ok'" [cancelText]="'Close'"
+  [title]="'Edit Job'" (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick()"
+  [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="edit-job-section">
+      <app-add-job
+      *ngIf="showEditDialog"
+      [redirectFrom]="'project'"
+      [projectObj]="undefined"
+      [redirectUpdate]="false"
+      [jobId]="seletedJobId"
+      (emitOnUpdate)="checkJobFormSubmitResponse($event)"
+      (emitOnCancel)="handleCancel($event)">
+    </app-add-job>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [withFooter]="false" [isVisible]="showAddDialog" [cancelText]="'Close'" [okText]="'Ok'"
+  [title]="'Add Job'" [hideDialogOnAction]="false" (eEmitOnCancelClick)="onCancelClick()" (eEmitOnOkClick)="onOkClick()">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="add-job-section">
+      <app-add-job *ngIf="showAddDialog"
+        [redirectFrom]="'project'"
+        [projectObj]="project"
+        [jobId]="undefined"
+        [redirectUpdate]="false"
+        (emitOnUpdate)="checkJobFormSubmitResponse($event)"
+        (emitOnCancel)="handleCancel($event)">
+      </app-add-job>
+    </section>
+  </nz-spin>
+</app-app-dialog>

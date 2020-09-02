@@ -1,0 +1,62 @@
+<section class="customer-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="customer-spin-container" [nzSpinning]="isSpinning">
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="customers" [showSearchBox]="true"
+        [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+        [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+        (selectedRows)="onRowsSelectionChange($event)" [tableConfig]="tableConfig"
+        [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)"
+        (eEmitSearchInput)="onSearchInput($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.type == 'activeinactive'">
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'active'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'inactive'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+  </span>
+  <span *ngIf="key.columnMap === 'fullName'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'officePhone'">
+    {{data[key.columnMap] | phoneFormat }}
+  </span>
+  <span *ngIf="key.columnMap === 'addresses'" class="titlecase">
+    <span *ngFor="let address of data[key.columnMap] let i = index">
+      <span *ngIf="i === data[key.columnMap].length - 1">
+        {{address?.street | titlecase}}
+      </span>
+      <span *ngIf="i < data[key.columnMap].length - 1">
+        {{address?.street | titlecase}},
+      </span>
+    </span>
+    <!-- {{data['addresses'] && data['addresses'][0] ? data['addresses'][0]['street'] : '-'}} -->
+  </span>
+  <span *ngIf="key.columnMap === 'jobNotification'">
+    {{data[key.columnMap] === true ? 'True' : 'False' }}
+  </span>
+  <ng-container *permission="viewButtonPermission">
+    <span *ngIf="key.columnMap === 'action'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline"
+          (click)="onRowViewClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+  <ng-container *permission="editButtonPermission">
+    <span *ngIf="key.columnMap === 'action'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="Edit" nz-icon nzType="edit" nzTheme="outline" (click)="onRowEditClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+</ng-template>

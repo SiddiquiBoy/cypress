@@ -1,0 +1,39 @@
+<section class="header-search-bar" *ngIf="inputSearchStyle === 'default'">
+  <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
+    <input [attr.data-cy]="'app-searchbar'" [placeholder]="searchPlaceholder" nz-input [(ngModel)]="inputValue"
+      (ngModelChange)="inputValue.trim()" (input)="onInput($event)" [nzAutocomplete]="auto" />
+  </nz-input-group>
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+  <nz-autocomplete nzBackfill #auto></nz-autocomplete>
+</section>
+
+<section class="header-search-bar" *ngIf="inputSearchStyle === 'advanced'">
+  <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
+    <input [attr.data-cy]="'app-searchbar-advanced'" [placeholder]="searchPlaceholder" nz-input [(ngModel)]="inputValue"
+      (ngModelChange)="inputValue.trim()" (input)="onInput($event)" [nzAutocomplete]="auto" />
+  </nz-input-group>
+  <ng-template #suffixIcon>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+  <nz-autocomplete #auto>
+    <!-- <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
+      <ng-template #groupTitle>
+        <span>{{ group.title }}</span>
+      </ng-template>
+      <nz-auto-option *ngFor="let option of group.children" [nzLabel]="option" [nzValue]="option">
+        {{ option }}
+      </nz-auto-option>
+    </nz-auto-optgroup> -->
+    <nz-auto-optgroup *ngFor="let group of menuItemGroups" [nzLabel]="groupTitle">
+      <ng-template #groupTitle>
+        <span>{{ group.label | titlecase }}</span>
+      </ng-template>
+      <nz-auto-option *ngFor="let item of group.items" [nzLabel]="item" [nzValue]="item"
+        (click)="onMenuItemClick(item)">
+        {{ item.label | titlecase }}
+      </nz-auto-option>
+    </nz-auto-optgroup>
+  </nz-autocomplete>
+</section>

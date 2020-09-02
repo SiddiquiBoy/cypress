@@ -1,0 +1,7 @@
+<section class="view-job-container">
+    <nz-spin class="job-spin-container" [nzSpinning]="isSpinning">
+        <section class="job-summary-parent-container">
+            <app-job-summary (emitRefreshData)="refreshData($event)" *ngIf="job?.id" [job]="job"></app-job-summary>
+        </section>
+    </nz-spin>
+</section>

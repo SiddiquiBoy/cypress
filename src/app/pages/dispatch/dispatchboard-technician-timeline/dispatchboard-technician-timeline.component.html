@@ -1,0 +1,207 @@
+<nz-spin [nzSpinning]="isSpinning">
+    <ng-container *ngIf="!initialLoad">
+        <div nz-row nzGutter="32" class="dispatch-calendar-header">
+            <div nz-col nzSpan="12">
+                <section class="text-left">
+                    <nz-button-group>
+                        <button nz-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+                            (viewDateChange)="closeOpenMonthViewDay()" (click)="setDate()">Previous</button>
+
+                        <button nz-button mwlCalendarToday [(viewDate)]="viewDate" (click)="setDate()">Today</button>
+
+                        <button nz-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+                            (viewDateChange)="closeOpenMonthViewDay()" (click)="setDate()">Next</button>
+                    </nz-button-group>
+                    <span class="ml-2">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</span>
+                </section>
+            </div>
+            <div nz-col nzSpan="2">
+
+            </div>
+            <div nz-col nzSpan="10">
+                <section nz-row nzGutter="32" class="text-right">
+                    <!-- <section nz-col nzSpan="6"> -->
+                        <!-- <form [nzLayout]="'vertical'" nz-form>
+                            <nz-form-item>
+                                <nz-form-control>
+                                    <nz-select name="businessUnits" id="businessUnits"
+                                        nzPlaceHolder="Select Business Unit(s)" nzMode="multiple" [nzMaxTagCount]="2"
+                                        [nzMaxTagPlaceholder]="maxTagPlaceHolder">
+                                        <nz-option *ngFor="let businessUnit of businessUnits" [nzValue]="businessUnit"
+                                            nzLabel="{{businessUnit.name | titlecase}}"></nz-option>
+                                    </nz-select>
+                                    <ng-template #maxTagPlaceHolder let-selectedList>+ {{selectedList.length}}
+                                    </ng-template>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </form> -->
+                    <!-- </section> -->
+                    <section nz-col nzSpan="24">
+                        <nz-badge [nzColor]="'lightgrey'" [nzText]="'Event'"></nz-badge>
+                        <nz-badge class="ml-2" [nzColor]="'#1890ff'" [nzText]="'Job'"></nz-badge>
+                        <button id="addEvent" class="ml-2" nz-button nzType="default" (click)="openAddEventPopup()">Add Event</button>
+                        <button class="ml-2" nz-button nzType="default" (click)="openSendSMSPopup()">Send SMS</button>
+                    </section>
+                </section>
+            </div>
+        </div>
+        <br />
+        <app-day-view-scheduler [viewDate]="viewDate" [events]="events" [users]="users"
+            (eventTimesChanged)="eventTimesChanged($event)" (userChanged)="userChanged($event)"
+            (eventClicked)="handleEvent('Clicked', $event.event)" [refresh]="refresh">
+        </app-day-view-scheduler>
+    </ng-container>
+</nz-spin>
+
+<app-app-dialog [isVisible]="showInfoDialog" [title]="'Job Details'" (eEmitOnCancelClick)="onCancelClick()"
+    [withFooter]="false">
+    <section class="event-info-dialog" *ngIf="showInfoDialog">
+        <span>Assigned To:</span> {{eventInfo.technician | titlecase}}<br>
+        <span>Business Unit:</span> {{eventInfo.businessUnit | titlecase}}<br>
+        <span>Service Address:</span> {{eventInfo.serviceAddresses.street | titlecase }}, {{eventInfo.serviceAddresses.city | titlecase }},
+        {{eventInfo.serviceAddresses.state | titlecase }}<br>
+        <span>Technician Phone:</span> {{eventInfo.officePhone | phoneFormat}}<br>
+        <span>Summary:</span> {{eventInfo.summary ? eventInfo.summary : 'N/A'}}<br>
+    </section>
+</app-app-dialog>
+
+<app-app-dialog [isVisible]="showAddEventPopup" [title]="(dispatchBoardEvent && dispatchBoardEvent.id) ? 'Edit an Event' : 'Add an Event' " (eEmitOnCancelClick)="onCancelClick()"
+    [withFooter]="false">
+    <nz-spin [nzSpinning]="isSpinning">
+        <section class="event-add-dialog" *ngIf="showAddEventPopup">
+            <form #addeventform="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form (ngSubmit)="submit()">
+                <p *ngIf="!dispatchBoardEvent.id">Add an event like Meal Break etc. for the technicians</p>
+                <p *ngIf="dispatchBoardEvent.id">Edit an event like Meal Break etc. for the technicians</p>
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="eventName">Event Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter a event name">
+                        <input class="text-capitalize" required name="eventName"
+                        type="text" trim="blur" id="eventName" nz-input
+                        [(ngModel)]="dispatchBoardEvent.name" maxLength="50" placeholder="Event Name"
+                        changes
+                        [changedValue]="dispatchBoardEvent?.name" [changedType]="changedType"
+                        [changedField]="'name'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Name'" [trimValue]="true"
+                        >
+                    </nz-form-control>
+                </nz-form-item>
+                <section nz-row nzGutter="30">
+                    <section nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="timesheetCode">Timesheet Code</nz-form-label>
+                            <nz-form-control nzErrorTip="Select a Timesheet code">
+                                <nz-select required name="timesheetCode" id="timesheetCode"
+                                class="text-capitalize" nzPlaceHolder="Select Timesheet Code"
+                                [(ngModel)]="dispatchBoardEvent.timesheetCode"
+                                changes [changedValue]="dispatchBoardEvent?.timesheetCode" [changedType]="changedType"
+                                [changedField]="'timesheetCode'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                                [changedFieldDisplayName]="'Timesheet Code'">
+                                        <nz-option *ngFor="let timesheetCode of timesheetCodes" [nzValue]="timesheetCode"
+                                            nzLabel="{{timesheetCode?.code | uppercase}}"></nz-option>
+                                    </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </section>
+                    <section nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="technician">Technician</nz-form-label>
+                            <nz-form-control nzErrorTip="Select a Technician">
+                                <nz-select required name="technician" id="technician"
+                                    class="text-capitalize" nzPlaceHolder="Select Technician"
+                                    [(ngModel)]="dispatchBoardEvent.technician" [nzDisabled]="dispatchBoardEvent.id"
+                                    changes [changedValue]="dispatchBoardEvent?.technician" [changedType]="changedType"
+                                [changedField]="'technician'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                                [changedFieldDisplayName]="'Technician'">
+                                        <nz-option *ngFor="let technician of technicians" [nzValue]="technician"
+                                            nzLabel="{{technician?.fullName | titlecase}}"></nz-option>
+                                    </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </section>
+                </section>
+                <section nz-row nzGutter="30">
+                    <section nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="startDate">
+                                Start Time
+                            </nz-form-label>
+                            <nz-form-control nzErrorTip="Enter a Start Time">
+                                <nz-time-picker required name="startTime" id="startTime" nzShowTime nzFormat="HH:mm:ss" [nzAllowEmpty]="false"
+                                    [nzUse12Hours]="false" nzPlaceHolder="Select Time"
+                                    [(ngModel)]="dispatchBoardEvent.startTime"
+                                    changes [changedValue]="dispatchBoardEvent?.startTime" (ngModelChange)="onChangeStartTime($event)"
+                                    [changedType]="changedType" [changedField]="'startTime'" [changeDescription]="'-'"
+                                    [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Start Time'">
+                                </nz-time-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </section>
+                    <section nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="startTime">
+                                End Time
+                            </nz-form-label>
+                            <nz-form-control nzErrorTip="Enter an End Time">
+                                <nz-time-picker required name="endTime"  id="endTime" nzShowTime nzFormat="HH:mm:ss" [nzAllowEmpty]="false"
+                                    [nzUse12Hours]="false" nzPlaceHolder="Select Time"
+                                    [(ngModel)]="dispatchBoardEvent.endTime" [nzDisabled]="!dispatchBoardEvent.startTime"
+                                    [nzDisabledHours]="disabledHours" [nzDisabledMinutes]="disabledMinutes"
+                                    [nzDisabledSeconds]="disabledSeconds"
+                                    changes [changedValue]="dispatchBoardEvent?.endTime"
+                                    [changedType]="changedType" [changedField]="'endTime'" [changeDescription]="'-'"
+                                    [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'End Time'">
+                                </nz-time-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </section>
+                </section>
+                <nz-form-item nz-row class="register-area mt-4 text-right">
+                    <nz-form-control>
+                        <a type="link" class="link mr-4" (click)="onCancelClick()">Cancel</a>
+                        <button nz-button [disabled]="addeventform.invalid" class="mr-auto" type="submit"
+                            nzType="primary">{{ dispatchBoardEvent.id ? 'Update' : 'Add' }}</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </section>
+    </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [isVisible]="showSendSMSPopup" [title]="'Send SMS'" (eEmitOnCancelClick)="onCancelClick()"
+    [withFooter]="false">
+    <nz-spin [nzSpinning]="isSpinning">
+        <section class="event-add-dialog" *ngIf="showSendSMSPopup">
+            <form #sendsmsform="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form (ngSubmit)="sendSMS()">
+                <p>Create and send message to the technicians</p>
+                <section nz-row nzGutter="30">
+                    <section nz-col [nzSpan]="24">
+                        <nz-form-item>
+                            <nz-form-label nzRequired nzFor="technician">Technician</nz-form-label>
+                            <nz-form-control nzErrorTip="Select a Technician">
+                                <nz-select required name="technician" id="technician" 
+                                    class="text-capitalize" nzPlaceHolder="Select Technician" nzMode="multiple"
+                                    [(ngModel)]="messageObject.technicians">
+                                        <nz-option *ngFor="let technician of technicians" [nzValue]="technician"
+                                            nzLabel="{{technician?.fullName | titlecase}}"></nz-option>
+                                    </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </section>
+                </section>
+                <nz-form-item>
+                    <nz-form-label nzRequired nzFor="message">Message</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter a message">
+                        <textarea id="message" name="message" nz-input rows="3" [(ngModel)]="messageObject.message"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row class="register-area mt-4 text-right">
+                    <nz-form-control>
+                        <a type="link" class="link mr-4" (click)="onCancelClick()">Cancel</a>
+                        <button nz-button [disabled]="sendsmsform.invalid" class="mr-auto" type="submit"
+                            nzType="primary">Send SMS</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </section>
+    </nz-spin>
+</app-app-dialog>

@@ -1,0 +1,61 @@
+<div nz-row nzGutter="32">
+  <div nz-col nzSpan="8">
+    <section class="text-left">
+      <nz-button-group>
+        <button nz-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()">Previous</button>
+
+        <button nz-button mwlCalendarToday [(viewDate)]="viewDate">Today</button>
+
+        <button nz-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()">Next</button>
+      </nz-button-group>
+    </section>
+  </div>
+  <div nz-col nzSpan="8">
+    <section class="text-center">
+      {{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}
+    </section>
+  </div>
+  <div nz-col nzSpan="8">
+    <section class="text-right">
+      <nz-button-group>
+        <button nz-button (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+          Month
+        </button>
+
+        <button nz-button (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+          Week
+        </button>
+
+        <button nz-button (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+          Day
+        </button>
+      </nz-button-group>
+    </section>
+  </div>
+</div>
+<br />
+<div [ngSwitch]="view">
+  <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+    [refresh]="refresh" [activeDayIsOpen]="false" (eventClicked)="handleEvent('Clicked', $event.event)"
+    (eventTimesChanged)="eventTimesChanged($event)">
+  </mwl-calendar-month-view>
+  <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+  </mwl-calendar-week-view>
+  <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+    (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+  </mwl-calendar-day-view>
+</div>
+
+<app-app-dialog [isVisible]="showInfoDialog" [title]="eventInfo?.jobType" (eEmitOnCancelClick)="onCancelClick()"
+  [withFooter]="false">
+  <section class="event-info-dialog" *ngIf="showInfoDialog">
+    <span style="color: black;">Assigned To:</span> {{eventInfo.technician}}<br>
+    <span>Business Unit:</span> {{eventInfo.businessUnit}}<br>
+    <span>Address:</span> {{eventInfo.address}}<br>
+    <span>Phone:</span> {{eventInfo.phone}}<br>
+    <span>Summary:</span> {{eventInfo.description}}<br>
+  </section>
+</app-app-dialog>

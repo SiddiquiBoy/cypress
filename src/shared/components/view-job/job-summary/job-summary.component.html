@@ -1,0 +1,481 @@
+<section class="job-summary-container">
+  <nz-spin class="job-summary-spin-container" [nzSpinning]="isSpinning">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="24">
+        <section class="job-summary-detail-block">
+          <!-- (nzBack)="onBack()" -->
+          <nz-page-header nzBackIcon>
+            <nz-page-header-title>
+              Job Details
+            </nz-page-header-title>
+            <!-- <nz-page-header-subtitle>
+              </nz-page-header-subtitle> -->
+            <nz-page-header-tags>
+              <nz-row nzType="flex" class="header-tags-container flex-center">
+                <i *ngIf="job?.tags.length" nz-tooltip nzTooltipTitle="Tags" nz-icon class="mr-2" nzType="tags"
+                  nzTheme="outline"></i>
+
+                <nz-tag class="job-tag" [ngClass]="{'white-tag': (tag?.color === '#ffffff')}"
+                  *ngFor="let tag of job?.tags | slice : 0 : maxTagsToDisplay" [nzColor]="tag?.color" nz-tooltip
+                  nzTooltipPlacement="bottom" [nzTooltipTitle]="tag?.name | uppercase">
+                  {{tag?.name | uppercase}}
+                </nz-tag>
+
+                <!-- <nz-tag *ngIf="job?.tags && job?.tags.length > maxTagsToDisplay" class="job-tag pointer" [nzColor]="'lightgrey'"
+                  (click)="toggleShowMoreTagsButton()">
+                  <span *ngIf="displayShowMoreTagsButton">Show more</span>
+                  <span *ngIf="!displayShowMoreTagsButton">Show less</span>
+                </nz-tag> -->
+
+                <nz-tag *ngIf="job?.tags && job?.tags.length > maxTagsToDisplay" class="job-tag pointer"
+                  [nzColor]="'lightgrey'" nz-popover nzPopoverTrigger="click" [nzPopoverContent]="tagListTemplate"
+                  nzPopoverPlacement="bottom">
+                  <span>MORE</span>
+                </nz-tag>
+
+                <ng-template #tagListTemplate>
+                  <p class="job-tag-popover">
+                    <nz-tag class="job-tag" [ngClass]="{'white-tag': (tag?.color === '#ffffff')}"
+                      *ngFor="let tag of job?.tags | slice : maxTagsToDisplay : job?.tags.length" [nzColor]="tag?.color"
+                      nz-tooltip nzTooltipPlacement="bottom" [nzTooltipTitle]="tag?.name | uppercase">
+                      {{tag?.name | uppercase}}
+                    </nz-tag>
+                  </p>
+                </ng-template>
+
+                <ng-container *permission="editJobPermission">
+                  <i nz-tooltip [nzTooltipTitle]="'Edit'" (click)="openEditJobPopup()" *ngIf="!isEditButtonDisabled"
+                    nz-icon class="ml-2 pointer" nzType="edit" [nzTheme]="'outline'"></i>
+                </ng-container>
+              </nz-row>
+            </nz-page-header-tags>
+            <nz-page-header-extra>
+
+              <span class="job-status-block">
+                <nz-tag [nzColor]="statusTagColor">
+                  {{job?.status | uppercase}}
+                </nz-tag>
+              </span>
+
+              <!-- <span class="completed-date-block" *ngIf="job?.completedDate">
+                at {{job?.completedDate | date}} {{getFormattedTimeFromDateString(job?.completedDate)}}
+              </span> -->
+
+              <span class="action-dropdown-block" *permission="updateJobStatusPermission">
+                <button nz-button nzType="primary" nz-dropdown [nzDropdownMenu]="menu">
+                  <span class="flex-center">
+                    Actions<i nz-icon nzType="down" class="ml-2"></i>
+                  </span>
+                </button>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu>
+                    <ng-container *ngFor="let status of statusDropdown">
+                      <li nz-menu-item *ngIf="status.show" (click)="handleChangeStatus(status.value)"><a>
+                          {{status.label | transformJobStatus}}</a></li>
+                    </ng-container>
+                    <ng-container>
+                      <li nz-menu-item (click)="openSendSurveyLinkPopup()"><a>Send Survey Link</a></li>
+                    </ng-container>
+                  </ul>
+                </nz-dropdown-menu>
+              </span>
+            </nz-page-header-extra>
+            <nz-page-header-content>
+              <nz-row nzType="flex">
+                <nz-statistic [nzTitle]="received"
+                  [nzValue]="(job?.wasJobInProgress && (job?.rescheduleDate && job?.rescheduleTime)) ?
+                            (job?.rescheduleDate | date) + ' ' + getFormattedTimeFromTimeString(job?.rescheduleTime) : (job?.startDate | date) + ' ' + getFormattedTimeFromTimeString(job?.startTime)">
+                  <ng-template #received><i nz-icon nzType="calendar"></i><span class="statistic-title-span">STARTS
+                      AT</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="priority" [nzValue]="job?.jobType?.name || '-' | titlecase">
+                  <ng-template #priority><i nz-icon nzType="reconciliation"></i><span class="statistic-title-span">JOB
+                      TYPE</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="campaign" [nzValue]="job?.leadSource || '-' | titlecase">
+                  <ng-template #campaign><i nz-icon nzType="book"></i><span class="statistic-title-span">LEAD
+                      SOURCE</span></ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="businessunit" [nzValue]="job?.businessUnit?.name || '-' | titlecase">
+                  <ng-template #businessunit><i nz-icon nzType="shop"></i><span class="statistic-title-span">BUSINESS
+                      UNIT</span></ng-template>
+                </nz-statistic>
+                <!-- <nz-statistic [nzTitle]="'INVOICE'" [nzValue]="'Low'">
+                      </nz-statistic> -->
+                <nz-statistic [nzTitle]="project" [nzValueTemplate]="projectValueTemplate">
+                  <ng-template #project><i nz-icon nzType="project"></i><span
+                      class="statistic-title-span">PROJECT</span></ng-template>
+                  <ng-template #projectValueTemplate>
+                    <a class="hyperlink-text" (click)="redirectToProject(job?.project?.id)">{{job?.project?.name || '-' | titlecase}}</a>
+                  </ng-template>
+                </nz-statistic>
+                <nz-statistic [nzTitle]="customer" [nzValueTemplate]="customerValueTemplate">
+                  <ng-template #customer><i nz-icon nzType="user"></i><span class="statistic-title-span">CUSTOMER</span>
+                  </ng-template>
+                  <ng-template #customerValueTemplate>
+                    <a class="hyperlink-text" (click)="redirectToCustomer(job?.project?.customer?.id)">{{job?.project?.customer?.fullName || '-' | titlecase}}</a>
+                  </ng-template>
+                </nz-statistic>
+                <ng-container *ngIf="job.completedDate">
+                  <nz-statistic [nzTitle]="completedDateTemplate"
+                    nzValue="{{job?.completedDate | date}} {{getFormattedTimeFromDateString(job?.completedDate)}}">
+                    <ng-template #completedDateTemplate><i nz-icon nzType="calendar"></i><span
+                        class="statistic-title-span">COMPLETED AT</span>
+                    </ng-template>
+                  </nz-statistic>
+                </ng-container>
+              </nz-row>
+            </nz-page-header-content>
+            <nz-page-header-content>
+              <nz-row nzType="flex">
+                <nz-statistic [nzValueTemplate]="servicelocation" [nzTitle]="'Service Location'">
+                  <ng-template #servicelocation>
+                    <span>{{job?.project?.customer?.fullName || '-' | titlecase}}</span><br>
+
+                    <ng-container *ngTemplateOutlet="addressTemplate;
+                    context: { 'data': job?.serviceAddresses[0] } ">
+                    </ng-container>
+
+                    <span class="flex-center"><i nz-tooltip nzTooltipTitle="Home Phone" nz-icon nzType="phone"
+                        nzTheme="outline" class="mr-2"></i>
+                      {{(job?.project?.customer?.homePhone | phoneFormat) || '-'}}</span>
+                    <span class="flex-center"><i nz-icon nzType="mail" nzTheme="outline" class="mr-2"></i>
+                      {{job?.project?.customer?.email || '-'}}</span>
+
+                    <nz-tag *ngIf="job?.serviceAddresses && job?.serviceAddresses.length > maxAddressesToDisplay"
+                      class="address-tag pointer" [nzColor]="'lightgrey'" nz-popover nzPopoverTrigger="click"
+                      [nzPopoverContent]="serviceAddressListTemplate" nzPopoverPlacement="right">
+                      <span>MORE</span>
+                    </nz-tag>
+                  </ng-template>
+                  <ng-template #serviceAddressListTemplate>
+                    <ng-container
+                      *ngFor="let address of job.serviceAddresses | slice : maxAddressesToDisplay : job.serviceAddresses.length">
+                      <ng-container *ngTemplateOutlet="addressTemplate;
+                        context: { 'data': address } ">
+                      </ng-container>
+                      <hr>
+                    </ng-container>
+                  </ng-template>
+                </nz-statistic>
+                <nz-statistic [nzValueTemplate]="billto" [nzTitle]="'Bill To'">
+                  <ng-template #billto>
+                    <span>{{job?.project?.customer?.fullName || '-' | titlecase}}</span><br>
+
+                    <ng-container *ngTemplateOutlet="addressTemplate;
+                    context: { 'data': job?.billingAddresses[0] } ">
+                    </ng-container>
+
+                    <span class="flex-center"><i nz-tooltip nzTooltipTitle="Home Phone" nz-icon nzType="phone"
+                        nzTheme="outline" class="mr-2"></i>
+                      {{(job?.project?.customer?.homePhone | phoneFormat) || '-'}}</span>
+                    <span class="flex-center"><i nz-icon nzType="mail" nzTheme="outline" class="mr-2"></i>
+                      {{job?.project?.customer?.email || '-'}}</span>
+
+                    <nz-tag *ngIf="job?.billingAddresses && job?.billingAddresses.length > maxAddressesToDisplay"
+                      class="address-tag pointer" [nzColor]="'lightgrey'" nz-popover nzPopoverTrigger="click"
+                      [nzPopoverContent]="billingAddressListTemplate" nzPopoverPlacement="right">
+                      <span>MORE</span>
+                    </nz-tag>
+                  </ng-template>
+                  <ng-template #billingAddressListTemplate>
+                    <ng-container
+                      *ngFor="let address of job.billingAddresses | slice : maxAddressesToDisplay : job.billingAddresses.length">
+                      <ng-container *ngTemplateOutlet="addressTemplate;
+                        context: { 'data': address } ">
+                      </ng-container>
+                      <hr>
+                    </ng-container>
+                  </ng-template>
+                </nz-statistic>
+                <nz-statistic [nzValueTemplate]="servicesTemplate" [nzTitle]="'Services'">
+                  <ng-template #servicesTemplate>
+                    <span *ngFor="let service of job?.services" class="flex-center">{{service.name | titlecase}}</span>
+                  </ng-template>
+                </nz-statistic>
+                <nz-statistic [nzValueTemplate]="technicians" [nzTitle]="technicianTitle">
+                  <ng-template #technicianTitle>
+                    <span class="flex-center">Technicians
+                      <ng-container *permission="editTechnicianPermission">
+                        <i *ngIf="!isEditTechnicianDisabled" nz-tooltip nzTooltipTitle="Edit" class="pointer ml-3"
+                          (click)="editTechnician()" nz-icon nzType="edit" nzTheme="outline">
+                        </i>
+                      </ng-container>
+                    </span>
+                  </ng-template>
+                  <ng-template #technicians>
+                    <span *ngFor="let technician of job?.technicians" class="flex-center"> <i nz-icon nzType="user"
+                        nzTheme="outline" class="mr-2"></i> {{technician.fullName | titlecase}}</span>
+                  </ng-template>
+                </nz-statistic>
+                <ng-container *ngIf="job?.status === 'hold' || job?.status === 'cancelled'">
+                  <nz-statistic [nzValueTemplate]="jobremark" [nzTitle]="'Remark'">
+                    <ng-template #jobremark>
+                      <p nz-popover nzPopoverTrigger="click" [nzPopoverContent]="remarkPopoverTemplate"
+                        nzPopoverPlacement="topLeft" class="pointer text-with-ellipsis">
+                        {{ job?.remark || '-' | firstLetterCapital }}
+                      </p>
+                      <ng-template #remarkPopoverTemplate>
+                        <p class="job-note-popover">{{job?.remark | firstLetterCapital}}</p>
+                      </ng-template>
+                    </ng-template>
+                  </nz-statistic>
+                </ng-container>
+              </nz-row>
+            </nz-page-header-content>
+            <nz-page-header-content>
+              <nz-row nzType="flex">
+                <nz-statistic [nzValueTemplate]="description" [nzTitle]="'Summary'">
+                  <ng-template #description>
+                    <p nz-popover nzPopoverTrigger="click" [nzPopoverContent]="summaryPopoverTemplate"
+                      nzPopoverPlacement="topLeft" class="pointer text-with-ellipsis">
+                      {{ job?.summary || '-' | firstLetterCapital }}
+                    </p>
+                    <ng-template #summaryPopoverTemplate>
+                      <p class="job-note-popover">{{job?.summary | firstLetterCapital}}</p>
+                    </ng-template>
+                    <!-- <p>{{ job?.summary || '-' }}
+                              </p> -->
+                  </ng-template>
+                </nz-statistic>
+              </nz-row>
+            </nz-page-header-content>
+            <nz-page-header-content class="job-notes" *permission="viewJobNotePermission">
+              <!-- <nz-list [nzDataSource]="job.jobNotes" nzBordered nzSize="small" [nzHeader]="'Job Notes'"
+                  [nzRenderItem]="smallItem">
+                  <ng-template #smallItem let-item>
+                    <nz-list-item [nzActions]="[editjobnote]" [nzContent]="item.note">
+                      <ng-template #editjobnote><a>Edit</a></ng-template>
+                    </nz-list-item>
+                  </ng-template>
+                </nz-list> -->
+              <ng-container>
+                <hr>
+                <div class="job-notes-card-block">
+                  <section class="notes-section-title-block">
+                    <span class="flex-center">
+                      <span class="notes-title mr-2">Notes</span>
+                      <ng-container *permission="addJobNotePermission">
+                        <i class="pointer add-note-icon" nz-icon nzType="plus-circle" nzTheme="outline"
+                          [nzTheme]="'twotone'" [nzTwotoneColor]="'#2a8ef7'" nz-tooltip nzTooltipTitle="Add a Note"
+                          (click)="openJobNotePopup()"></i>
+                      </ng-container>
+                    </span>
+                  </section>
+                  <section class="empty-notes-block" *ngIf="!job.jobNotes || !job.jobNotes.length">
+                    <p>No notes are added for this job</p>
+                  </section>
+                  <div nz-row [nzGutter]="8">
+                    <div nz-col [nzSpan]="6" *ngFor="let note of job.jobNotes">
+                      <nz-card [nzTitle]="jobNoteTitle">
+                        <ng-template #jobNoteTitle>
+                          <span class="flex-center">
+                            <i *permission="editJobNotePermission" nz-tooltip nzTooltipTitle="Edit"
+                              (click)="editJobNote(note)" nz-icon nzType="edit" nzTheme="outline"
+                              class="pointer mr-2"></i>
+                            <i *ngIf="!note.pinnedAt" (click)="pinToTop(true, note)" nz-tooltip
+                              nzTooltipTitle="Pin to top" class="pointer mr-2" nz-icon nzType="pushpin"
+                              nzTheme="outline"></i>
+                            <i *ngIf="note.pinnedAt" (click)="pinToTop(false, note)" nz-tooltip nzTooltipTitle="Unpin"
+                              class="pointer mr-2" nz-icon nzType="pushpin" nzTheme="fill"></i>
+                            <span nz-tooltip [nzTooltipTitle]="formatJobNoteUpdatedAtDate(note.updatedAt)">
+                              {{formatJobNoteUpdatedAtDate(note.updatedAt)}}
+                            </span>
+                          </span>
+                        </ng-template>
+                        <p nz-popover nzPopoverTrigger="click" [nzPopoverContent]="contentTemplate"
+                          nzPopoverPlacement="topLeft" class="pointer job-note-text">{{note?.note | firstLetterCapital}}
+                        </p>
+                        <ng-template #contentTemplate>
+                          <p class="job-note-popover">{{note?.note | firstLetterCapital}}</p>
+                        </ng-template>
+                      </nz-card>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </nz-page-header-content>
+            <!-- <nz-page-header-content class="job-events-container" *permission="viewJobEventsPermission">
+              <hr>
+              <section class="job-event-section">
+                <h5 class="section-heading">Events</h5>
+              </section>
+              <section nz-row [nzGutter]="8">
+                <section class="job-event-component-container">
+                  <app-job-events *ngIf="job?.id" [entityId]="job?.id"></app-job-events>
+                </section>
+              </section>
+            </nz-page-header-content> -->
+          </nz-page-header>
+        </section>
+      </section>
+      <section class="padding-top-10" nz-col [nzSpan]="0">
+        <!-- Button Section -->
+        <section class="job-action-container">
+          <!-- <div class="action-button" *permission="editJobPermission">
+            <button [disabled]="isEditButtonDisabled" class="mr-4" (click)="openEditJobPopup()" nz-button
+              nzType="default">Edit</button>
+          </div> -->
+          <!-- <div class="action-button" *permission="addJobNotePermission">
+            <button class="mr-4" nz-button nzType="default" (click)="openJobNotePopup()">Add Note</button>
+          </div> -->
+          <!-- <div class="action-button" *permission="updateJobStatusPermission">
+            <button class="mr-4" nz-button nzType="primary" nz-dropdown [nzDropdownMenu]="menu">
+              <span class="flex-center">
+                Actions<i nz-icon nzType="down" class="ml-2"></i>
+              </span>
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <ng-container *ngFor="let status of statusDropdown">
+                  <li nz-menu-item *ngIf="status.show" (click)="handleChangeStatus(status.value)"><a>
+                      {{status.label | transformJobStatus}}</a></li>
+                </ng-container>
+              </ul>
+            </nz-dropdown-menu>
+          </div> -->
+          <!-- <div class="action-button">
+            <section class="status-tag-container">
+              <nz-tag [nzColor]="statusTagColor">
+                {{job?.status | uppercase}}
+                <span *ngIf="job?.completedDate"><br>{{job?.completedDate | date}}
+                  {{getFormattedTimeFromDateString(job?.completedDate)}}</span>
+              </nz-tag>
+            </section>
+          </div> -->
+        </section>
+      </section>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #addressTemplate let-data="data">
+  <span *ngIf="!data">{{'-'}}</span>
+  <ng-container *ngIf="data">
+    <span *ngIf="!data?.street && !data?.city && !data?.state && !data?.postalCode && !data?.country">{{'-'}}</span>
+    <span *ngIf="data.street">{{data?.street | titlecase}}<br></span>
+    <span *ngIf="data.city">{{data?.city | titlecase}}, </span>
+    <span *ngIf="data.state">{{data?.state | titlecase}} </span>
+    <span *ngIf="data.postalCode">{{data?.postalCode}}, </span>
+    <span *ngIf="data.country">{{data?.country | titlecase}}</span>
+  </ng-container>
+  <br>
+</ng-template>
+
+<app-app-dialog [isVisible]="showEditTechnicianDialog" [okText]="'Update'" [cancelText]="'Cancel'"
+  [title]="'Edit Technicians'" (eEmitOnOkClick)="onOkClick()" (eEmitOnCancelClick)="onCancelClick('editTechnician')"
+  [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <app-select-technicians [selectedTechnicians]="selectedTechnicians" [technicians]="listTechnicians"
+      (emitSelectedTechnicians)="updateSelectedTechnicians($event)"></app-select-technicians>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [isVisible]="showRemarkDialog" [okText]="'Ok'" [cancelText]="'Cancel'" [title]="'Add Remark'"
+  (eEmitOnOkClick)="onOkRemarkClick()" (eEmitOnCancelClick)="onCancelClick('remarks')" [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="remark-section">
+      <textarea name="remarks" trim="blur" id="remarks" placeholder="Add a remark"
+        [ngModel]="remarks | firstLetterCapital" (ngModelChange)="remarks=$event" cols="30" rows="10"></textarea>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [isVisible]="showJobNoteDialog" [okText]="'Ok'" [cancelText]="'Cancel'"
+  [title]="note?.id ? 'Edit a Note' : 'Add a Note'" (eEmitOnOkClick)="onOkJobNoteClick()"
+  (eEmitOnCancelClick)="onCancelClick('jobNote')" [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="job-note-section">
+      <textarea name="jobNote" trim="blur" id="jobNote" placeholder="Add a note"
+        [ngModel]="note.note | firstLetterCapital" (ngModelChange)="note.note=$event" cols="30" rows="10"></textarea>
+      <label for="pin-note" class="mr-2">Pin this note</label>
+      <nz-switch id="pin-note" name="pin-note" [(ngModel)]="isNotePinned" (ngModelChange)="handleJobNoteSwitch($event)">
+      </nz-switch>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [isVisible]="showRescheduleDialog" [okText]="'Update'" [cancelText]="'Cancel'"
+  [title]="'Reschedule Job'" (eEmitOnOkClick)="onOkRescheduleClick()" (eEmitOnCancelClick)="onCancelClick('reschedule')"
+  [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="reschedule-section">
+      <!-- <textarea name="remarks" id="remarks" placeholder="Add a remark" [(ngModel)]="remarks" cols="30" rows="10"></textarea> -->
+      <section nz-row nzGutter="30">
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="startDate">
+              Start Date
+            </nz-form-label>
+            <nz-form-control>
+              <nz-date-picker name="startDate" [(ngModel)]="startDate" [nzAllowClear]="false"
+                [nzDisabledDate]="disabledDate" (ngModelChange)="onStartDateChange($event)">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+        <section nz-col [nzSpan]="12">
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="startTime">
+              Start Time
+            </nz-form-label>
+            <nz-form-control>
+              <nz-time-picker name="startTime" nzShowTime nzFormat="HH:mm:ss" [nzAllowEmpty]="false"
+                [nzDisabled]="!startDate" [nzDisabledHours]="disableHrs" [nzDisabledMinutes]="disableMins"
+                [nzDisabledSeconds]="disableSecs" [nzUse12Hours]="false" nzPlaceHolder="Select Time"
+                [(ngModel)]="startTime" (ngModelChange)="onStartTimeChange($event)"
+                (nzOpenChange)="onTimePickerOpen($event)">
+              </nz-time-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </section>
+      </section>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [withFooter]="false" [isVisible]="showEditJobDialog" [okText]="'Update'" [cancelText]="'Cancel'"
+  [title]="'Edit a Job'" (eEmitOnOkClick)="onOkEditJobClick()" (eEmitOnCancelClick)="onCancelClick('editJob')"
+  [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="edit-job-section">
+      <app-add-job *ngIf="showEditJobDialog" [redirectUpdate]="false"
+        (emitOnUpdate)="checkJobFormSubmitResponse($event)" (emitOnCancel)="handleCancelEdit($event)"></app-add-job>
+    </section>
+  </nz-spin>
+</app-app-dialog>
+
+<app-app-dialog [isVisible]="showConfirmDialog" [okText]="'Yes'" [cancelText]="'No'" [title]="'Confirmation Dialog'"
+  (eEmitOnOkClick)="onConfirmClick('completeJob')" (eEmitOnCancelClick)="onCancelClick('confirmDialog')">
+  Are you sure you want to complete the Job?
+</app-app-dialog>
+
+<!-- Send Survey Link Dialog -->
+<app-app-dialog [withFooter]="false" [isVisible]="showSendSurveyLinkDialog" [title]="'Send Survey Link'"
+  (eEmitOnCancelClick)="onCancelClick('surveyLink')" [hideDialogOnAction]="false">
+  <nz-spin [nzSpinning]="isSpinning">
+    <section class="survey-link-section" *ngIf="showSendSurveyLinkDialog">
+      <form #surveylinkform="ngForm" autocomplete="off" [nzLayout]="'vertical'" nz-form (ngSubmit)="sendSurveyLink()">
+        <p>{{surveyLinkFormDescription}}</p>
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="surveyLink">Survey Link</nz-form-label>
+          <nz-form-control nzErrorTip="Enter a vald link">
+            <textarea required name="surveyLink" type="textarea" trim="blur" id="surveyLink"
+              placeholder="http://www.example.com" [pattern]="urlRegex" [(ngModel)]="surveyLink" rows="3">
+            </textarea>
+            <!-- <input required name="surveyLink" type="text" trim="blur" id="surveyLink" placeholder="http://www.example.com"
+              [pattern]="urlRegex" [(ngModel)]="surveyLink" nz-input> -->
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row class="register-area mt-4 text-right">
+          <nz-form-control>
+            <a type="link" class="link mr-4" (click)="onCancelClick('surveyLink')">Cancel</a>
+            <button nz-button [disabled]="surveylinkform.invalid" class="mr-auto" type="submit"
+              nzType="primary">Send</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </section>
+  </nz-spin>
+</app-app-dialog>

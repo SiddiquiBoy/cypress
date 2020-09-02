@@ -1,0 +1,29 @@
+<section class="payment-detail-container">
+  <nz-spin class="payment-detail-spin-container" [nzSpinning]="isSpinning">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="24">
+        <section class="table-container pl-4">
+          <hr>
+          <h5>Payment Breakup</h5>
+          <app-general-table *ngIf="columns?.length" [tableData]="paymentDetailCopy"
+            [showColShowHide]="false" [customHeaderOptions]="columns" [customTemplate]="custom"
+            [tableActionButtons]="tableActionButtons" [totalRecords]="paymentDetailCopy?.length" [tableConfig]="tableConfig"
+            [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+            (editRow)="onRowEditClick($event)"  (eEmitSelectedDate)="onDateFilter($event)" (eEmitSearchInput)="onSearchInput($event)">
+          </app-general-table>
+        </section>
+      </section>
+    </section>
+  </nz-spin>
+</section>
+
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.columnMap === 'entityType'">
+    {{data[key.columnMap] | transformUserType }}
+  </span>
+  <span *ngIf="key.columnMap === 'billCycle'">
+    {{data.billingStartDate || 'NA' | date : defaultDateFormat }} - {{ data.billingEndDate || 'NA' | date : defaultDateFormat }}
+  </span>
+</ng-template>
+

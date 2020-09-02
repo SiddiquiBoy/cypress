@@ -1,0 +1,121 @@
+<section class="vendor-contact-component-container">
+    <section nz-row nzGutter="30">
+        <section nz-col nzSpan="16">
+
+            <section nz-row nzGutter="30">
+                <section nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="firstName">First Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter valid first name">
+                      <input [placeholder]="vendorContactFirstNamePlaceholder" class="text-capitalize"
+                        [attr.data-cy]="'firstName'" nz-input id="firstName" [(ngModel)]="vendor.firstName" type="text"
+                        [pattern]="nameRegex" required name="firstName" trim="blur" changes
+                        [changedValue]="vendor?.firstName" [changedType]="changedType" [changedField]="'firstName'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'FirstName'" [trimValue]="true">
+                    </nz-form-control>
+                  </nz-form-item>
+                </section>
+                <section nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="lastName">Last Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter valid last name">
+                      <input [placeholder]="vendorContactLastNamePlaceholder" class="text-capitalize" required
+                        [pattern]="nameRegex" [attr.data-cy]="'lastName'" nz-input id="lastName"
+                        [(ngModel)]="vendor.lastName" type="text" trim="blur" name="lastName" changes
+                        [changedValue]="vendor?.lastName" [changedType]="changedType" [changedField]="'lastName'"
+                        [pattern]="nameRegex" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'LastName'" [trimValue]="true">
+                    </nz-form-control>
+                  </nz-form-item>
+                </section>
+            </section>
+
+            <section nz-row nzGutter="30">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
+                    <nz-form-control nzErrorTip="Enter valid email">
+                      <input [placeholder]="vendorContactEmailPlaceholder" [attr.data-cy]="'email'" nz-input id="email"
+                        [(ngModel)]="vendor.email" type="email" required
+                        (ngModelChange)="vendor.email=$event.toLowerCase()" trim="blur" [pattern]="emailRegex"
+                        name="email" changes [changedValue]="vendor?.email" [changedType]="changedType"
+                        [changedField]="'email'" [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Email'" [trimValue]="true">
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+    
+    
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label nzRequired nzFor="tag">Tags</nz-form-label>
+                    <nz-form-control nzErrorTip="Select tags">
+                      <nz-select [nzPlaceHolder]="vendorContactTagsPlaceholder" [attr.data-cy]="'tags'"
+                        nzMode="multiple" name="tags" [(ngModel)]="vendor.tags" nzShowSearch required
+                        [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate" changes
+                        [changedValue]="vendor?.tags" [changedType]="changedType" [changedField]="'tags'"
+                        [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                        [changedFieldDisplayName]="'Tags'">
+                        <nz-option nzCustomContent *ngFor="let tagname of tags" [nzValue]="tagname"
+                          [nzLabel]="tagname?.name">
+                          <nz-avatar [ngStyle]="{ 'background-color': tagname.color ,'border': '1px solid #80808040' }"
+                            nzSize="small" [nzShape]="'square'"></nz-avatar>
+                          <span class="ml-2 text-capitalize"> {{ tagname?.name}} </span>
+                        </nz-option>
+                      </nz-select>
+                      <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+            </section>
+    
+            <section nz-row nzGutter="30">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="phone">Phone</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter valid phone number">
+                    <input [attr.data-cy]="'phone'" maxlength="14" required
+                      [placeholder]="vendorContactPhonePlaceholder" (ngModelChange)="vendor.phone=$event"
+                      [ngModel]="vendor.phone | phoneFormat" nz-input type="text" [pattern]="phoneRegex" required
+                      trim="blur" id="phone" name="phone" changes [changedValue]="vendor?.phone"
+                      [changedType]="changedType" [changedField]="'phone'" [changeDescription]="'-'"
+                      [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Phone'" [trimValue]="true">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="fax">Fax</nz-form-label>
+                  <nz-form-control nzErrorTip="Enter valid fax number">
+                    <input [attr.data-cy]="'fax'" nz-input id="fax" maxlength="14" required
+                      [placeholder]="vendorContactFaxPlaceholder" (ngModelChange)="vendor.fax=$event"
+                      [ngModel]="vendor.fax | phoneFormat" trim="blur" type="text" [pattern]="phoneRegex" name="fax"
+                      changes [changedValue]="vendor?.fax" [changedType]="changedType" [changedField]="'fax'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Fax'"
+                      [trimValue]="true">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </section>
+
+            <section nz-row nzGutter="30">
+              <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                  <nz-form-label nzRequired nzFor="memo">
+                    Memo
+                  </nz-form-label>
+                  <nz-form-control nzErrorTip="Enter valid memo">
+                    <textarea [attr.data-cy]="'memo'" nz-input trim="blur" [(ngModel)]="vendor.memo" type="textarea"
+                      required name="memo" [placeholder]="vendorContactMemoPlaceholder" changes
+                      [changedValue]="vendor?.memo" [changedType]="changedType" [changedField]="'memo'"
+                      [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Memo'"
+                      [trimValue]="true"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </section>
+        </section> 
+    </section>
+</section>
+  

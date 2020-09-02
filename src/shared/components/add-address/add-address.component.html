@@ -1,0 +1,161 @@
+<section class="add-address-container">
+    <nz-spin class="address-spin-container" [nzSpinning]="isSpinning">
+        <!-- <div class="page-header-container mr-auto">
+            <app-page-header></app-page-header>
+        </div> -->
+
+        <div>
+            <div nz-row>
+                <div nz-row nzGutter="30">
+                    <div nz-col nzSpan="24">
+                        <form #addressForm="ngForm" nz-form autocomplete="off" (ngSubmit)="onSubmit()">
+                            <section nz-row nzGutter="30">
+                                <section nz-col [nzSpan]="12">
+                                  <nz-form-item>
+                                    <nz-form-label nzRequired nzFor="country">
+                                      Country
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Select a country">
+                                      <nz-select required name="country" nzShowSearch nzPlaceHolder="Select a country"
+                                        [(ngModel)]="address.country"
+                                        (ngModelChange)="onCountrySelect()" changes [changedValue]="address?.country"
+                                        [changedType]="changedType" [changedField]="'country'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Country'" [checkOnlyObjectId]="false">
+                                        <nz-option *ngFor="let country of countries" [nzLabel]="country.name | titlecase"
+                                          [nzValue]="country.name">
+                                        </nz-option>
+                                      </nz-select>
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                                <section nz-col [nzSpan]="12">
+                                  <nz-form-item>
+                                    <nz-form-label nzRequired nzFor="state">
+                                      State
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Select a state">
+                                      <nz-select required name="state" nzShowSearch nzPlaceHolder="Select a state"
+                                        [(ngModel)]="address.state" changes
+                                        [changedValue]="address?.state" [changedType]="changedType"
+                                        [changedField]="'state'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'State'" [checkOnlyObjectId]="false">
+                                        <nz-option *ngFor="let state of states" [nzLabel]="state.name | titlecase" [nzValue]="state.name">
+                                        </nz-option>
+                                      </nz-select>
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                              </section>
+                              <section nz-row nzGutter="30">
+                                <section nz-col [nzSpan]="12">
+                                  <nz-form-item>
+                                    <nz-form-label nzRequired nzFor="addCity">
+                                      City
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Enter a valid City ">
+                                      <input required nz-input name="city" id="addCity" class="titlecase" maxlength="20"
+                                        placeholder="Denver" [(ngModel)]="address.city" trim="blur"
+                                        changes [changedValue]="address?.city" [changedType]="changedType"
+                                        [changedField]="'city'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'City'" [checkOnlyObjectId]="false"
+                                        [trimValue]="true" />
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                                <section nz-col [nzSpan]="12">
+                                  <nz-form-item>
+                                    <nz-form-label nzRequired nzFor="street">
+                                      Street
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Enter a street">
+                                      <input required nz-input name="street" class="titlecase" maxlength="40" placeholder="123 Street"
+                                        [(ngModel)]="address.street" trim="blur" changes
+                                        [changedValue]="address?.street" [changedType]="changedType"
+                                        [changedField]="'street'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Street'" [checkOnlyObjectId]="false"
+                                        [trimValue]="true" />
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                              </section>
+                              <section nz-row nzGutter="30">
+                                <section nz-col [nzSpan]="12">
+                                  <nz-form-item>
+                                    <nz-form-label nzFor="landmark">
+                                      Landmark
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Enter a valid landmark">
+                                      <input nz-input name="landmark" class="titlecase" maxlength="40" placeholder="Opposite Plaza Mall"
+                                        [(ngModel)]="address.landmark" trim="blur" changes
+                                        [changedValue]="address?.landmark" [changedType]="changedType"
+                                        [changedField]="'landmark'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Landmark'" [checkOnlyObjectId]="false"
+                                        [trimValue]="true" />
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                                <section nz-col [nzSpan]="12">
+                                  <nz-form-item>
+                                    <nz-form-label nzRequired nzFor="zipcode">
+                                      Zip Code
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Enter a valid zipcode">
+                                      <input required nz-input name="zipcode" maxlength="5" [pattern]="zipcodeRegex" placeholder="12345"
+                                        [(ngModel)]="address.postalCode" trim="blur" changes
+                                        [changedValue]="address?.postalCode" [changedType]="changedType"
+                                        [changedField]="'postalCode'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Postal Code'"
+                                        [checkOnlyObjectId]="false" [trimValue]="true" />
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                              </section>
+                              <section nz-row nzGutter="30">
+                                <section nz-col [nzSpan]="6">
+                                  <nz-form-item>
+                                    <nz-form-label nzFor="latitude">
+                                      Latitude
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Enter a valid latitude">
+                                      <input nz-input [pattern]="latLongRegex" name="latitude" maxlength="6" placeholder="123.45"
+                                        [(ngModel)]="address.latitude" trim="blur" changes
+                                        [changedValue]="address?.latitude" [changedType]="changedType"
+                                        [changedField]="'latitude'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Latitude'" [checkOnlyObjectId]="false"
+                                        [trimValue]="false" [formatterType]="'number'" />
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                                <section nz-col [nzSpan]="6">
+                                  <nz-form-item>
+                                    <nz-form-label nzFor="longitude">
+                                      Longitude
+                                    </nz-form-label>
+                                    <nz-form-control nzErrorTip="Enter a valid longitude">
+                                      <input nz-input [pattern]="latLongRegex" name="longitude" maxlength="6" placeholder="123.45"
+                                        [(ngModel)]="address.longitude" trim="blur" changes
+                                        [changedValue]="address?.longitude" [changedType]="changedType"
+                                        [changedField]="'longitude'" [changeDescription]="'-'"
+                                        [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Longitude'"
+                                        [checkOnlyObjectId]="false" [trimValue]="false" [formatterType]="'number'" />
+                                    </nz-form-control>
+                                  </nz-form-item>
+                                </section>
+                            </section>
+                            <nz-form-item nz-row class="register-area mt-4 text-right">
+                                <nz-form-control>
+                                    <a type="link" class="link mr-4" (click)="cancel()">Cancel</a>
+                                    <button nz-button [disabled]="addressForm.invalid" class="mr-auto" type="submit"
+                                    nzType="primary">
+                                    <span *ngIf="!address.id">Add</span>
+                                    <span *ngIf="address.id">Update</span>
+                                    </button>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nz-spin>
+</section>

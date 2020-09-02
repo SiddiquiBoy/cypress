@@ -1,0 +1,273 @@
+<section class="project-jobs-component-container">
+  <ng-container>
+    <section *ngIf="project?.jobs?.length < 1" nz-col [nzSpan]="24" class="job-button-container text-center height-150">
+      <section class="add-button-container">
+        <button nz-button class="mr-auto width-150" nzType="primary" (click)="addJob()">
+          <i nz-icon [nzType]="addButtonIcon"></i>
+          Add job
+        </button>
+      </section>
+    </section>
+  </ng-container>
+  <ng-container *ngFor="let job of project.jobs; let i = index">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="16">
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="jobType{{i}}">
+                Job Type
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a job type">
+                <nz-select [nzDisabled]="job?.id" required name="jobType{{i}}" nzShowSearch [(ngModel)]="job.jobType"
+                  (ngModelChange)="onJobTypeChange(i)" [nzPlaceHolder]="projectJobJobTypePlaceholder" changes
+                  [changedValue]="job?.jobType" [changedType]="changedType" [changedField]="'jobs/' + i + '.jobType'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Job Type'"
+                  [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let jType of jobTypes" [nzValue]="jType" nzLabel="{{jType.name | titlecase}}">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="businessUnit{{i}}">
+                Business Unit
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a business unit">
+                <nz-select [nzDisabled]="job?.id" required name="businessUnit{{i}}" nzShowSearch
+                  [(ngModel)]="job.businessUnit" (ngModelChange)="onBusinessUnitChange(i)"
+                  [nzPlaceHolder]="projectJobBusinessUnitPlaceholder" changes [changedValue]="job?.businessUnit"
+                  [changedType]="changedType" [changedField]="'jobs/' + i + '.businessUnit'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Business Unit'"
+                  [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let unit of businessUnits" [nzValue]="unit" nzLabel="{{unit.name | titlecase}}">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="leadSource{{i}}">
+                Lead Source
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a lead source">
+                <input [disabled]="job?.id" required nz-input name="leadSource{{i}}" class="titlecase" maxlength="20"
+                  [placeholder]="projectJobLeadSourcePlaceholder" [(ngModel)]="job.leadSource" trim="blur" changes
+                  [changedValue]="job?.leadSource" [changedType]="changedType"
+                  [changedField]="'jobs/' + i + '.leadSource'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Lead Source'"
+                  [checkOnlyObjectId]="false" [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzFor="summary{{i}}">
+                Summary
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter summary">
+                <textarea [disabled]="job?.id" nz-input trim="blur" type="textarea" name="summary{{i}}"
+                  [ngModel]="job.summary | firstLetterCapital" [placeholder]="projectJobSummaryPlaceholder"
+                  (ngModelChange)="job.summary=$event" changes [changedValue]="job?.summary" [changedType]="changedType"
+                  [changedField]="'jobs/' + i + '.summary'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Summary'" [checkOnlyObjectId]="false"
+                  [trimValue]="true"></textarea>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzFor="technician{{i}}">
+                Technicians
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a technican">
+                <nz-select [nzDisabled]="job?.id" name="technicians{{i}}" nzShowSearch [(ngModel)]="job.technicians"
+                  nzMode="multiple" [nzPlaceHolder]="projectJobTechniciansPlaceholder"
+                  [nzMaxTagCount]="maximumSelections" [nzMaxTagPlaceholder]="selectionCountTemplate" changes
+                  [changedValue]="job?.technicians" [changedType]="changedType"
+                  [changedField]="'jobs/' + i + '.technicians'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Technicians'"
+                  [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let technician of technicians" [nzValue]="technician"
+                    nzLabel="{{technician.fullName | titlecase}}">
+                  </nz-option>
+                </nz-select>
+                <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzFor="tag{{i}}">
+                Tags
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a tag">
+                <nz-select [nzDisabled]="job?.id" name="tags{{i}}" nzShowSearch [(ngModel)]="job.tags"
+                  [nzPlaceHolder]="projectJobTagsPlaceholder" nzMode="multiple" [nzMaxTagCount]="maximumSelections"
+                  [nzMaxTagPlaceholder]="selectionCountTemplate" changes [changedValue]="job?.tags"
+                  [changedType]="changedType" [changedField]="'jobs/' + i + '.tags'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Tags'" [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let tag of tags" [nzValue]="tag" nzLabel="{{tag.name | titlecase}}">
+                  </nz-option>
+                </nz-select>
+                <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="startDate{{i}}">
+                Start Date
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a start date">
+                <nz-date-picker [nzPlaceHolder]="projectJobStartDatePlaceholder" [nzFormat]="dateFormat"
+                  [nzDisabled]="job?.id" required name="startDate{{i}}" [(ngModel)]="job.startDate"
+                  [nzAllowClear]="false" [nzDisabledDate]="disabledDate" (ngModelChange)="onStartDateChange($event, i)"
+                  changes [changedValue]="job?.startDate" [changedType]="changedType"
+                  [changedField]="'jobs/' + i + '.startDate'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Start Date'"
+                  [checkOnlyObjectId]="false">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="startTime{{i}}">
+                Start Time
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter start time">
+                <nz-time-picker required name="startTime{{i}}" nzShowTime nzFormat="HH:mm:ss" [nzAllowEmpty]="false"
+                  [nzDisabled]="!job.startDate || job?.id" [nzDisabledHours]="disableHrs"
+                  [nzDisabledMinutes]="disableMins" [nzDisabledSeconds]="disableSecs" [nzUse12Hours]="false"
+                  [nzPlaceHolder]="projectJobStartTimePlaceholder" [(ngModel)]="job.startTime"
+                  (ngModelChange)="onStartTimeChange($event, i)" (nzOpenChange)="onTimePickerOpen($event, i)" changes
+                  [changedValue]="job?.startTime" [changedType]="changedType"
+                  [changedField]="'jobs/' + i + '.startTime'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Start Time'"
+                  [checkOnlyObjectId]="false" [formatterType]="'time'">
+                </nz-time-picker>
+                <!-- <nz-time-picker required name="startTime{{i}}" nzShowTime nzFormat="HH:mm:ss" [nzDisabled]="!job.startDate"
+                  [nzDisabledHours]="getDisableHrs(i)" [nzDisabledMinutes]="getDisableMins(i)"
+                  [nzDisabledSeconds]="getDisableSecs(i)" [nzUse12Hours]="false" nzPlaceHolder="Select Time"
+                  [(ngModel)]="job.startTime" (ngModelChange)="onStartTimeChange($event, i)">
+                </nz-time-picker> -->
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="billingAddresses{{i}}">
+                Billing Address
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a billing address">
+                <nz-select required [nzDisabled]="job?.id" name="billingAddresses{{i}}" nzShowSearch
+                  [(ngModel)]="job.billingAddresses" nzMode="multiple"
+                  [nzPlaceHolder]="projectJobBillingAddressesPlaceholder" [nzMaxTagCount]="maximumSelections"
+                  [nzMaxTagPlaceholder]="selectionCountTemplate" changes [changedValue]="job?.billingAddresses"
+                  [changedType]="changedType" [changedField]="'jobs/' + i + '.billingAddresses'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'Billing Addresses'" [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let address of customerAddresses" [nzValue]="address"
+                    nzLabel="{{address?.street | titlecase}}">
+                  </nz-option>
+                </nz-select>
+                <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="serviceAddresses{{i}}">
+                Service Address
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a service address">
+                <nz-select required [nzDisabled]="job?.id" name="serviceAddresses{{i}}" nzShowSearch
+                  [(ngModel)]="job.serviceAddresses" nzMode="multiple"
+                  [nzPlaceHolder]="projectJobServiceAddressesPlaceholder" [nzMaxTagCount]="maximumSelections"
+                  [nzMaxTagPlaceholder]="selectionCountTemplate" changes [changedValue]="job?.serviceAddresses"
+                  [changedType]="changedType" [changedField]="'jobs/' + i + '.serviceAddresses'"
+                  [changeDescription]="'-'" [changeAdditionalDescription]="'-'"
+                  [changedFieldDisplayName]="'Service Addresses'" [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let address of customerAddresses" [nzValue]="address"
+                    nzLabel="{{address?.street | titlecase}}">
+                  </nz-option>
+                </nz-select>
+                <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="service{{i}}">
+                Services
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select service(s)">
+                <nz-select [nzDisabled]="job?.id" required nzMode="multiple" name="services{{i}}" nzShowSearch
+                  [(ngModel)]="job.services" (ngModelChange)="onServiceChange(i)"
+                  [nzPlaceHolder]="projectJobServicesPlaceholder" [nzMaxTagCount]="maximumSelections"
+                  [nzMaxTagPlaceholder]="selectionCountTemplate" changes [changedValue]="job?.services"
+                  [changedType]="changedType" [changedField]="'jobs/' + i + '.services'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Services'" [checkOnlyObjectId]="true">
+                  <nz-option *ngFor=" let service of services" [nzValue]="service"
+                    nzLabel="{{service.name | titlecase}}">
+                  </nz-option>
+                </nz-select>
+                <ng-template #selectionCountTemplate let-selectedList>+ {{selectedList.length}} </ng-template>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="status{{i}}">
+                Status
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a tag">
+                <nz-select required name="status{{i}}" nzShowSearch [(ngModel)]="job.status"
+                  [nzPlaceHolder]="projectJobStatusPlaceholder" [nzDisabled]="true" changes [changedValue]="job?.status"
+                  [changedType]="changedType" [changedField]="'jobs/' + i + '.status'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Status'" [checkOnlyObjectId]="false">
+                  <nz-option *ngFor="let item of statusDropdown" [nzLabel]="item.label" [nzValue]="item.value">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30" *ngIf="i !== project?.jobs?.length - 1">
+          <hr>
+        </section>
+      </section>
+      <section *ngIf="i === project?.jobs?.length - 1" nz-col [nzSpan]="8" class="job-button-container">
+        <section class="add-button-container">
+          {{isJobTabValid()}}
+          <button nz-button [disabled]="!isJobsTabValid" class="mr-auto width-150" nzType="primary" (click)="addJob()">
+            <i nz-icon [nzType]="addButtonIcon"></i>
+            Add job
+          </button>
+        </section>
+      </section>
+      <section nz-col *ngIf="!job?.id" [nzSpan]="8" class="job-button-container">
+        <section class="add-button-container">
+          <button nz-button class="mr-auto width-150" nzType="danger" (click)="removeJob(i)">
+            <i nz-icon [nzType]="removeButtonIcon"></i>
+            Remove job
+          </button>
+        </section>
+      </section>
+    </section>
+  </ng-container>
+</section>

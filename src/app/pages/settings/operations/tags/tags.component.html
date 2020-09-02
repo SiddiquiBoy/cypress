@@ -1,0 +1,65 @@
+<section class="optags-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="tag-spin-container" [nzSpinning]="isSpinning">
+    <!-- <section class="table-action-list">
+      <section class="search-bar-container">
+        <app-searchbar [searchPlaceholder]="searchPlaceholder" (searchValue)="onSearchInput($event)"></app-searchbar>
+      </section>
+      <section class="buttons-container">
+        <button class="flex-center" nz-dropdown [nzDropdownMenu]="menu" nz-button nzType="primary" nzGhost>Actions<i
+            nz-icon nzType="down"></i></button>
+        <button [routerLink]="['add']" class="ml-10" nz-button nzType="primary">Add</button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item [nzDisabled]="item?.disabled" *ngFor="let item of actionButtonDropdownMenu">
+              <a (click)="onMenuItemClick(item)">{{item?.label}}</a>
+            </li>
+          </ul>
+        </nz-dropdown-menu>
+      </section>
+    </section> -->
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="tags" [showSearchBox]="true"
+        [showColShowHide]="false" [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons"
+        [totalRecords]="totalRecords" [customHeaderOptions]="columns" [customTemplate]="custom"
+        (selectedRows)="onRowsSelectionChange($event)" [tableConfig]="tableConfig"
+        [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)"
+        (eEmitSearchInput)="onSearchInput($event)" (eEmitSelectedCols)="onSelectedColsChange($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.type == 'color'">
+    <!-- nzText="{{ data[key.columnMap] }}" -->
+    <!-- <nz-badge nzColor="{{ data[key.columnMap] }}"></nz-badge> -->
+    <nz-avatar [ngStyle]="{ 'background-color': data[key.columnMap] ,'border': '1px solid #80808040' }"
+      [nzShape]="'square'" title="{{data[key.columnMap]}}"></nz-avatar>
+  </span>
+  <span *ngIf="key.type == 'activeinactive'">
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'active'" nzColor="green">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+    <nz-tag *ngIf="data[key.columnMap].toLowerCase() == 'inactive'" nzColor="red">{{ data[key.columnMap] | uppercase }}
+    </nz-tag>
+  </span>
+  <span *ngIf="key.columnMap === 'importance'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'name'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <span *ngIf="key.columnMap === 'code'">
+    {{data[key.columnMap] | uppercase }}
+  </span>
+  <ng-container *permission="editButtonPermission">
+    <span *ngIf="key.columnMap === 'edit'">
+      <a>
+        <i nz-icon nzType="edit" nzTheme="outline" (click)="onRowEditClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+</ng-template>

@@ -1,0 +1,75 @@
+<section class="job-component-container">
+  <section class="page-header-container">
+    <app-page-header></app-page-header>
+  </section>
+  <nz-spin class="project-spin-container" [nzSpinning]="isSpinning">
+    <section class="table-container">
+      <app-general-table *ngIf="columns?.length && !firstLoad" [tableData]="jobs" [showSearchBox]="true"
+        [showColShowHide]="showColShowHide" [maxShowHideColSelections]="maxShowHideColSelections" [dateFilterPlaceholder]="dateFilterPlaceholder" [showDateFilter]="true"
+        [searchPlaceholder]="searchPlaceholder" [tableActionButtons]="tableActionButtons" [totalRecords]="totalRecords"
+        [customHeaderOptions]="columns" [customTemplate]="custom" [tableConfig]="tableConfig"
+        [customPaginationData]="paginationData" (paginatedData)="onPaginationChange($event)"
+        (sortObj)="onSortChange($event)" (editRow)="onRowEditClick($event)" (eEmitSelectedFilters)="onFilter($event)"
+        (eEmitSearchInput)="onSearchInput($event)" (eEmitSelectedDate)="onDateFilter($event)">
+      </app-general-table>
+    </section>
+  </nz-spin>
+</section>
+
+<ng-template #custom let-data="data" let-key="key">
+  <span *ngIf="key.columnMap === 'jobType.name'">
+    {{data?.jobType?.name || '-' | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'startDate'">
+    {{data[key.columnMap] || '-' | date : defaultDateFormat}}
+  </span>
+  <span *ngIf="key.columnMap === 'startTime'">
+    {{getFormattedTime(data[key.columnMap] || '-')}}
+  </span>
+  <span *ngIf="key.columnMap === 'tags.name'">
+    <span *ngFor="let item of data?.tags let i = index">
+      <span *ngIf="i === data?.tags?.length - 1">
+        {{item.name | titlecase}}
+      </span>
+      <span *ngIf="i < data?.tags?.length - 1">
+        {{item.name | titlecase}},
+      </span>
+    </span>
+    <span *ngIf="!data?.tags?.length">
+      -
+    </span>
+  </span>
+  <span *ngIf="key.columnMap === 'summary'">
+    {{data[key.columnMap] || '-' | firstLetterCapital}}
+  </span>
+  <span *ngIf="key.columnMap === 'project.name'">
+    {{data?.project?.name || '-' | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap === 'customer.fullName'">
+    {{data?.project?.customer?.fullName || '-' | titlecase}}
+  </span>
+  <span *ngIf="key.columnMap== 'status'">
+    {{data[key.columnMap] | titlecase }}
+  </span>
+  <!-- <span *ngIf="key.columnMap === 'addresses'" class="titlecase">
+    {{data['addresses'] && data['addresses'][0] ? data['addresses'][0]['street'] : '-'}}
+  </span> -->
+  <ng-container *permission="viewButtonPermission">
+    <span *ngIf="key.columnMap === 'action'">
+      <a>
+        <i nz-tooltip nzTooltipTitle="View" nz-icon nzType="eye" class="mr-2" nzTheme="outline"
+          (click)="onRowViewClick(data)"></i>
+      </a>
+    </span>
+  </ng-container>
+  <ng-container *permission="editButtonPermission">
+    <ng-container *ngIf="!allNonEditableStatus.includes(data['status'])">
+      <span *ngIf="key.columnMap === 'action'">
+        <a>
+          <i nz-tooltip nzTooltipTitle="Edit" nz-icon nzType="edit" nzTheme="outline"
+            (click)="onRowEditClick(data)"></i>
+        </a>
+      </span>
+    </ng-container>
+  </ng-container>
+</ng-template>

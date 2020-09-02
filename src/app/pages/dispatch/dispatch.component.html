@@ -1,0 +1,13 @@
+<section class="schedule-container">
+    <section class="page-header-container">
+        <app-page-header></app-page-header>
+    </section>
+    <nz-spin class="schedule-spin-container" [nzSpinning]="isSpinning">
+        <section class="dispatch-calendar-container" *ngIf="orgId">
+            <app-dispatchboard-technician-timeline [orgId]="orgId"></app-dispatchboard-technician-timeline>
+        </section>
+        <section class="dispatchboard-job-list" *ngIf="orgId">
+            <app-dispatchboard-job-list [orgId]="orgId"></app-dispatchboard-job-list>
+        </section>
+    </nz-spin>
+</section>

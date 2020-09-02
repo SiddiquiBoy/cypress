@@ -1,0 +1,31 @@
+<!-- <section class="app-dialog-component-container">
+  <nz-modal [nzWidth]="600" [(nzVisible)]="isVisible" [nzTitle]="title" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()"
+    [nzClassName]="'app-dialog-modal-class'" [nzMaskClosable]="false" [nzWrapClassName]="'app-dialog-modal-class-wrapper'"
+    [nzOkText]="okText"
+    [nzFooter]="footerHide ? null : ''"
+    [nzCancelText]="cancelText">
+    <section class="app-dialog-content">
+      <ng-content></ng-content>
+    </section>
+    <ng-container *ngIf="!withFooter">
+      <section *nzModalFooter class="app-dialog-footer">
+      </section>
+    </ng-container>
+  </nz-modal>
+</section>
+
+<ng-template #modalFooter></ng-template> -->
+
+<section class="app-dialog-component-container">
+  <nz-modal [(nzVisible)]="isVisible" [nzTitle]="title" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()"
+    [nzClassName]="'app-dialog-modal-class'" [nzWrapClassName]="'app-dialog-modal-class-wrapper'" [nzOkText]="okText"
+    [nzCancelText]="cancelText" [nzFooter]="withFooter ? '' : null">
+    <section class="app-dialog-content">
+      <ng-content></ng-content>
+    </section>
+    <!-- <ng-container *ngIf="!withFooter">
+      <section *nzModalFooter class="app-dialog-footer">
+      </section>
+    </ng-container> -->
+  </nz-modal>
+</section>

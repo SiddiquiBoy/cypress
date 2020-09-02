@@ -1,0 +1,66 @@
+.customer-summary-section {
+    
+    .padding-top-10 {
+        padding-top: 5%;
+    }
+
+    .customer-image {
+        width: 35px;
+        cursor: default;
+        img {
+            width: inherit;
+            border-radius: 50%;
+        }
+    }
+
+    .job-action-container {
+        // width: 20%;
+        // margin: auto 0px auto 0px;
+        padding: 10px;
+
+        .action-button {
+            margin: 10px;
+            width: 100%;
+            // display: flex;
+
+            button {
+                width: inherit;
+            }
+
+            // .status-tag-container {
+            //     width: inherit;
+
+            //     nz-tag {
+            //         width: inherit;
+            //         padding:10px;
+            //         text-align: center;
+            //     }
+            // }
+        }
+    }
+
+    .ant-statistic-content {
+        font-size: 14px;
+    }
+
+    nz-statistic {
+        margin: 10px 20px;
+        width: 16%;
+
+        .ant-statistic-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .statistic-title-span {
+            margin: 0 5px;
+        }
+    }
+}
+
+.edit-summary-section {
+    width: 800px;
+    // height: 400px;
+    overflow-y: auto;
+    padding: 0px 20px;
+}

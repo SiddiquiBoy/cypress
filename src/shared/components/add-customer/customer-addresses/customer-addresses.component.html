@@ -1,0 +1,180 @@
+<section class="customer-addresses-component-container">
+  <ng-container *ngFor="let address of customer.addresses; let i = index">
+    <section nz-row nzGutter="30">
+      <section nz-col [nzSpan]="redirectUpdate ? '16' : '24'">
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="country">
+                Country
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a country">
+                <nz-select required name="country{{i}}" nzShowSearch [nzPlaceHolder]="customerAddressCountryPlaceholder"
+                  [nzDisabled]="address?.id" [(ngModel)]="customer.addresses[i].country"
+                  (ngModelChange)="onCountrySelect(i)" changes [changedValue]="address?.country"
+                  [changedType]="changedType" [changedField]="'addresses/' + i + '.country'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Country'" [checkOnlyObjectId]="false">
+                  <nz-option *ngFor="let country of countries" [nzLabel]="country.name | titlecase"
+                    [nzValue]="country.name">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="state">
+                State
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select a state">
+                <nz-select required name="state{{i}}" nzShowSearch [nzPlaceHolder]="customerAddressStatePlaceholder"
+                  [nzDisabled]="address?.id" [(ngModel)]="customer.addresses[i].state" changes
+                  [changedValue]="address?.state" [changedType]="changedType"
+                  [changedField]="'addresses/' + i + '.state'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'State'" [checkOnlyObjectId]="false">
+                  <nz-option *ngFor="let state of states" [nzLabel]="state.name | titlecase" [nzValue]="state.name">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="addCity{{i}}">
+                City
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid City ">
+                <input required nz-input name="city{{i}}" id="addCity{{i}}" class="titlecase" maxlength="20"
+                  [disabled]="address?.id" [placeholder]="customerAddressCityPlaceholder"
+                  [(ngModel)]="customer.addresses[i].city" trim="blur" changes [changedValue]="address?.city"
+                  [changedType]="changedType" [changedField]="'addresses/' + i + '.city'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'City'" [checkOnlyObjectId]="false"
+                  [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="street">
+                Street
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a street">
+                <input required nz-input name="street{{i}}" class="titlecase"
+                  [placeholder]="customerAddressStreetPlaceholder" [disabled]="address?.id"
+                  [(ngModel)]="customer.addresses[i].street" trim="blur" changes [changedValue]="address?.street"
+                  [changedType]="changedType" [changedField]="'addresses/' + i + '.street'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Street'" [checkOnlyObjectId]="false"
+                  [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzFor="landmark">
+                Landmark
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid landmark">
+                <input nz-input name="landmark{{i}}" class="titlecase"
+                  [placeholder]="customerAddressLandmarkPlaceholder" [disabled]="address?.id"
+                  [(ngModel)]="customer.addresses[i].landmark" trim="blur" changes [changedValue]="address?.landmark"
+                  [changedType]="changedType" [changedField]="'addresses/' + i + '.landmark'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Landmark'" [checkOnlyObjectId]="false"
+                  [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="zipcode">
+                Zip Code
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid zipcode">
+                <input required nz-input name="zipcode{{i}}" maxlength="5" [pattern]="zipcodeRegex"
+                  [placeholder]="customerAddressZipCodePlaceholder" [disabled]="address?.id"
+                  [(ngModel)]="customer.addresses[i].postalCode" trim="blur" changes
+                  [changedValue]="address?.postalCode" [changedType]="changedType"
+                  [changedField]="'addresses/' + i + '.postalCode'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Postal Code'"
+                  [checkOnlyObjectId]="false" [trimValue]="true" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+        </section>
+        <section nz-row nzGutter="30">
+          <section nz-col [nzSpan]="6">
+            <nz-form-item>
+              <nz-form-label nzFor="latitude">
+                Latitude
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid latitude">
+                <input nz-input [pattern]="latLongRegex" name="latitude{{i}}" maxlength="6"
+                  [placeholder]="customerAddressLatitudePlaceholder" [(ngModel)]="customer.addresses[i].latitude"
+                  trim="blur" [disabled]="address?.id" changes [changedValue]="address?.latitude"
+                  [changedType]="changedType" [changedField]="'addresses/' + i + '.latitude'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Latitude'" [checkOnlyObjectId]="false"
+                  [trimValue]="false" [formatterType]="'number'" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <section nz-col [nzSpan]="6">
+            <nz-form-item>
+              <nz-form-label nzFor="longitude">
+                Longitude
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Enter a valid longitude">
+                <input nz-input [pattern]="latLongRegex" name="longitude{{i}}" maxlength="6"
+                  [placeholder]="customerAddressLongitudePlaceholder" [(ngModel)]="customer.addresses[i].longitude"
+                  trim="blur" [disabled]="address?.id" changes [changedValue]="address?.longitude"
+                  [changedType]="changedType" [changedField]="'addresses/' + i + '.longitude'" [changeDescription]="'-'"
+                  [changeAdditionalDescription]="'-'" [changedFieldDisplayName]="'Longitude'"
+                  [checkOnlyObjectId]="false" [trimValue]="false" [formatterType]="'number'" />
+              </nz-form-control>
+            </nz-form-item>
+          </section>
+          <!-- <section nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label nzRequired nzFor="addressType">
+                AddressType
+              </nz-form-label>
+              <nz-form-control nzErrorTip="Select an address type">
+                <nz-select required name="addressType{{i}}" nzPlaceHolder="Select an address type"
+                  [nzDisabled]="address?.id" [(ngModel)]="customer.addresses[i].type">
+                  <nz-option *ngFor="let item of addressTypeDropdown" [nzLabel]="item.value" [nzValue]="item.label">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </section> -->
+        </section>
+        <section nz-row nzGutter="30" *ngIf="i !== customer?.addresses?.length - 1">
+          <hr>
+        </section>
+      </section>
+      <ng-container *ngIf="redirectUpdate">
+        <section *ngIf="i === customer?.addresses?.length - 1" nz-col [nzSpan]="8" class="address-button-container">
+          <section class="add-button-container">
+            {{isAddressTabValid()}}
+            <button nz-button [disabled]="!isAddTabValid" class="mr-auto width-150" nzType="primary"
+              (click)="addAddress()">
+              <i nz-icon [nzType]="addButtonIcon"></i>
+              Add address
+            </button>
+          </section>
+        </section>
+        <section *ngIf="customer?.addresses?.length > 1 && !address?.id" nz-col [nzSpan]="8"
+          class="address-button-container">
+          <section class="add-button-container">
+            <button nz-button class="mr-auto width-150" nzType="danger" (click)="removeAddress(i)">
+              <i nz-icon [nzType]="removeButtonIcon"></i>
+              Remove address
+            </button>
+          </section>
+        </section>
+      </ng-container>
+    </section>
+  </ng-container>
+</section>
